@@ -1,0 +1,201 @@
+account_id,customer_name,email,phone,account_type,open_date,home_city,home_lat,home_lon,credit_limit,avg_monthly_txns,risk_tier,last_active,is_dormant,dormant_days,kyc_verified,country
+ACC-00001,Donald Walker,rhodespatricia@example.org,001-260-501-3389,Savings,2024-12-21,"Chicago, US",41.88,-87.63,10000,33,Standard,2024-11-29T13:09:42.784808,True,32,True,US
+ACC-00002,Jerry Ramirez,blakeerik@example.com,942-335-1161x55940,Savings,2026-04-04,"Boston, US",42.36,-71.06,5000,8,Standard,2024-12-05T02:51:42.994638,True,26,True,US
+ACC-00003,Sandra Montgomery,barbara10@example.net,441.731.6475,Business,2023-03-03,"Boston, US",42.36,-71.06,10000,74,Premium,2024-11-06T01:38:03.317172,False,0,True,US
+ACC-00004,Melinda Jones,amandasanchez@example.com,(748)535-0305x6413,Checking,2024-09-01,"Denver, US",39.74,-104.98,10000,59,Standard,2024-12-02T07:34:42.155961,False,0,True,US
+ACC-00005,Judy Baker,julieryan@example.net,001-369-265-3287,Savings,2025-09-12,"Los Angeles, US",34.05,-118.24,5000,16,Premium,2024-11-07T14:33:53.662648,False,0,True,US
+ACC-00006,Michael Carlson,djames@example.net,280-618-4514x627,Checking,2026-04-02,"Austin, US",30.27,-97.74,25000,73,Standard,2024-10-16T18:08:14.099252,False,0,False,US
+ACC-00007,Ashley Garrett,ericfarmer@example.net,001-380-395-7015x43039,Savings,2025-01-19,"Miami, US",25.77,-80.19,50000,51,High-Risk,2024-12-10T13:50:18.059829,True,21,True,US
+ACC-00008,Kim Martinez,karroyo@example.com,596.338.3465x78713,Checking,2023-01-31,"Chicago, US",41.88,-87.63,15000,15,Standard,2024-12-15T10:36:36.818595,True,16,True,US
+ACC-00009,Daniel Jones,perezrebecca@example.com,983-547-3829,Business,2025-04-25,"Miami, US",25.77,-80.19,15000,25,Standard,2024-11-24T22:44:48.594723,False,0,True,US
+ACC-00010,Brent Jordan,ujenkins@example.org,+1-610-965-1333x87262,Business,2022-08-23,"Dallas, US",32.78,-96.8,5000,26,High-Risk,2024-12-14T16:11:36.654634,False,0,True,US
+ACC-00011,Scott Pierce,pearsonamber@example.org,432-867-7360,Savings,2021-05-27,"Houston, US",29.76,-95.37,50000,33,Standard,2024-12-25T02:15:13.299970,False,0,True,US
+ACC-00012,Rachel Mitchell,smoore@example.org,4982050097,Checking,2026-03-13,"New York, US",40.71,-74.01,15000,56,Standard,2024-11-07T03:18:39.587003,False,0,True,US
+ACC-00013,Kurt Leonard,richarddavid@example.net,799.609.1699,Savings,2022-05-31,"Denver, US",39.74,-104.98,10000,68,Premium,2024-10-10T05:02:26.753711,False,0,True,US
+ACC-00014,James Powers,stephen10@example.com,+1-791-618-3842x513,Checking,2022-03-08,"Seattle, US",47.61,-122.33,10000,76,High-Risk,2024-12-06T10:58:27.442939,True,25,True,US
+ACC-00015,Lisa Archer,contrerasangela@example.net,524-711-8244,Business,2022-05-30,"Denver, US",39.74,-104.98,25000,51,Standard,2024-12-17T00:53:20.767279,False,0,False,US
+ACC-00016,John Whitehead,davisrodney@example.com,2053242786,Checking,2021-10-08,"Houston, US",29.76,-95.37,5000,19,Standard,2024-11-29T01:57:14.368290,False,0,True,US
+ACC-00017,Kimberly Davenport,russellwilliams@example.com,4535315869,Savings,2025-09-18,"Miami, US",25.77,-80.19,25000,64,High-Risk,2024-12-21T11:30:35.314302,False,0,True,US
+ACC-00018,Sierra Johnson,kimberly63@example.com,(616)507-3375,Checking,2022-07-05,"Boston, US",42.36,-71.06,5000,73,Standard,2024-12-29T20:36:18.112071,False,0,True,US
+ACC-00019,Donald Jones,michael86@example.net,+1-350-814-2940,Savings,2023-02-14,"Austin, US",30.27,-97.74,10000,63,Standard,2024-12-01T09:40:18.029053,True,30,False,US
+ACC-00020,William Wilson,jonathanfletcher@example.org,783.856.1595x14846,Checking,2024-11-17,"Dallas, US",32.78,-96.8,50000,18,Standard,2024-12-12T18:41:05.513712,False,0,True,US
+ACC-00021,Maurice Gray,christinaturner@example.net,9449369957,Checking,2024-10-08,"Boston, US",42.36,-71.06,15000,25,High-Risk,2024-11-21T21:31:51.426337,False,0,False,US
+ACC-00022,Toni Fitzgerald,campbellelizabeth@example.net,813-543-3200x37917,Business,2024-12-25,"Boston, US",42.36,-71.06,15000,67,Standard,2024-11-18T00:08:08.999697,False,0,True,US
+ACC-00023,Charles Watts,osbornejeffery@example.net,870.983.1727x88957,Savings,2025-11-17,"Austin, US",30.27,-97.74,10000,12,Standard,2024-11-06T13:23:36.562446,False,0,True,US
+ACC-00024,David Wright,katie87@example.net,347.414.3455,Savings,2022-02-23,"Chicago, US",41.88,-87.63,5000,73,Standard,2024-12-08T22:17:44.718233,True,23,True,US
+ACC-00025,Daniel Perry,amy60@example.org,(569)909-6705x46688,Checking,2022-06-28,"Seattle, US",47.61,-122.33,15000,72,High-Risk,2024-11-06T11:21:22.433946,False,0,True,US
+ACC-00026,George Shelton,dramsey@example.org,+1-280-669-9016x272,Business,2023-04-16,"Los Angeles, US",34.05,-118.24,10000,44,Premium,2024-11-11T05:24:20.549739,False,0,False,US
+ACC-00027,Philip Gray,fking@example.com,5802531003,Business,2024-07-01,"Austin, US",30.27,-97.74,25000,20,Standard,2024-10-22T01:11:10.370028,False,0,True,US
+ACC-00028,Brian Gould,xlyons@example.com,(699)812-4190,Business,2023-05-18,"Austin, US",30.27,-97.74,10000,80,Standard,2024-10-24T11:15:25.468128,True,68,True,US
+ACC-00029,Michael Burton,terrykevin@example.net,+1-819-905-8651x850,Checking,2021-12-02,"New York, US",40.71,-74.01,15000,14,High-Risk,2024-12-06T08:25:54.346465,False,0,True,US
+ACC-00030,Sandra Zimmerman,hthompson@example.net,998-577-6945x314,Checking,2025-02-22,"Seattle, US",47.61,-122.33,50000,78,Premium,2024-12-28T11:18:04.122661,False,0,True,US
+ACC-00031,Gabrielle Snyder,hunter35@example.com,949-948-0831x36783,Checking,2023-08-20,"Seattle, US",47.61,-122.33,5000,17,Premium,2024-11-23T06:52:30.837019,False,0,True,US
+ACC-00032,Jared Sanchez,thomas85@example.com,001-485-557-4443x1351,Business,2022-06-23,"Miami, US",25.77,-80.19,5000,17,Standard,2024-10-04T13:14:43.584693,False,0,True,US
+ACC-00033,Vanessa Warren,tina34@example.org,(924)308-2400x842,Checking,2025-10-03,"Austin, US",30.27,-97.74,10000,29,Standard,2024-11-15T13:52:08.214166,False,0,True,US
+ACC-00034,Jeremiah Lopez,kingmichelle@example.org,667-319-0229,Savings,2026-05-12,"Houston, US",29.76,-95.37,25000,36,Standard,2024-11-23T15:58:43.371814,False,0,True,US
+ACC-00035,Lisa Gibbs,kimberlyjames@example.com,496-549-9091x3341,Business,2022-04-06,"Boston, US",42.36,-71.06,50000,6,Standard,2024-10-13T15:51:19.347756,True,79,False,US
+ACC-00036,Jerry Wheeler,antonio44@example.net,413.349.3618x324,Savings,2021-09-09,"Los Angeles, US",34.05,-118.24,25000,32,Premium,2024-10-09T18:08:24.420575,False,0,True,US
+ACC-00037,Samantha Morse,smartinez@example.com,001-664-288-7719x065,Savings,2021-11-06,"Houston, US",29.76,-95.37,15000,63,Standard,2024-12-13T08:04:39.731023,False,0,True,US
+ACC-00038,Laura Sampson,barbara27@example.net,+1-374-429-6717x5655,Savings,2023-01-16,"Boston, US",42.36,-71.06,10000,29,Standard,2024-12-28T13:43:40.730651,False,0,True,US
+ACC-00039,Tony Cervantes,gibsonleonard@example.com,768-908-7603,Business,2024-07-08,"New York, US",40.71,-74.01,5000,45,Standard,2024-12-04T10:20:06.488895,False,0,True,US
+ACC-00040,Joshua Pennington,fgilmore@example.org,3935248086,Business,2026-05-09,"Seattle, US",47.61,-122.33,10000,12,High-Risk,2024-12-10T09:34:46.408411,False,0,True,US
+ACC-00041,Bruce Collier,scantu@example.net,001-446-377-3782x639,Checking,2022-10-10,"Houston, US",29.76,-95.37,10000,56,Standard,2024-12-24T03:55:42.735093,True,7,False,US
+ACC-00042,Timothy Romero,campbellkenneth@example.net,001-872-978-7558,Business,2026-01-21,"Denver, US",39.74,-104.98,5000,15,Premium,2024-12-13T02:24:48.071256,False,0,True,US
+ACC-00043,Mrs. Janet Chase,vwilliams@example.com,001-366-927-0289x517,Savings,2021-06-21,"Denver, US",39.74,-104.98,10000,45,Standard,2024-12-20T06:20:22.688828,False,0,True,US
+ACC-00044,Tracy Jones,matthew61@example.com,+1-386-357-8091x34316,Savings,2023-08-12,"Houston, US",29.76,-95.37,25000,45,Standard,2024-10-15T23:22:32.514559,False,0,True,US
+ACC-00045,Amber Flynn,michael62@example.org,569.922.2196x93792,Checking,2024-07-31,"Denver, US",39.74,-104.98,5000,73,Standard,2024-12-04T11:02:33.041880,False,0,True,US
+ACC-00046,Stephanie Marshall,erica21@example.com,(894)764-7436x713,Checking,2024-04-07,"Houston, US",29.76,-95.37,10000,52,Standard,2024-11-13T08:40:20.201598,False,0,True,US
+ACC-00047,William Barrett,alan09@example.net,943.295.3394x2104,Business,2024-04-16,"Boston, US",42.36,-71.06,50000,6,High-Risk,2024-12-31T08:12:53.331243,False,0,True,US
+ACC-00048,Edward Burgess,jamesbuchanan@example.com,784.324.7451x71236,Checking,2025-05-06,"Chicago, US",41.88,-87.63,15000,19,Standard,2024-12-07T21:53:49.555496,False,0,True,US
+ACC-00049,Jordan Chambers,brenda51@example.net,970.698.5931,Business,2024-08-21,"Houston, US",29.76,-95.37,10000,48,Standard,2024-10-04T06:03:51.462065,False,0,True,US
+ACC-00050,Andrew Ferrell,davispaige@example.org,(275)786-9261x7964,Savings,2022-06-24,"Dallas, US",32.78,-96.8,5000,16,Premium,2024-10-13T12:01:12.083990,False,0,True,US
+ACC-00051,Jack Pollard,amy50@example.com,531-371-3900x532,Checking,2025-07-17,"New York, US",40.71,-74.01,15000,25,Premium,2024-11-12T00:32:35.005642,True,49,True,US
+ACC-00052,Robin Hall,kristinacarlson@example.com,(728)542-1020,Checking,2024-05-03,"Miami, US",25.77,-80.19,5000,24,High-Risk,2024-11-21T21:05:19.763074,False,0,True,US
+ACC-00053,Cameron Fisher,reesethomas@example.com,891.878.3908x47007,Checking,2024-10-27,"Austin, US",30.27,-97.74,25000,21,Standard,2024-10-04T10:05:13.705383,False,0,True,US
+ACC-00054,Angel Miller,cameronhill@example.net,001-885-369-8478,Checking,2025-05-11,"New York, US",40.71,-74.01,10000,18,Standard,2024-11-16T02:58:50.609826,False,0,True,US
+ACC-00055,Sherry Arnold,russellbeasley@example.com,376-361-5654x52711,Business,2023-07-21,"Miami, US",25.77,-80.19,10000,35,Standard,2024-10-13T07:08:03.827216,False,0,False,US
+ACC-00056,Carlos Brown,elizabeth65@example.net,001-360-749-4519x83273,Checking,2025-08-14,"Houston, US",29.76,-95.37,10000,47,Premium,2024-12-09T00:18:43.824436,False,0,True,US
+ACC-00057,Laura Aguirre,lynchdiane@example.net,302-444-5502x296,Business,2025-02-05,"Los Angeles, US",34.05,-118.24,5000,53,Standard,2024-11-05T01:55:54.729585,False,0,True,US
+ACC-00058,Joseph Bennett,xpeterson@example.com,001-859-991-0229x0147,Savings,2024-06-05,"Los Angeles, US",34.05,-118.24,15000,44,Standard,2024-12-29T11:06:37.038662,False,0,True,US
+ACC-00059,Jose Reed,campbellerika@example.com,740.336.9003x43244,Savings,2021-06-07,"Los Angeles, US",34.05,-118.24,5000,40,Standard,2024-11-09T06:38:12.745776,False,0,True,US
+ACC-00060,James Padilla,charles06@example.org,715.496.9664x160,Business,2025-05-26,"Miami, US",25.77,-80.19,15000,8,Standard,2024-12-09T05:33:01.823790,False,0,True,US
+ACC-00061,Tamara Davis,sanchezbrianna@example.net,364-553-5218,Savings,2025-12-03,"Dallas, US",32.78,-96.8,5000,18,High-Risk,2024-11-27T15:09:02.047454,False,0,True,US
+ACC-00062,Sabrina Briggs,curtisscott@example.org,+1-721-427-7997x995,Business,2023-08-05,"Austin, US",30.27,-97.74,5000,54,High-Risk,2024-11-03T10:39:02.064313,False,0,True,US
+ACC-00063,Rebecca Vargas,william47@example.com,8059411998,Checking,2024-04-17,"New York, US",40.71,-74.01,50000,73,Standard,2024-11-14T04:52:10.345501,False,0,True,US
+ACC-00064,Amanda Stout,marcalvarez@example.org,9719518203,Savings,2024-01-05,"Chicago, US",41.88,-87.63,50000,45,Standard,2024-12-27T21:08:23.962996,False,0,True,US
+ACC-00065,Thomas Hughes,erika05@example.org,818-464-4925x19254,Business,2024-05-14,"Dallas, US",32.78,-96.8,25000,46,Premium,2024-11-26T21:10:46.839565,False,0,True,US
+ACC-00066,James Conner,elizabethcalderon@example.net,+1-581-468-5054x23573,Savings,2022-03-02,"Boston, US",42.36,-71.06,25000,27,High-Risk,2024-12-26T10:05:05.103823,True,5,True,US
+ACC-00067,Katie Fernandez,stanleynancy@example.net,(296)822-2927,Checking,2023-03-20,"Miami, US",25.77,-80.19,15000,41,Standard,2024-10-29T14:54:39.382466,False,0,True,US
+ACC-00068,Lisa Goodwin,pyoung@example.com,435.697.7468x8623,Savings,2021-08-27,"Denver, US",39.74,-104.98,25000,61,Premium,2024-12-06T18:18:18.199396,False,0,True,US
+ACC-00069,Timothy Dawson,mitchellkathryn@example.com,782.561.3750x606,Business,2023-04-29,"Boston, US",42.36,-71.06,10000,15,Standard,2024-11-15T06:04:32.936871,False,0,True,US
+ACC-00070,Fernando Garcia,lacey20@example.com,827.379.0104x3289,Checking,2025-04-10,"Denver, US",39.74,-104.98,15000,33,Standard,2024-10-10T08:16:03.879753,False,0,True,US
+ACC-00071,David Fowler,fbrown@example.net,+1-708-593-2460,Savings,2024-03-31,"New York, US",40.71,-74.01,50000,14,Premium,2024-10-24T09:18:10.402360,False,0,True,US
+ACC-00072,Kelly Ward,myerstheodore@example.net,(754)705-1531x9520,Business,2025-06-17,"Denver, US",39.74,-104.98,25000,68,Premium,2024-10-19T20:35:52.978144,False,0,True,US
+ACC-00073,Julie Dominguez,lisabrown@example.com,8439030548,Checking,2022-08-29,"New York, US",40.71,-74.01,25000,33,Standard,2024-10-18T18:11:33.051954,False,0,True,US
+ACC-00074,Howard Norman,joshua56@example.com,001-876-452-7758x4161,Business,2024-02-14,"Boston, US",42.36,-71.06,10000,20,Premium,2024-12-09T19:06:30.184736,False,0,True,US
+ACC-00075,Matthew Parker,cjackson@example.com,205.496.4016x582,Business,2025-08-20,"Seattle, US",47.61,-122.33,50000,45,Premium,2024-10-31T21:49:00.065797,False,0,True,US
+ACC-00076,Cameron Young,michael90@example.net,(775)857-1928,Business,2022-12-19,"Boston, US",42.36,-71.06,25000,25,Premium,2024-12-03T00:40:19.068637,False,0,True,US
+ACC-00077,Allison Lopez,hmcintyre@example.com,001-347-739-4731x21727,Savings,2024-09-24,"Los Angeles, US",34.05,-118.24,50000,67,Standard,2024-10-28T01:58:11.622747,False,0,True,US
+ACC-00078,Donna Evans,jenniferho@example.net,(258)731-3237,Checking,2024-02-29,"Chicago, US",41.88,-87.63,15000,47,Standard,2024-12-05T20:36:26.825509,False,0,True,US
+ACC-00079,Kristen Salazar,jonesraymond@example.net,001-778-466-9125x1778,Checking,2025-10-13,"Chicago, US",41.88,-87.63,25000,24,Standard,2024-11-05T04:50:53.222938,True,56,True,US
+ACC-00080,Catherine Burch,dshaw@example.org,624.422.5358x41438,Savings,2024-07-08,"Miami, US",25.77,-80.19,25000,12,Standard,2024-12-12T05:22:04.534647,False,0,True,US
+ACC-00081,Martin Vargas,georgeweber@example.net,690-601-0943x96907,Business,2023-10-22,"Miami, US",25.77,-80.19,5000,78,Premium,2024-11-27T07:09:54.292125,False,0,True,US
+ACC-00082,Elizabeth Jones,moorerobert@example.com,759.325.5562,Savings,2022-12-27,"Austin, US",30.27,-97.74,25000,73,High-Risk,2024-12-14T10:07:35.087182,False,0,True,US
+ACC-00083,David Davis,sonia96@example.org,(959)653-2787,Savings,2023-11-18,"Los Angeles, US",34.05,-118.24,25000,67,Standard,2024-11-13T23:34:50.681308,False,0,True,US
+ACC-00084,Jim Allen,brandon47@example.net,+1-874-280-1624x5650,Savings,2024-03-30,"Miami, US",25.77,-80.19,10000,73,Standard,2024-10-11T02:30:21.763061,False,0,True,US
+ACC-00085,Angel Gordon,marcia99@example.org,(816)255-8523,Checking,2021-08-14,"Denver, US",39.74,-104.98,5000,59,Standard,2024-10-20T12:27:19.627479,False,0,True,US
+ACC-00086,John Bryant,markaustin@example.org,(794)795-8887x9470,Savings,2024-10-05,"Houston, US",29.76,-95.37,15000,32,Premium,2024-10-15T07:59:54.840861,True,77,True,US
+ACC-00087,Rebecca Swanson,carlsonjoseph@example.net,001-399-530-9728x96230,Savings,2021-06-27,"Miami, US",25.77,-80.19,15000,15,Premium,2024-12-30T04:34:47.090449,False,0,True,US
+ACC-00088,Michael Jenkins,vsalas@example.net,7284385786,Savings,2023-09-10,"Boston, US",42.36,-71.06,10000,13,Standard,2024-10-31T05:34:32.751275,True,61,True,US
+ACC-00089,Megan Dillon,chelsea33@example.com,+1-743-644-3757,Checking,2022-10-31,"Los Angeles, US",34.05,-118.24,50000,24,Standard,2024-11-19T23:33:16.054121,False,0,True,US
+ACC-00090,Stephanie Foster,stephanie24@example.org,315-574-7338x4842,Checking,2022-08-09,"Chicago, US",41.88,-87.63,25000,37,Standard,2024-11-23T14:42:35.626921,False,0,True,US
+ACC-00091,Margaret Williams,erivera@example.org,+1-520-282-6773x45401,Business,2025-12-16,"Denver, US",39.74,-104.98,5000,25,Standard,2024-12-02T06:50:28.911009,False,0,True,US
+ACC-00092,Casey Gillespie,lfrench@example.net,400-949-9154x7887,Business,2022-10-04,"New York, US",40.71,-74.01,25000,55,Standard,2024-10-18T18:08:23.694140,False,0,True,US
+ACC-00093,Nicholas Wong,alexisrogers@example.com,001-832-396-6851,Savings,2022-04-26,"Los Angeles, US",34.05,-118.24,50000,20,High-Risk,2024-12-14T19:02:16.717218,True,17,True,US
+ACC-00094,David Green,seanadams@example.com,699-304-5301x7426,Business,2024-08-02,"Austin, US",30.27,-97.74,15000,13,High-Risk,2024-10-15T15:43:17.944932,False,0,True,US
+ACC-00095,Daniel Bernard,vhernandez@example.net,(768)378-3391x878,Savings,2025-12-23,"New York, US",40.71,-74.01,5000,60,Standard,2024-12-26T15:46:22.610248,False,0,True,US
+ACC-00096,Stephanie Harris,franklinbond@example.com,439-871-8707,Savings,2023-09-05,"Seattle, US",47.61,-122.33,10000,71,Standard,2024-10-13T02:22:15.562994,False,0,True,US
+ACC-00097,Robert Cummings,ascott@example.net,391.906.5180,Savings,2021-07-20,"Boston, US",42.36,-71.06,25000,80,Standard,2024-10-08T04:42:41.208531,False,0,True,US
+ACC-00098,Pamela Good,ybrooks@example.com,(261)282-5128x6823,Checking,2026-04-14,"Los Angeles, US",34.05,-118.24,15000,62,Standard,2024-11-08T19:09:09.292930,False,0,True,US
+ACC-00099,Jessica Gray,johnreed@example.com,310.269.0331,Savings,2023-08-17,"Denver, US",39.74,-104.98,15000,8,Premium,2024-11-13T16:05:18.335690,False,0,True,US
+ACC-00100,Dana Williams,nyoung@example.org,(584)639-5995,Savings,2025-10-10,"Houston, US",29.76,-95.37,15000,48,Standard,2024-12-02T11:34:15.800318,False,0,True,US
+ACC-00101,Jennifer Hill,conniesimmons@example.com,8564856624,Business,2025-03-01,"Dallas, US",32.78,-96.8,10000,15,Standard,2024-12-30T17:06:08.680199,False,0,True,US
+ACC-00102,Elizabeth Zimmerman,jmelendez@example.com,(588)226-3435x17518,Checking,2022-09-26,"Seattle, US",47.61,-122.33,25000,67,Premium,2024-11-14T14:48:02.347525,False,0,True,US
+ACC-00103,Shelly Lopez,timothybooth@example.com,603-831-7393x6385,Savings,2023-09-22,"Chicago, US",41.88,-87.63,10000,44,High-Risk,2024-12-02T15:07:52.854855,False,0,True,US
+ACC-00104,Ian Andrade,ugarcia@example.com,001-853-655-6093x20489,Savings,2022-02-26,"Boston, US",42.36,-71.06,50000,47,Standard,2024-11-30T09:14:17.139802,False,0,True,US
+ACC-00105,Roy Porter,jonathan77@example.com,(252)328-7280,Checking,2026-02-12,"Dallas, US",32.78,-96.8,5000,29,Standard,2024-11-01T16:30:32.463764,False,0,True,US
+ACC-00106,Jennifer Kirby,carloshernandez@example.org,275.609.9770x08860,Business,2024-01-27,"Boston, US",42.36,-71.06,10000,29,Standard,2024-12-02T03:20:44.065425,False,0,True,US
+ACC-00107,Melissa Jordan,danieldavis@example.org,739.884.5461,Business,2023-09-09,"Dallas, US",32.78,-96.8,50000,41,Standard,2024-10-28T19:14:50.060083,False,0,True,US
+ACC-00108,Elizabeth Clayton,valdezmichele@example.org,366-968-7002,Checking,2025-08-14,"Dallas, US",32.78,-96.8,15000,6,High-Risk,2024-10-24T21:19:44.585244,False,0,True,US
+ACC-00109,William Dickson,hallrachel@example.net,001-474-701-4890,Business,2021-06-21,"New York, US",40.71,-74.01,15000,21,Premium,2024-11-30T00:59:58.713351,False,0,True,US
+ACC-00110,Robert Nicholson,evansanne@example.net,(785)862-1850x1631,Savings,2026-03-28,"New York, US",40.71,-74.01,25000,61,Standard,2024-10-21T15:27:41.505425,False,0,True,US
+ACC-00111,Rachel Hayes,michaelpugh@example.com,(696)419-4311,Savings,2023-04-17,"New York, US",40.71,-74.01,5000,13,Premium,2024-11-01T08:58:24.806900,False,0,True,US
+ACC-00112,James Ward,smithkyle@example.com,001-341-721-2678x88610,Checking,2024-03-01,"Denver, US",39.74,-104.98,10000,24,High-Risk,2024-12-12T13:12:10.831823,False,0,False,US
+ACC-00113,Sharon Smith,fhughes@example.net,+1-639-682-6224,Checking,2023-11-10,"Chicago, US",41.88,-87.63,50000,58,High-Risk,2024-11-25T17:21:25.341913,False,0,True,US
+ACC-00114,Jason Washington,wardsheryl@example.net,+1-879-793-7124x0659,Business,2023-08-05,"Denver, US",39.74,-104.98,25000,62,Premium,2024-10-08T16:39:25.360554,False,0,True,US
+ACC-00115,Marilyn Wheeler,malik37@example.com,(665)847-9356,Savings,2023-03-21,"Denver, US",39.74,-104.98,50000,12,High-Risk,2024-11-10T18:07:51.734085,False,0,False,US
+ACC-00116,Zachary White,bentonsteven@example.net,674.416.7243,Checking,2024-12-20,"Chicago, US",41.88,-87.63,10000,38,Standard,2024-12-25T21:15:54.178528,False,0,True,US
+ACC-00117,William Mendoza,sferguson@example.com,+1-405-289-1135,Checking,2024-03-17,"Houston, US",29.76,-95.37,5000,57,Premium,2024-12-13T00:24:20.910799,False,0,True,US
+ACC-00118,Tracy Rivera,grodriguez@example.com,888.989.9375,Checking,2025-04-03,"Seattle, US",47.61,-122.33,15000,41,Premium,2024-11-30T01:16:02.641579,False,0,True,US
+ACC-00119,Haley Johnson,phillipssamantha@example.org,725-945-7387,Business,2021-11-18,"Los Angeles, US",34.05,-118.24,50000,30,Premium,2024-11-24T23:21:15.502056,False,0,True,US
+ACC-00120,Austin Williams,johnsonmatthew@example.org,+1-423-882-8258x67362,Savings,2023-05-16,"Los Angeles, US",34.05,-118.24,10000,14,Standard,2024-12-06T23:30:24.902943,False,0,True,US
+ACC-00121,Joanna Jordan,bushjamie@example.net,391-682-5537,Business,2024-09-29,"Dallas, US",32.78,-96.8,15000,61,Standard,2024-12-08T08:45:31.961591,False,0,True,US
+ACC-00122,Emily Price,wmatthews@example.com,392.449.9125x134,Savings,2023-04-05,"Dallas, US",32.78,-96.8,50000,74,Premium,2024-11-16T01:17:07.419194,False,0,True,US
+ACC-00123,Kyle Andrews,olopez@example.net,001-728-227-4225x790,Savings,2023-10-25,"Denver, US",39.74,-104.98,15000,37,Standard,2024-10-15T17:20:04.032452,True,77,True,US
+ACC-00124,Justin Delgado,acohen@example.net,672.419.0340x438,Checking,2025-04-18,"Denver, US",39.74,-104.98,15000,78,Standard,2024-10-20T13:28:39.150948,False,0,True,US
+ACC-00125,Kathleen Dixon,adamsamy@example.com,+1-207-983-6134,Business,2022-09-15,"Houston, US",29.76,-95.37,25000,40,Standard,2024-11-22T21:48:17.986181,False,0,False,US
+ACC-00126,Sean Wilson,jasonrojas@example.net,(696)429-2330x958,Savings,2023-01-04,"Miami, US",25.77,-80.19,5000,65,Standard,2024-12-19T14:21:04.287869,False,0,True,US
+ACC-00127,Derek Hodge,taylorkaren@example.com,9424232536,Checking,2024-04-12,"Austin, US",30.27,-97.74,15000,57,Premium,2024-12-05T08:45:22.051408,False,0,True,US
+ACC-00128,Jesse Schultz,powellkara@example.net,(577)859-0175x186,Business,2025-07-08,"Miami, US",25.77,-80.19,5000,63,Standard,2024-10-27T04:25:44.574632,False,0,True,US
+ACC-00129,Drew Kelley,ashleewashington@example.com,+1-600-417-0127x70632,Savings,2025-10-06,"Austin, US",30.27,-97.74,50000,5,High-Risk,2024-11-16T12:35:03.432191,True,45,True,US
+ACC-00130,Isaac Miller,brettgarrett@example.net,001-936-211-0371x293,Savings,2021-06-07,"New York, US",40.71,-74.01,50000,68,Premium,2024-12-20T21:26:43.009555,False,0,True,US
+ACC-00131,Scott Benson,yjones@example.org,001-211-455-4262x2189,Checking,2023-08-05,"Los Angeles, US",34.05,-118.24,15000,61,Premium,2024-11-02T22:07:12.590665,False,0,True,US
+ACC-00132,Brittany Jenkins,fheath@example.org,(619)365-6523,Business,2022-08-20,"Denver, US",39.74,-104.98,10000,44,High-Risk,2024-12-07T00:27:11.437009,False,0,True,US
+ACC-00133,Dominique Pugh,abbottdominique@example.com,989.883.6403,Checking,2021-12-15,"Miami, US",25.77,-80.19,25000,20,Standard,2024-11-26T02:09:28.704272,True,35,True,US
+ACC-00134,Kelsey Levine,sarah26@example.net,(858)627-1091x04300,Savings,2024-07-14,"Dallas, US",32.78,-96.8,25000,66,Premium,2024-11-16T23:05:53.840936,False,0,True,US
+ACC-00135,Michael Miller,joshuacollins@example.net,528.256.9146,Checking,2022-08-13,"Boston, US",42.36,-71.06,50000,70,Standard,2024-11-17T02:15:56.755783,True,44,True,US
+ACC-00136,Logan Brown,davidzimmerman@example.net,4276588425,Savings,2025-01-21,"Dallas, US",32.78,-96.8,15000,69,Standard,2024-12-25T05:11:45.417819,False,0,True,US
+ACC-00137,Frances Patterson,bakertheresa@example.net,777-485-0792,Business,2022-09-01,"Dallas, US",32.78,-96.8,50000,67,Standard,2024-10-13T15:00:09.056916,False,0,True,US
+ACC-00138,Miranda Perez,williamsmichelle@example.org,5757622086,Business,2022-08-20,"Seattle, US",47.61,-122.33,50000,53,Premium,2024-10-12T06:16:28.619210,False,0,False,US
+ACC-00139,Roger Duncan,shawrachel@example.org,380.961.7445,Checking,2021-06-07,"Los Angeles, US",34.05,-118.24,50000,54,Standard,2024-12-24T10:14:46.651714,False,0,True,US
+ACC-00140,Elizabeth Dean,frichardson@example.org,001-883-620-6038x5050,Business,2021-11-29,"Miami, US",25.77,-80.19,25000,53,Premium,2024-10-21T01:26:58.889250,True,71,False,US
+ACC-00141,Johnathan Brown,jenniferdavis@example.org,865.471.9182x61990,Checking,2022-07-30,"Houston, US",29.76,-95.37,10000,69,High-Risk,2024-11-19T16:23:57.466931,False,0,True,US
+ACC-00142,Robert Haynes,louis43@example.org,729.812.1277,Savings,2021-12-30,"Chicago, US",41.88,-87.63,5000,72,Premium,2024-10-26T11:44:25.541070,False,0,True,US
+ACC-00143,Jodi Ford,davislindsey@example.com,001-690-635-2135x680,Business,2025-06-29,"Houston, US",29.76,-95.37,10000,14,Premium,2024-11-04T05:54:03.179609,False,0,True,US
+ACC-00144,Sarah Hawkins,codygarcia@example.org,600-332-3651,Business,2021-07-02,"Dallas, US",32.78,-96.8,25000,15,Standard,2024-10-18T15:33:15.488060,False,0,True,US
+ACC-00145,Jill Anderson,david70@example.org,001-566-470-6625,Savings,2022-10-08,"Boston, US",42.36,-71.06,25000,74,Standard,2024-10-08T19:15:34.552301,False,0,True,US
+ACC-00146,Lucas Jensen,victor87@example.org,246-826-3838,Savings,2025-04-20,"Los Angeles, US",34.05,-118.24,10000,16,Premium,2024-11-12T03:23:04.884708,False,0,False,US
+ACC-00147,Kari Durham,paul20@example.com,+1-530-540-7859x321,Business,2022-09-22,"Chicago, US",41.88,-87.63,15000,8,Standard,2024-11-04T07:40:55.766097,False,0,True,US
+ACC-00148,Amy Davies,barbaramcgrath@example.com,(422)539-5590x599,Savings,2025-07-29,"New York, US",40.71,-74.01,25000,23,Standard,2024-12-15T11:10:33.416670,False,0,True,US
+ACC-00149,Kimberly Thompson,davisjesse@example.org,4877059325,Checking,2021-09-09,"Denver, US",39.74,-104.98,10000,27,Standard,2024-12-14T22:27:59.444369,False,0,True,US
+ACC-00150,Brenda Rodriguez,susan56@example.net,454-752-2675,Checking,2022-07-05,"Miami, US",25.77,-80.19,25000,79,Standard,2024-10-16T07:03:28.659636,False,0,True,US
+ACC-00151,Eric Barker,gregorysmith@example.net,001-369-902-9593,Business,2022-02-04,"Dallas, US",32.78,-96.8,5000,64,Standard,2024-11-25T00:07:56.411369,False,0,True,US
+ACC-00152,William Jackson,underwoodelizabeth@example.net,870-443-3154x10067,Savings,2025-10-25,"Houston, US",29.76,-95.37,50000,43,Premium,2024-12-09T01:56:29.719321,True,22,True,US
+ACC-00153,Joshua Garcia,kkramer@example.net,001-832-471-0405x41152,Checking,2025-01-19,"Seattle, US",47.61,-122.33,25000,66,Standard,2024-11-16T09:03:25.581253,False,0,True,US
+ACC-00154,Anna Wheeler,bbush@example.net,(896)620-1533,Savings,2024-09-11,"Denver, US",39.74,-104.98,15000,7,Premium,2024-11-21T05:37:11.706969,False,0,True,US
+ACC-00155,James Dunn,xhernandez@example.org,(614)897-3103x24171,Business,2023-09-30,"Denver, US",39.74,-104.98,5000,68,Standard,2024-10-29T18:23:07.436372,False,0,True,US
+ACC-00156,Martin Hughes,nicole52@example.com,4473743490,Savings,2021-10-27,"Los Angeles, US",34.05,-118.24,10000,29,High-Risk,2024-12-22T12:56:07.310961,False,0,True,US
+ACC-00157,Tracy Lawrence,randallloretta@example.com,+1-479-337-4160,Business,2026-02-20,"Houston, US",29.76,-95.37,5000,44,Premium,2024-11-02T22:35:21.821782,False,0,True,US
+ACC-00158,Carol Lewis,davidhenderson@example.net,(932)294-5116x86854,Checking,2025-04-29,"Austin, US",30.27,-97.74,15000,46,Premium,2024-11-12T09:55:32.988598,False,0,True,US
+ACC-00159,Jennifer Perry,ashleyaguilar@example.org,991-948-5646,Savings,2021-07-31,"Houston, US",29.76,-95.37,50000,69,Standard,2024-11-28T01:48:18.452707,False,0,True,US
+ACC-00160,Lee Steele,fosternatasha@example.net,607.945.0544,Savings,2025-09-07,"Dallas, US",32.78,-96.8,15000,48,Standard,2024-10-27T18:53:40.368462,False,0,True,US
+ACC-00161,Crystal Turner,uschroeder@example.com,001-469-313-7367x8508,Checking,2022-12-13,"Chicago, US",41.88,-87.63,25000,76,Standard,2024-12-03T15:16:49.363000,True,28,True,US
+ACC-00162,Samuel Suarez,thompsonnancy@example.org,9308705345,Business,2024-07-27,"Miami, US",25.77,-80.19,5000,63,Standard,2024-11-17T14:40:40.060240,True,44,True,US
+ACC-00163,Jaime Wheeler,susanwells@example.net,(552)541-4060x293,Business,2024-10-12,"Dallas, US",32.78,-96.8,15000,18,Standard,2024-10-14T03:33:55.350734,False,0,True,US
+ACC-00164,Alejandro Deleon,wellsdavid@example.org,+1-503-949-4466x574,Business,2022-11-26,"Denver, US",39.74,-104.98,15000,33,Standard,2024-10-27T05:13:13.912395,False,0,True,US
+ACC-00165,Lauren Smith,anna99@example.com,517-215-4544x4328,Savings,2025-06-02,"Seattle, US",47.61,-122.33,25000,19,Standard,2024-11-18T20:34:40.297400,False,0,True,US
+ACC-00166,Mary Becker,rioswhitney@example.com,(466)409-9353x87584,Savings,2022-11-11,"New York, US",40.71,-74.01,5000,17,Standard,2024-12-14T05:06:20.476865,False,0,True,US
+ACC-00167,Molly Hansen,staceylam@example.net,635-934-6554,Savings,2025-08-25,"Houston, US",29.76,-95.37,50000,58,High-Risk,2024-11-14T08:53:12.066596,False,0,True,US
+ACC-00168,Lauren Blackburn,kennedyjames@example.org,+1-768-446-0223x56972,Business,2025-04-15,"Houston, US",29.76,-95.37,5000,67,High-Risk,2024-11-14T08:21:32.350207,False,0,True,US
+ACC-00169,Cassandra Walters,hayesjason@example.org,001-827-912-9666,Savings,2023-04-23,"Dallas, US",32.78,-96.8,10000,61,Premium,2024-11-15T21:10:28.656537,True,46,False,US
+ACC-00170,Jake Smith,katherine83@example.org,+1-203-635-4216x89421,Business,2026-02-18,"Austin, US",30.27,-97.74,15000,74,Standard,2024-10-06T09:29:12.076461,True,86,True,US
+ACC-00171,Kelly Hamilton,matthewvalenzuela@example.com,001-732-260-3323x09821,Checking,2023-04-09,"Dallas, US",32.78,-96.8,25000,16,Standard,2024-11-13T00:48:03.001867,False,0,True,US
+ACC-00172,Lisa Wheeler,stanleydesiree@example.org,4165761847,Checking,2024-11-13,"Denver, US",39.74,-104.98,15000,36,Standard,2024-11-29T15:05:36.759080,False,0,True,US
+ACC-00173,Matthew Bates,cindy26@example.org,891.641.1739x34835,Business,2022-03-12,"Los Angeles, US",34.05,-118.24,10000,80,Standard,2024-11-28T17:28:20.981107,True,33,True,US
+ACC-00174,Melissa Castillo,aaronpowers@example.org,001-972-618-1143,Checking,2022-09-18,"Los Angeles, US",34.05,-118.24,50000,5,Standard,2024-11-21T07:58:47.026752,False,0,True,US
+ACC-00175,Shelly Phelps,laurie56@example.net,610-302-2557,Business,2023-04-04,"Houston, US",29.76,-95.37,15000,27,Standard,2024-10-07T12:10:23.602642,False,0,True,US
+ACC-00176,James Bryant,evaughn@example.com,+1-821-720-2169x7972,Savings,2024-06-13,"New York, US",40.71,-74.01,10000,80,Standard,2024-11-02T20:16:51.892184,True,59,True,US
+ACC-00177,Monica Snow,hknapp@example.com,301.845.0899x358,Business,2024-09-13,"Dallas, US",32.78,-96.8,25000,72,Standard,2024-12-19T15:09:49.222699,True,12,True,US
+ACC-00178,Michael Cruz,smithsarah@example.net,872.817.5354x0838,Savings,2025-06-24,"Seattle, US",47.61,-122.33,50000,80,Standard,2024-10-25T08:55:34.711959,False,0,True,US
+ACC-00179,Kenneth Miller,hwest@example.com,001-501-966-0880x1994,Checking,2026-02-22,"Los Angeles, US",34.05,-118.24,50000,43,Premium,2024-10-10T02:16:26.712589,False,0,True,US
+ACC-00180,Daniel Gibson,xmoran@example.net,211.430.5548x851,Savings,2023-11-09,"New York, US",40.71,-74.01,25000,59,Standard,2024-11-04T16:49:11.105583,True,57,True,US
+ACC-00181,Jennifer King,jacobconrad@example.com,973.951.6091,Checking,2024-09-07,"Seattle, US",47.61,-122.33,15000,23,Standard,2024-12-15T23:10:17.419528,True,16,True,US
+ACC-00182,Jonathan Moreno,tranryan@example.net,882.592.2169x9586,Business,2022-10-05,"Denver, US",39.74,-104.98,15000,53,High-Risk,2024-12-28T01:22:15.940962,False,0,True,US
+ACC-00183,Jodi Anderson,vmorrison@example.net,785-383-3394x5228,Savings,2025-03-13,"Seattle, US",47.61,-122.33,5000,19,High-Risk,2024-12-28T17:21:43.348998,False,0,True,US
+ACC-00184,Terri Mckinney,natalie60@example.net,606-620-0342,Checking,2022-02-15,"Los Angeles, US",34.05,-118.24,25000,48,Premium,2024-11-22T14:31:30.924246,False,0,True,US
+ACC-00185,Christina Weaver,lisa19@example.net,001-283-286-3840x6665,Savings,2025-02-09,"Chicago, US",41.88,-87.63,15000,52,Standard,2024-10-08T13:59:27.238954,False,0,True,US
+ACC-00186,Shannon Ramos,rhondabush@example.net,(398)893-3472x122,Checking,2021-08-06,"Seattle, US",47.61,-122.33,5000,60,Standard,2024-10-21T06:40:06.243943,True,71,True,US
+ACC-00187,Christopher Singleton,riverajenna@example.org,7253909479,Business,2025-04-24,"Austin, US",30.27,-97.74,5000,80,High-Risk,2024-10-28T02:52:56.827300,False,0,True,US
+ACC-00188,Clinton Jones,robertherrera@example.org,(233)355-5439x878,Business,2024-09-26,"Chicago, US",41.88,-87.63,25000,11,Standard,2024-10-31T14:34:31.625774,False,0,True,US
+ACC-00189,Lisa Oliver,flemingmanuel@example.org,(548)740-8588x7704,Business,2023-12-18,"Austin, US",30.27,-97.74,10000,24,Premium,2024-11-12T02:38:28.507110,True,49,True,US
+ACC-00190,Tyler Medina,simsjason@example.net,001-336-213-8612x07501,Business,2022-04-14,"Chicago, US",41.88,-87.63,15000,19,Standard,2024-12-27T08:08:15.109586,False,0,True,US
+ACC-00191,Roberto Bartlett,ohughes@example.com,(350)661-8091x90158,Business,2025-04-29,"Miami, US",25.77,-80.19,50000,76,Standard,2024-10-25T16:07:16.615709,False,0,True,US
+ACC-00192,Preston Kim,bshort@example.com,(783)226-8424,Savings,2024-02-28,"Dallas, US",32.78,-96.8,15000,48,Standard,2024-10-30T02:55:03.119754,True,62,True,US
+ACC-00193,Aaron Carlson,torreskaitlin@example.net,(436)282-2239x431,Savings,2025-08-25,"Houston, US",29.76,-95.37,5000,23,Standard,2024-11-21T22:57:02.342099,False,0,True,US
+ACC-00194,Julia Dunn MD,kingjames@example.net,755.623.1491x3577,Savings,2024-11-10,"Boston, US",42.36,-71.06,25000,48,Standard,2024-12-25T21:55:08.073375,False,0,True,US
+ACC-00195,Rhonda Benjamin,adamsanchez@example.org,001-364-452-5777x547,Business,2024-08-14,"Austin, US",30.27,-97.74,50000,15,Standard,2024-10-16T17:10:23.224933,False,0,True,US
+ACC-00196,Ronald Vance,josemercado@example.org,001-910-480-9969x3084,Checking,2023-03-22,"Denver, US",39.74,-104.98,15000,61,Premium,2024-10-10T09:03:47.437438,True,82,True,US
+ACC-00197,Morgan Carter,fmason@example.com,(480)939-2827x229,Checking,2026-02-01,"Seattle, US",47.61,-122.33,50000,19,Standard,2024-10-23T02:20:32.491927,False,0,True,US
+ACC-00198,Crystal Baker,bradclark@example.com,(477)800-5184x4989,Business,2024-08-29,"Dallas, US",32.78,-96.8,25000,72,Standard,2024-10-06T15:18:24.567378,False,0,True,US
+ACC-00199,Sara Black,okaufman@example.net,(655)577-9082x7231,Checking,2022-02-22,"Miami, US",25.77,-80.19,5000,31,Standard,2024-11-04T21:02:27.745658,False,0,False,US
+ACC-00200,Ruth Guerrero,ushepherd@example.org,477.439.2603x0299,Savings,2024-07-16,"Houston, US",29.76,-95.37,15000,20,Standard,2024-10-17T03:53:30.774522,False,0,True,US
