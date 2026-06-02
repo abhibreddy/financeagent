@@ -68,6 +68,10 @@ if "session_id" not in st.session_state:
 if "analyst" not in st.session_state:
     st.session_state.analyst = "analyst"
 
+# pending_input holds a suggestion click so it survives the rerun
+if "pending_input" not in st.session_state:
+    st.session_state.pending_input = None
+
 # ── Header ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="fd-header">
@@ -101,6 +105,7 @@ with st.sidebar:
     st.divider()
     if st.button("🗑 Clear conversation", use_container_width=True):
         st.session_state.messages = []
+        st.session_state.pending_input = None
         st.session_state.session_id = str(uuid.uuid4())
         st.rerun()
 
@@ -128,7 +133,7 @@ SUGGESTIONS = [
     "Are there coordinated attacks in the dataset?",
 ]
 
-if not st.session_state.messages:
+if not st.session_state.messages and st.session_state.pending_input is None:
     st.markdown("""
     <div class="empty-state">
       <div class="icon">🛡️</div>
@@ -141,7 +146,8 @@ if not st.session_state.messages:
     for i, suggestion in enumerate(SUGGESTIONS):
         with cols[i]:
             if st.button(suggestion, key="sug_" + str(i), use_container_width=True):
-                st.session_state.messages.append({"role": "user", "content": suggestion})
+                # Store as pending — don't append yet, let the agent block handle it
+                st.session_state.pending_input = suggestion
                 st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -154,7 +160,6 @@ for msg in st.session_state.messages:
             unsafe_allow_html=True
         )
     else:
-        # Render agent response — preserve newlines as <br>
         content = msg["content"].replace("\n", "<br>")
         st.markdown(
             "<div class='chat-label'>🤖 FraudGuard Agent</div>"
@@ -173,22 +178,38 @@ for msg in st.session_state.messages:
 # ── Chat input ────────────────────────────────────────────────────────────────
 user_input = st.chat_input("Ask the agent to investigate an account...")
 
-if user_input:
-    # Add user message
-    st.session_state.messages.append({"role": "user", "content": user_input})
+# Resolve what to send: typed input takes priority, then pending suggestion
+to_send = user_input or st.session_state.pending_input
 
-    # Run agent
+if to_send:
+    # Clear pending so it doesn't re-fire on the next rerun
+    st.session_state.pending_input = None
+
+    # Append user message and rerun immediately so the bubble renders first
+    if not st.session_state.messages or st.session_state.messages[-1]["content"] != to_send:
+        st.session_state.messages.append({"role": "user", "content": to_send})
+        st.session_state._run_agent_for = to_send
+        st.rerun()
+
+# After the rerun, the user bubble is visible — now run the agent
+if hasattr(st.session_state, "_run_agent_for") and st.session_state._run_agent_for:
+    prompt = st.session_state._run_agent_for
+    st.session_state._run_agent_for = None
+
     with st.spinner("Agent is investigating..."):
         try:
             from agent import run_agent
             response, updated_messages = run_agent(
-                messages=st.session_state.messages[:-1] + [{"role": "user", "content": user_input}],
+                messages=st.session_state.messages,
                 session_id=st.session_state.session_id,
                 analyst=st.session_state.analyst or "analyst",
             )
             st.session_state.messages = updated_messages
         except Exception as e:
-            error_msg = "Agent error: " + str(e) + ". Make sure Ollama is running (`ollama serve`) and the model is pulled (`ollama pull qwen2.5`)."
+            error_msg = (
+                "Agent error: " + str(e) +
+                ". Make sure Ollama is running (`ollama serve`) and the model is pulled (`ollama pull qwen2.5`)."
+            )
             st.session_state.messages.append({"role": "assistant", "content": error_msg})
 
     st.rerun()
