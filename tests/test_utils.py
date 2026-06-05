@@ -67,3 +67,61 @@ def test_compare_accounts_unknown_id():
     txns, accounts = load_data()
     result = compare_accounts(["DOES-NOT-EXIST"], txns, accounts)
     assert result == []
+
+
+# ── Invoice fraud detection ────────────────────────────────────────────────────
+from utils import (
+    detect_exact_duplicates, detect_near_duplicates, detect_split_billing,
+    detect_threshold_avoidance, detect_ghost_vendors, build_invoice_risk_report,
+)
+
+
+def test_detect_exact_duplicates_finds_duplicates():
+    df = pd.DataFrame([
+        {"invoice_id": "INV-001", "vendor": "ACME", "amount": 1000.0, "date": pd.Timestamp("2024-01-01")},
+        {"invoice_id": "INV-002", "vendor": "ACME", "amount": 1000.0, "date": pd.Timestamp("2024-01-01")},
+        {"invoice_id": "INV-003", "vendor": "ACME", "amount": 2000.0, "date": pd.Timestamp("2024-01-01")},
+    ])
+    result = detect_exact_duplicates(df)
+    assert len(result) == 2
+    assert set(result["invoice_id"]) == {"INV-001", "INV-002"}
+
+
+def test_detect_exact_duplicates_no_false_positives():
+    df = pd.DataFrame([
+        {"invoice_id": "INV-001", "vendor": "ACME", "amount": 1000.0, "date": pd.Timestamp("2024-01-01")},
+        {"invoice_id": "INV-002", "vendor": "ACME", "amount": 2000.0, "date": pd.Timestamp("2024-01-01")},
+    ])
+    result = detect_exact_duplicates(df)
+    assert result.empty
+
+
+def test_detect_threshold_avoidance():
+    df = pd.DataFrame([
+        {"invoice_id": "INV-001", "vendor": "A", "amount": 9800.0, "date": pd.Timestamp("2024-01-01")},
+        {"invoice_id": "INV-002", "vendor": "B", "amount": 5000.0, "date": pd.Timestamp("2024-01-01")},
+        {"invoice_id": "INV-003", "vendor": "C", "amount": 10500.0, "date": pd.Timestamp("2024-01-01")},
+    ])
+    result = detect_threshold_avoidance(df)
+    assert len(result) == 1
+    assert result.iloc[0]["invoice_id"] == "INV-001"
+
+
+def test_detect_ghost_vendors():
+    df = pd.DataFrame(
+        [{"invoice_id": f"INV-{i:03d}", "vendor": "BigCo", "amount": 1000.0, "date": pd.Timestamp("2024-01-01")} for i in range(5)]
+        + [{"invoice_id": "INV-099", "vendor": "Ghost LLC", "amount": 5000.0, "date": pd.Timestamp("2024-01-01")}]
+    )
+    result = detect_ghost_vendors(df)
+    assert len(result) == 1
+    assert result.iloc[0]["vendor"] == "Ghost LLC"
+
+
+def test_build_invoice_risk_report_on_real_data():
+    df = pd.read_csv("synthetictables/invoices.csv", parse_dates=["date"])
+    report = build_invoice_risk_report(df)
+    assert "total_invoices" in report
+    assert "flagged_count" in report
+    assert report["flagged_count"] > 0
+    assert isinstance(report["exact_duplicates"], list)
+    assert isinstance(report["ghost_vendors"], list)

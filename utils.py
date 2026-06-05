@@ -188,3 +188,100 @@ def compare_accounts(account_ids: list, txns: pd.DataFrame, accounts: pd.DataFra
             "txn_count":    len(acc_txns),
         })
     return results
+
+
+# ── Invoice fraud detection ────────────────────────────────────────────────────
+APPROVAL_THRESHOLD = 10_000.0
+THRESHOLD_BAND     = 500.0
+SPLIT_WINDOW_DAYS  = 7
+SPLIT_MIN_COUNT    = 4
+
+
+def load_invoices() -> pd.DataFrame:
+    df = pd.read_csv("synthetictables/invoices.csv", parse_dates=["date"])
+    return df
+
+
+def detect_exact_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """Return rows that share the same vendor + amount + date as another row."""
+    key = ["vendor", "amount", "date"]
+    counts = df.groupby(key)["invoice_id"].transform("count")
+    return df[counts > 1].copy()
+
+
+def detect_near_duplicates(df: pd.DataFrame, amount_tolerance: float = 0.01,
+                            day_window: int = 3) -> pd.DataFrame:
+    """
+    Return rows where the same vendor billed a very similar amount within day_window days.
+    Skips pairs already caught by exact duplicate detection.
+    """
+    df = df.sort_values(["vendor", "date"]).reset_index(drop=True)
+    flagged_indices = set()
+    for vendor, group in df.groupby("vendor"):
+        idxs = group.index.tolist()
+        for i in range(len(idxs)):
+            for j in range(i + 1, len(idxs)):
+                ri, rj = df.loc[idxs[i]], df.loc[idxs[j]]
+                day_diff = abs((rj["date"] - ri["date"]).days)
+                amt_diff = abs(ri["amount"] - rj["amount"]) / max(ri["amount"], 1)
+                if day_diff <= day_window and amt_diff <= amount_tolerance:
+                    if ri["date"] != rj["date"] or ri["amount"] != rj["amount"]:
+                        flagged_indices.update([idxs[i], idxs[j]])
+    return df.loc[list(flagged_indices)].copy()
+
+
+def detect_split_billing(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Return rows where a vendor submits SPLIT_MIN_COUNT+ invoices
+    within SPLIT_WINDOW_DAYS days.
+    """
+    df = df.sort_values(["vendor", "date"]).reset_index(drop=True)
+    flagged = []
+    for vendor, group in df.groupby("vendor"):
+        group = group.sort_values("date")
+        dates = group["date"].tolist()
+        for i, anchor in enumerate(dates):
+            window_end = anchor + pd.Timedelta(days=SPLIT_WINDOW_DAYS)
+            in_window = group[(group["date"] >= anchor) & (group["date"] <= window_end)]
+            if len(in_window) >= SPLIT_MIN_COUNT:
+                flagged.extend(in_window.index.tolist())
+    return df.loc[list(set(flagged))].copy()
+
+
+def detect_threshold_avoidance(df: pd.DataFrame) -> pd.DataFrame:
+    """Return invoices that fall just below the approval threshold."""
+    lower = APPROVAL_THRESHOLD - THRESHOLD_BAND
+    return df[(df["amount"] >= lower) & (df["amount"] < APPROVAL_THRESHOLD)].copy()
+
+
+def detect_ghost_vendors(df: pd.DataFrame, known_vendors: list = None) -> pd.DataFrame:
+    """
+    Return invoices from vendors who appear in fewer than 3 invoices total.
+    """
+    freq = df["vendor"].value_counts()
+    rare = freq[freq < 3].index.tolist()
+    if known_vendors:
+        rare = [v for v in rare if v not in known_vendors]
+    return df[df["vendor"].isin(rare)].copy()
+
+
+def build_invoice_risk_report(df: pd.DataFrame) -> dict:
+    """Run all detection passes and return a consolidated risk report dict."""
+    exact_dups = detect_exact_duplicates(df)
+    near_dups  = detect_near_duplicates(df)
+    splits     = detect_split_billing(df)
+    threshold  = detect_threshold_avoidance(df)
+    ghosts     = detect_ghost_vendors(df)
+
+    all_flagged = pd.concat([exact_dups, near_dups, splits, threshold, ghosts]).drop_duplicates("invoice_id")
+
+    return {
+        "total_invoices":       len(df),
+        "flagged_count":        len(all_flagged),
+        "exact_duplicates":     exact_dups.to_dict("records"),
+        "near_duplicates":      near_dups.to_dict("records"),
+        "split_billing":        splits.to_dict("records"),
+        "threshold_avoidance":  threshold.to_dict("records"),
+        "ghost_vendors":        ghosts.to_dict("records"),
+        "total_flagged_amount": float(all_flagged["amount"].sum()),
+    }
