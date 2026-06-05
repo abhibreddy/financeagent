@@ -1,0 +1,102 @@
+invoice_id,vendor,amount,date,department,category,approver,is_duplicate,is_split,is_ghost,is_threshold,fraud_type
+INV-01000,Metro Consulting LLC,395.08,2024-02-05,Operations,Office Supplies,A.Patel,False,False,False,False,
+INV-01001,Metro Consulting LLC,5478.26,2024-03-10,Finance,Catering,R.Kumar,False,False,False,False,
+INV-01002,Apex Office Supplies,432.42,2024-01-28,Operations,Catering,J.Smith,False,False,False,False,
+INV-01003,BlueStar Events,1750.93,2024-03-24,Marketing,Logistics,A.Patel,False,False,False,False,
+INV-01004,Sigma Analytics,4796.27,2024-01-01,Operations,Software,R.Kumar,False,False,False,False,
+INV-01005,GreenLeaf Catering,2367.4,2024-01-28,IT,IT Services,J.Smith,False,False,False,False,
+INV-01006,Premier Logistics,954.39,2024-02-14,Marketing,Consulting,J.Smith,False,False,False,False,
+INV-01007,Sigma Analytics,4382.58,2024-02-18,Finance,Catering,M.Chen,False,False,False,False,
+INV-01008,GreenLeaf Catering,4703.35,2024-01-09,Finance,Software,A.Patel,False,False,False,False,
+INV-01009,TechFix Services,7884.73,2024-01-30,Finance,Logistics,M.Chen,False,False,False,False,
+INV-01010,Sigma Analytics,5158.34,2024-02-16,Operations,Consulting,M.Chen,False,False,False,False,
+INV-01011,DataSec Partners,5427.37,2024-03-30,Finance,Catering,A.Patel,False,False,False,False,
+INV-01012,BlueStar Events,5887.19,2024-01-21,HR,Logistics,M.Chen,False,False,False,False,
+INV-01013,BlueStar Events,1913.0,2024-02-11,Finance,Office Supplies,J.Smith,False,False,False,False,
+INV-01014,GreenLeaf Catering,3329.09,2024-01-09,Operations,Catering,M.Chen,False,False,False,False,
+INV-01015,DataSec Partners,5312.42,2024-02-20,HR,Office Supplies,M.Chen,False,False,False,False,
+INV-01016,CloudHost Pro,2123.69,2024-03-12,Marketing,Consulting,R.Kumar,False,False,False,False,
+INV-01017,Premier Logistics,3023.57,2024-01-18,Marketing,Logistics,J.Smith,False,False,False,False,
+INV-01018,Apex Office Supplies,6916.6,2024-01-20,Operations,Software,R.Kumar,False,False,False,False,
+INV-01019,Metro Consulting LLC,3201.19,2024-03-17,HR,Catering,M.Chen,False,False,False,False,
+INV-01020,BlueStar Events,6914.08,2024-01-02,Finance,Software,M.Chen,False,False,False,False,
+INV-01021,GreenLeaf Catering,1070.11,2024-02-25,Operations,Logistics,J.Smith,False,False,False,False,
+INV-01022,TechFix Services,7780.73,2024-01-23,Marketing,IT Services,M.Chen,False,False,False,False,
+INV-01023,BlueStar Events,4949.97,2024-01-20,IT,Office Supplies,J.Smith,False,False,False,False,
+INV-01024,GreenLeaf Catering,4011.12,2024-01-15,IT,Consulting,A.Patel,False,False,False,False,
+INV-01025,Apex Office Supplies,2078.8,2024-03-13,Finance,IT Services,R.Kumar,False,False,False,False,
+INV-01026,Metro Consulting LLC,7828.28,2024-03-09,Operations,Office Supplies,R.Kumar,False,False,False,False,
+INV-01027,BlueStar Events,1487.99,2024-03-08,Marketing,Logistics,A.Patel,False,False,False,False,
+INV-01028,BlueStar Events,6091.07,2024-03-29,Operations,Software,M.Chen,False,False,False,False,
+INV-01029,Premier Logistics,7962.16,2024-03-24,IT,Logistics,R.Kumar,False,False,False,False,
+INV-01030,Metro Consulting LLC,2133.66,2024-01-09,IT,IT Services,A.Patel,False,False,False,False,
+INV-01031,DataSec Partners,256.09,2024-03-21,Finance,Office Supplies,J.Smith,False,False,False,False,
+INV-01032,Apex Office Supplies,6905.16,2024-01-10,Marketing,Office Supplies,M.Chen,False,False,False,False,
+INV-01033,Sigma Analytics,1871.05,2024-01-17,Marketing,Catering,R.Kumar,False,False,False,False,
+INV-01034,DataSec Partners,6320.03,2024-02-22,Operations,IT Services,J.Smith,False,False,False,False,
+INV-01035,Premier Logistics,2963.52,2024-02-22,HR,Software,J.Smith,False,False,False,False,
+INV-01036,Metro Consulting LLC,672.78,2024-02-13,Finance,Office Supplies,A.Patel,False,False,False,False,
+INV-01037,DataSec Partners,4383.03,2024-01-18,HR,Office Supplies,M.Chen,False,False,False,False,
+INV-01038,Sigma Analytics,2148.49,2024-01-10,HR,Catering,J.Smith,False,False,False,False,
+INV-01039,Apex Office Supplies,5286.73,2024-03-10,Finance,IT Services,A.Patel,False,False,False,False,
+INV-01040,CloudHost Pro,3370.03,2024-03-02,Operations,Logistics,J.Smith,False,False,False,False,
+INV-01041,CloudHost Pro,3155.99,2024-02-19,IT,Logistics,M.Chen,False,False,False,False,
+INV-01042,Premier Logistics,5633.41,2024-03-12,HR,Office Supplies,A.Patel,False,False,False,False,
+INV-01043,TechFix Services,1898.07,2024-01-08,Marketing,Software,J.Smith,False,False,False,False,
+INV-01044,GreenLeaf Catering,645.89,2024-03-15,HR,Catering,A.Patel,False,False,False,False,
+INV-01045,Apex Office Supplies,7694.08,2024-01-11,Operations,IT Services,J.Smith,False,False,False,False,
+INV-01046,DataSec Partners,3349.45,2024-03-13,Operations,Catering,J.Smith,False,False,False,False,
+INV-01047,Metro Consulting LLC,3469.95,2024-03-15,Marketing,Catering,M.Chen,False,False,False,False,
+INV-01048,TechFix Services,1793.22,2024-02-10,Operations,Consulting,R.Kumar,False,False,False,False,
+INV-01049,CloudHost Pro,5439.18,2024-02-08,HR,Consulting,J.Smith,False,False,False,False,
+INV-01050,Apex Office Supplies,3774.63,2024-03-13,Finance,IT Services,A.Patel,False,False,False,False,
+INV-01051,BlueStar Events,2268.56,2024-02-14,Finance,Office Supplies,M.Chen,False,False,False,False,
+INV-01052,TechFix Services,1430.43,2024-03-10,IT,Catering,J.Smith,False,False,False,False,
+INV-01053,BlueStar Events,2535.15,2024-03-25,Finance,Office Supplies,M.Chen,False,False,False,False,
+INV-01054,Metro Consulting LLC,7139.76,2024-03-11,Operations,Consulting,M.Chen,False,False,False,False,
+INV-01055,DataSec Partners,5797.38,2024-01-27,IT,Catering,R.Kumar,False,False,False,False,
+INV-01056,TechFix Services,7261.62,2024-01-07,Finance,Software,R.Kumar,False,False,False,False,
+INV-01057,TechFix Services,543.88,2024-02-12,Operations,Software,M.Chen,False,False,False,False,
+INV-01058,CloudHost Pro,5981.6,2024-03-11,HR,Catering,J.Smith,False,False,False,False,
+INV-01059,Metro Consulting LLC,786.9,2024-03-29,Operations,Catering,J.Smith,False,False,False,False,
+INV-01060,GreenLeaf Catering,4743.57,2024-01-19,HR,Office Supplies,J.Smith,False,False,False,False,
+INV-01061,TechFix Services,3044.28,2024-01-06,IT,Office Supplies,A.Patel,False,False,False,False,
+INV-01062,Metro Consulting LLC,2958.69,2024-03-12,HR,Catering,A.Patel,False,False,False,False,
+INV-01063,DataSec Partners,6943.92,2024-01-23,HR,IT Services,A.Patel,False,False,False,False,
+INV-01064,GreenLeaf Catering,6302.61,2024-02-22,Operations,Consulting,A.Patel,False,False,False,False,
+INV-01065,Metro Consulting LLC,3183.83,2024-01-05,HR,Office Supplies,A.Patel,False,False,False,False,
+INV-01066,Sigma Analytics,2927.34,2024-01-30,Operations,IT Services,A.Patel,False,False,False,False,
+INV-01067,Premier Logistics,2760.44,2024-01-09,IT,Consulting,R.Kumar,False,False,False,False,
+INV-01068,BlueStar Events,2782.97,2024-01-04,Finance,Consulting,A.Patel,False,False,False,False,
+INV-01069,TechFix Services,498.41,2024-03-17,HR,Consulting,M.Chen,False,False,False,False,
+INV-01070,Premier Logistics,4928.43,2024-03-06,Finance,Logistics,A.Patel,False,False,False,False,
+INV-01071,TechFix Services,546.21,2024-02-25,Finance,Catering,A.Patel,False,False,False,False,
+INV-01072,GreenLeaf Catering,3564.12,2024-03-26,IT,Catering,M.Chen,False,False,False,False,
+INV-01073,Metro Consulting LLC,5814.08,2024-02-08,Marketing,Consulting,R.Kumar,False,False,False,False,
+INV-01074,GreenLeaf Catering,3338.72,2024-02-07,Marketing,Office Supplies,A.Patel,False,False,False,False,
+INV-01075,Premier Logistics,5386.45,2024-02-18,Operations,Catering,M.Chen,False,False,False,False,
+INV-01076,Premier Logistics,4473.91,2024-01-01,IT,Consulting,A.Patel,False,False,False,False,
+INV-01077,Premier Logistics,6328.92,2024-03-18,IT,Logistics,R.Kumar,False,False,False,False,
+INV-01078,Sigma Analytics,5469.89,2024-03-06,HR,Software,A.Patel,False,False,False,False,
+INV-01079,Metro Consulting LLC,2413.53,2024-03-25,Marketing,Consulting,J.Smith,False,False,False,False,
+INV-01080,Metro Consulting LLC,4750.0,2024-02-14,Finance,Consulting,A.Patel,False,False,False,False,
+INV-01081,Metro Consulting LLC,4750.0,2024-02-14,Finance,Consulting,A.Patel,True,False,False,False,exact_duplicate
+INV-01082,Apex Office Supplies,3200.0,2024-03-05,Operations,Office Supplies,M.Chen,False,False,False,False,
+INV-01083,Apex Office Supplies,3200.0,2024-03-06,Operations,Office Supplies,A.Patel,True,False,False,False,near_duplicate
+INV-01084,Sigma Analytics,1261.31,2024-04-01,IT,IT Services,A.Patel,False,True,False,False,split_billing
+INV-01085,Sigma Analytics,1104.89,2024-04-02,IT,IT Services,A.Patel,False,True,False,False,split_billing
+INV-01086,Sigma Analytics,1296.79,2024-04-03,IT,IT Services,J.Smith,False,True,False,False,split_billing
+INV-01087,Sigma Analytics,1191.08,2024-04-04,IT,IT Services,A.Patel,False,True,False,False,split_billing
+INV-01088,Sigma Analytics,1243.67,2024-04-05,IT,IT Services,R.Kumar,False,True,False,False,split_billing
+INV-01089,Sigma Analytics,1198.88,2024-04-01,IT,IT Services,A.Patel,False,True,False,False,split_billing
+INV-01090,Sigma Analytics,1129.51,2024-04-02,IT,IT Services,J.Smith,False,True,False,False,split_billing
+INV-01091,Sigma Analytics,1278.53,2024-04-03,IT,IT Services,J.Smith,False,True,False,False,split_billing
+INV-01092,Premier Logistics,9765.43,2024-01-26,Finance,Consulting,R.Kumar,False,False,False,True,threshold_avoidance
+INV-01093,Apex Office Supplies,9866.66,2024-01-30,Finance,Consulting,J.Smith,False,False,False,True,threshold_avoidance
+INV-01094,Sigma Analytics,9739.87,2024-01-15,Finance,Consulting,M.Chen,False,False,False,True,threshold_avoidance
+INV-01095,Sigma Analytics,9883.18,2024-01-24,Finance,Consulting,R.Kumar,False,False,False,True,threshold_avoidance
+INV-01096,BlueStar Events,9833.33,2024-01-06,Finance,Consulting,R.Kumar,False,False,False,True,threshold_avoidance
+INV-01097,Phantom Solutions LLC,9500.7,2024-03-25,Operations,Consulting,A.Patel,False,False,True,False,ghost_vendor
+INV-01098,Phantom Solutions LLC,13398.63,2024-03-09,Operations,Consulting,R.Kumar,False,False,True,False,ghost_vendor
+INV-01099,Phantom Solutions LLC,11267.48,2024-03-09,Operations,Consulting,R.Kumar,False,False,True,False,ghost_vendor
+INV-01100,Phantom Solutions LLC,5774.83,2024-03-10,Operations,Consulting,A.Patel,False,False,True,False,ghost_vendor
