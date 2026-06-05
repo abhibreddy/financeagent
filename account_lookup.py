@@ -6,12 +6,36 @@ from utils import load_data, compute_velocity, build_alert_queue, VELOCITY_THRES
 st.set_page_config(
     page_title="FraudGuard — Account Lookup",
     page_icon="🛡️",
-    layout="centered",
+    layout="wide",
 )
 
 # ── CSS ───────────────────────────────────────────────────────────────────────
 with open("css/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# ── Sidebar ───────────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### 🛡️ FraudGuard")
+    st.caption("Fraud Detection Platform")
+    st.divider()
+    st.markdown("**Agents**")
+    _agents = [
+        ("🔍", "Velocity Agent",  "online"),
+        ("🧾", "Invoice Agent",   "online"),
+        ("🔎", "Audit Agent",     "online"),
+        ("📊", "Synthesis Agent", "online"),
+    ]
+    for _icon, _name, _status in _agents:
+        st.markdown(
+            f"<div class='agent-status-row'>{_icon} {_name}"
+            f"<span style='flex:1'></span>"
+            f"<span class='agent-dot {_status}'></span></div>",
+            unsafe_allow_html=True,
+        )
+    st.divider()
+    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
+    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
+    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 @st.cache_data

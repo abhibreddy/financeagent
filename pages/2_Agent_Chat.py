@@ -20,44 +20,6 @@ st.set_page_config(
 with open("css/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# ── Extra chat-specific styles ────────────────────────────────────────────────
-st.markdown("""
-<style>
-.chat-bubble {
-    padding: 12px 16px; border-radius: 10px; font-size: 13px;
-    line-height: 1.7; margin-bottom: 8px; max-width: 88%;
-}
-.chat-user {
-    background: #1f2d3d; border: 1px solid #1a3a5c;
-    color: #79c0ff; margin-left: auto; text-align: right;
-}
-.chat-agent {
-    background: #161b22; border: 1px solid #21262d; color: #e6edf3;
-}
-.chat-label {
-    font-size: 10px; color: #7d8590; text-transform: uppercase;
-    letter-spacing: 0.08em; margin-bottom: 4px;
-}
-.chat-label-right { text-align: right; }
-.tool-chip {
-    display: inline-block; padding: 2px 8px; border-radius: 20px;
-    font-size: 10px; font-weight: 600; margin: 2px;
-    background: #0d1f38; color: #58a6ff; border: 1px solid #1a3a5c;
-}
-.langfuse-link {
-    font-size: 11px; color: #7d8590; text-align: right;
-    padding: 4px 0 12px;
-}
-.langfuse-link a { color: #58a6ff; text-decoration: none; }
-.langfuse-link a:hover { text-decoration: underline; }
-.suggestion-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
-.empty-state {
-    text-align: center; padding: 3rem 1rem; color: #7d8590; font-size: 13px;
-}
-.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-</style>
-""", unsafe_allow_html=True)
-
 # ── Session state init ────────────────────────────────────────────────────────
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -85,6 +47,13 @@ st.markdown("""
 
 # ── Sidebar controls ──────────────────────────────────────────────────────────
 with st.sidebar:
+    st.markdown("### 🛡️ FraudGuard")
+    st.caption("Fraud Detection Platform")
+    st.divider()
+    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
+    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
+    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
+    st.divider()
     st.markdown("### 🤖 Agent Session")
     st.divider()
 

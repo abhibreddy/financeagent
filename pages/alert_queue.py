@@ -14,6 +14,15 @@ st.set_page_config(
 with open("css/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# ── Sidebar ───────────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### 🛡️ FraudGuard")
+    st.caption("Fraud Detection Platform")
+    st.divider()
+    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
+    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
+    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
+
 # ── Load data ─────────────────────────────────────────────────────────────────
 @st.cache_data
 def cached_load():
