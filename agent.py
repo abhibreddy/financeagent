@@ -1,6 +1,9 @@
 """
-agent.py — LangGraph fraud detection agent
-Ollama (qwen3.5) · LangGraph tools · Langfuse v2 observability (with latency tracking)
+agent.py — 3-stage multi-agent pipeline for velocity fraud detection.
+
+Stage 1 — DataAgent:   Calls tools to collect raw account/transaction facts (has tools).
+Stage 2 — AuditAgent:  Reviews findings for consistency and flags false positives (no tools).
+Stage 3 — SynthAgent:  Produces concise analyst-ready summary (no tools).
 """
 
 import os
@@ -10,7 +13,7 @@ from dotenv import load_dotenv
 from typing import Annotated, TypedDict
 
 from langchain_ollama import ChatOllama
-from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, BaseMessage
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
@@ -206,50 +209,66 @@ TOOLS = [
     record_decision,
 ]
 
-SYSTEM_PROMPT = """You are FraudGuard, an expert fraud detection agent for a financial institution.
+# ── System prompts ────────────────────────────────────────────────────────────
+DATA_AGENT_PROMPT = """You are the Data Collection Agent for FraudGuard.
 
-You have access to tools to investigate accounts suspected of transaction velocity fraud.
+Call tools to collect facts. Do NOT reason, interpret, or summarize.
+For any account investigation:
+1. lookup_account
+2. analyze_velocity
+3. get_transaction_history
+4. If risk is High: get_similar_flagged_accounts
+5. If user requests a decision: record_decision
 
-Your capabilities:
-- Look up account details (lookup_account)
-- Retrieve transaction history (get_transaction_history)
-- Analyze velocity patterns (analyze_velocity)
-- Find similar flagged accounts in the same time window (get_similar_flagged_accounts)
-- Record analyst decisions: block, clear, escalate, monitor (record_decision)
+After tool calls, output ONLY the raw data as collected — no interpretation."""
 
-When investigating an account:
-1. Always start with lookup_account to get account context
-2. Run analyze_velocity to get the risk assessment
-3. Use get_transaction_history to review the actual transactions
-4. If high risk, check get_similar_flagged_accounts for coordinated attacks
-5. Provide a clear recommendation: block / clear / escalate / monitor
-6. If the user confirms an action, call record_decision
+AUDIT_AGENT_PROMPT = """You are the Audit Agent for FraudGuard.
 
-Be concise, precise, and analytical. Always cite specific numbers (velocity count,
-geo flags, amounts) when explaining your reasoning. If an account is high risk,
-be direct about it."""
+You receive raw data from the Data Agent. Your job:
+1. Verify every claim is supported by the actual data (no hallucinated numbers)
+2. Check velocity counts match the transaction history
+3. Confirm geo flags correspond to actual city mismatches
+4. Rate each finding: Confirmed / Uncertain / Likely False Positive
+5. Note any data gaps that should affect the final recommendation
+
+Be skeptical. If a number doesn't add up, flag it."""
+
+SYNTH_AGENT_PROMPT = """You are the Synthesis Agent for FraudGuard.
+
+You receive data findings + an audit review. Produce a concise analyst summary:
+
+## Fraud Investigation: [Account ID]
+
+**Risk Level:** [High / Medium / Low]
+**Recommendation:** [Block / Clear / Escalate / Monitor]
+
+**Key Evidence:**
+- [Confirmed finding with specific numbers]
+
+**Caveats:** [Anything the Audit Agent flagged as uncertain]
+
+Be direct. Only cite numbers that appear in the actual data."""
 
 
-# ── Agent factory ─────────────────────────────────────────────────────────────
-def _build_agent():
+# ── Agent builders ────────────────────────────────────────────────────────────
+def _build_data_agent():
     llm = ChatOllama(
         model=os.getenv("OLLAMA_MODEL", "qwen3.5"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         temperature=0,
     ).bind_tools(TOOLS)
-
     tool_node = ToolNode(TOOLS)
 
     def call_model(state: AgentState):
-        messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+        messages = [SystemMessage(content=DATA_AGENT_PROMPT)] + state["messages"]
         response = llm.invoke(messages)
+        if not isinstance(response, BaseMessage):
+            response = AIMessage(content=response.content)
         return {"messages": [response]}
 
     def should_continue(state: AgentState):
         last = state["messages"][-1]
-        if hasattr(last, "tool_calls") and last.tool_calls:
-            return "tools"
-        return END
+        return "tools" if (hasattr(last, "tool_calls") and last.tool_calls) else END
 
     graph = StateGraph(AgentState)
     graph.add_node("agent", call_model)
@@ -260,53 +279,99 @@ def _build_agent():
     return graph.compile()
 
 
+def _build_reasoning_agent(system_prompt: str):
+    llm = ChatOllama(
+        model=os.getenv("OLLAMA_MODEL", "qwen3.5"),
+        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+        temperature=0,
+    )
+
+    def call_model(state: AgentState):
+        response = llm.invoke([SystemMessage(content=system_prompt)] + state["messages"])
+        if not isinstance(response, BaseMessage):
+            response = AIMessage(content=response.content)
+        return {"messages": [response]}
+
+    graph = StateGraph(AgentState)
+    graph.add_node("agent", call_model)
+    graph.set_entry_point("agent")
+    graph.add_edge("agent", END)
+    return graph.compile()
+
+
 # ── Public run function ───────────────────────────────────────────────────────
 def run_agent(
     messages: list,
     session_id: str,
     analyst: str = "analyst",
-) -> tuple[str, list]:
+) -> tuple:
     """
-    Run the agent with a full message history.
-    Returns (response_text, updated_messages).
-    Traces each run to Langfuse v2 with session + user metadata.
+    Run the 3-stage fraud detection pipeline: Data → Audit → Synthesis.
+    Returns (final_response, updated_messages).
+    Traces each stage to Langfuse using the v4 context-manager API.
     """
-    # Convert stored dicts to LangChain message objects
-    lc_messages = []
-    for m in messages:
-        if m["role"] == "user":
-            lc_messages.append(HumanMessage(content=m["content"]))
-        elif m["role"] == "assistant":
-            lc_messages.append(AIMessage(content=m["content"]))
+    lc_messages = [
+        HumanMessage(content=m["content"]) if m["role"] == "user"
+        else AIMessage(content=m["content"])
+        for m in messages
+    ]
 
-    # Langfuse v2 SDK tracing
-    trace = langfuse.trace(
-        name="fraud-agent-run",
-        session_id=session_id,
-        user_id=analyst,
-        input=messages[-1]["content"] if messages else "",
-    )
-
-    # generation span — start time is stamped here, end() stamps finish time
-    # this is what gives Langfuse the latency = end - start measurement
-    generation = trace.generation(
-        name="langgraph-agent",
-        model=os.getenv("OLLAMA_MODEL", "qwen3.5"),
-        input=messages[-1]["content"] if messages else "",
-    )
+    user_input = messages[-1]["content"] if messages else ""
+    model_name = os.getenv("OLLAMA_MODEL", "qwen3.5")
 
     try:
-        agent    = _build_agent()
-        result   = agent.invoke({"messages": lc_messages})
-        response = result["messages"][-1].content
-        generation.end(output=response)
-        trace.update(output=response)
-    except Exception as e:
-        generation.end(output={"error": str(e)})
-        trace.update(output={"error": str(e)})
-        raise e
+        with langfuse.start_as_current_observation(
+            name="fraud-agent-run",
+            as_type="span",
+            input=user_input,
+            metadata={"session_id": session_id, "analyst": analyst},
+        ):
+            # Stage 1: Data collection (with tools)
+            with langfuse.start_as_current_observation(
+                name="data-agent",
+                as_type="generation",
+                model=model_name,
+                input=user_input,
+            ) as gen1:
+                data_result = _build_data_agent().invoke({"messages": lc_messages})
+                data_output = data_result["messages"][-1].content
+                gen1.update(output=data_output)
+
+            # Stage 2: Audit review
+            with langfuse.start_as_current_observation(
+                name="audit-agent",
+                as_type="generation",
+                model=model_name,
+                input=data_output,
+            ) as gen2:
+                audit_result = _build_reasoning_agent(AUDIT_AGENT_PROMPT).invoke({
+                    "messages": [HumanMessage(content=f"Data Agent output:\n\n{data_output}")]
+                })
+                audit_output = audit_result["messages"][-1].content
+                gen2.update(output=audit_output)
+
+            # Stage 3: Synthesis
+            with langfuse.start_as_current_observation(
+                name="synthesis-agent",
+                as_type="generation",
+                model=model_name,
+                input=audit_output,
+            ) as gen3:
+                synth_result = _build_reasoning_agent(SYNTH_AGENT_PROMPT).invoke({
+                    "messages": [HumanMessage(content=(
+                        f"Original request: {user_input}\n\n"
+                        f"Data findings:\n{data_output}\n\n"
+                        f"Audit review:\n{audit_output}"
+                    ))]
+                })
+                final = synth_result["messages"][-1].content
+                gen3.update(output=final)
+
+            langfuse.set_current_trace_io(input=user_input, output=final)
+
+    except Exception:
+        raise
     finally:
         langfuse.flush()
 
-    updated = messages + [{"role": "assistant", "content": response}]
-    return response, updated
+    return final, messages + [{"role": "assistant", "content": final}]

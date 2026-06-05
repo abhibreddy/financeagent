@@ -125,3 +125,27 @@ def test_build_invoice_risk_report_on_real_data():
     assert report["flagged_count"] > 0
     assert isinstance(report["exact_duplicates"], list)
     assert isinstance(report["ghost_vendors"], list)
+
+
+def test_run_agent_returns_tuple():
+    """Smoke test: run_agent returns (str, list) with mocked LLM."""
+    from unittest.mock import patch, MagicMock
+    mock_response = MagicMock()
+    mock_response.content = "Account ACC-001 shows high risk."
+    mock_response.tool_calls = []
+
+    with patch("agent.ChatOllama") as mock_llm_class:
+        mock_llm = MagicMock()
+        mock_llm.bind_tools.return_value = mock_llm
+        mock_llm.invoke.return_value = mock_response
+        mock_llm_class.return_value = mock_llm
+
+        from agent import run_agent
+        result = run_agent(
+            messages=[{"role": "user", "content": "Check ACC-00009"}],
+            session_id="test-abc",
+            analyst="tester",
+        )
+        assert isinstance(result, tuple) and len(result) == 2
+        text, msgs = result
+        assert isinstance(text, str) and isinstance(msgs, list)
