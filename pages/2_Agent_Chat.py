@@ -53,6 +53,7 @@ with st.sidebar:
     st.page_link("account_lookup.py",        label="🔍 Account Lookup")
     st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
     st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
+    st.page_link("pages/3_Invoice_Fraud.py", label="🧾 Invoice Fraud")
     st.divider()
     st.markdown("### 🤖 Agent Session")
     st.divider()
@@ -165,7 +166,17 @@ if hasattr(st.session_state, "_run_agent_for") and st.session_state._run_agent_f
     prompt = st.session_state._run_agent_for
     st.session_state._run_agent_for = None
 
-    with st.spinner("Agent is investigating..."):
+    with st.spinner("Running investigation pipeline..."):
+        pipeline_ph = st.empty()
+        pipeline_ph.markdown("""
+        <div class="agent-pipeline">
+          <span class="pipeline-step data active">1. Data Agent</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step audit">2. Audit Agent</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step synth">3. Synthesis Agent</span>
+        </div>
+        """, unsafe_allow_html=True)
         try:
             from agent import run_agent
             response, updated_messages = run_agent(
@@ -174,7 +185,9 @@ if hasattr(st.session_state, "_run_agent_for") and st.session_state._run_agent_f
                 analyst=st.session_state.analyst or "analyst",
             )
             st.session_state.messages = updated_messages
+            pipeline_ph.empty()
         except Exception as e:
+            pipeline_ph.empty()
             error_msg = (
                 "Agent error: " + str(e) +
                 ". Make sure Ollama is running (`ollama serve`) and the model is pulled (`ollama pull qwen2.5`)."
