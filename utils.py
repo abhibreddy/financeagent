@@ -153,3 +153,38 @@ def save_decision(account_id: str, decision: str, analyst: str, notes: str):
     """, (account_id, decision, analyst, notes, datetime.now().isoformat()))
     con.commit()
     con.close()
+
+
+# ── Multi-account comparison ──────────────────────────────────────────────────
+def compare_accounts(account_ids: list, txns: pd.DataFrame, accounts: pd.DataFrame) -> list:
+    """
+    Return a list of velocity + account summary dicts for each account_id.
+    Used for the multi-account comparison view.
+    """
+    results = []
+    for acc_id in account_ids:
+        acc_row = accounts[accounts["account_id"] == acc_id]
+        acc_txns = txns[txns["account_id"] == acc_id]
+        if acc_row.empty:
+            continue
+        acc = acc_row.iloc[0]
+        v = compute_velocity(acc_txns.copy())
+        results.append({
+            "account_id":   acc_id,
+            "customer":     acc["customer_name"],
+            "account_type": acc["account_type"],
+            "home_city":    acc["home_city"],
+            "risk_tier":    acc["risk_tier"],
+            "kyc_verified": bool(acc["kyc_verified"]),
+            "is_dormant":   bool(acc["is_dormant"]),
+            "dormant_days": int(acc["dormant_days"]),
+            "risk_score":   v["risk_score"],
+            "risk_level":   v["risk_level"],
+            "max_velocity": v["max_velocity"],
+            "geo_flags":    v["geo_flags"],
+            "total_amount": v["total_amount"],
+            "fraud_types":  v["fraud_types"],
+            "peak_window":  v["peak_window"],
+            "txn_count":    len(acc_txns),
+        })
+    return results
