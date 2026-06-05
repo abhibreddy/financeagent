@@ -7,6 +7,7 @@ import streamlit as st
 import uuid
 import os
 from dotenv import load_dotenv
+from components import render_sidebar_nav
 
 load_dotenv()
 
@@ -40,23 +41,15 @@ st.markdown("""
   <div class="fd-icon">🤖</div>
   <div>
     <div class="fd-title">Agent Chat</div>
-    <div class="fd-sub">Fraud Investigation · qwen2.5 via Ollama · Traced by Langfuse</div>
+    <div class="fd-sub">Fraud Investigation · qwen2.5:14b via Ollama · Traced by Langfuse</div>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
 # ── Sidebar controls ──────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🛡️ FraudGuard")
-    st.caption("Fraud Detection Platform")
-    st.divider()
-    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
-    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
-    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
-    st.page_link("pages/3_Invoice_Fraud.py", label="🧾 Invoice Fraud")
-    st.divider()
-    st.markdown("### 🤖 Agent Session")
-    st.divider()
+    render_sidebar_nav()
+    st.markdown('<div class="sb-section-label">Session</div>', unsafe_allow_html=True)
 
     analyst = st.text_input("Analyst name", value=st.session_state.analyst, placeholder="Your name")
     if analyst:
@@ -94,6 +87,9 @@ with st.sidebar:
             unsafe_allow_html=True
         )
 
+    if "last_debug" not in st.session_state:
+        st.session_state.last_debug = {}
+
 # ── Suggested prompts ─────────────────────────────────────────────────────────
 SUGGESTIONS = [
     "Investigate ACC-00009",
@@ -122,28 +118,42 @@ if not st.session_state.messages and st.session_state.pending_input is None:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ── Chat history ──────────────────────────────────────────────────────────────
+langfuse_host = os.getenv("LANGFUSE_HOST", "http://localhost:3000")
+
 for msg in st.session_state.messages:
     if msg["role"] == "user":
-        st.markdown(
-            "<div class='chat-label chat-label-right'>You</div>"
-            "<div class='chat-bubble chat-user'>" + msg["content"] + "</div>",
-            unsafe_allow_html=True
-        )
+        with st.chat_message("user"):
+            st.markdown(msg["content"])
     else:
-        content = msg["content"].replace("\n", "<br>")
-        st.markdown(
-            "<div class='chat-label'>🤖 FraudGuard Agent</div>"
-            "<div class='chat-bubble chat-agent'>" + content + "</div>",
-            unsafe_allow_html=True
-        )
-        langfuse_host = os.getenv("LANGFUSE_HOST", "http://localhost:3000")
-        st.markdown(
-            "<div class='langfuse-link'>Traced in "
-            "<a href='" + langfuse_host + "' target='_blank'>Langfuse</a>"
-            " · session: " + st.session_state.session_id[:12] + "..."
-            "</div>",
-            unsafe_allow_html=True
-        )
+        with st.chat_message("assistant", avatar="🤖"):
+            st.markdown(msg["content"])
+            st.caption(
+                f"Traced in [Langfuse]({langfuse_host})"
+                f" · session: {st.session_state.session_id[:12]}..."
+            )
+
+# ── Pipeline debug panel ──────────────────────────────────────────────────────
+if st.session_state.get("last_debug"):
+    debug = st.session_state.last_debug
+    with st.expander("🔬 Pipeline Debug — last run", expanded=False):
+        gt = debug.get("ground_truth", "")
+        if gt:
+            if "DISCREPANCIES" in gt:
+                st.error(gt)
+            else:
+                st.success(gt)
+        t1, t2, t3 = st.tabs(["Data Agent", "Audit Agent", "Synthesis Input"])
+        with t1:
+            st.code(debug.get("data_agent", "—"), language=None)
+        with t2:
+            st.markdown(debug.get("audit_agent", "—"))
+        with t3:
+            st.caption("What the Synthesis Agent received")
+            da = debug.get("data_agent", "")
+            aa = debug.get("audit_agent", "")
+            st.code(da, language=None)
+            st.divider()
+            st.markdown(aa)
 
 # ── Chat input ────────────────────────────────────────────────────────────────
 user_input = st.chat_input("Ask the agent to investigate an account...")
@@ -179,19 +189,16 @@ if hasattr(st.session_state, "_run_agent_for") and st.session_state._run_agent_f
         """, unsafe_allow_html=True)
         try:
             from agent import run_agent
-            response, updated_messages = run_agent(
+            response, updated_messages, debug = run_agent(
                 messages=st.session_state.messages,
                 session_id=st.session_state.session_id,
                 analyst=st.session_state.analyst or "analyst",
             )
             st.session_state.messages = updated_messages
+            st.session_state.last_debug = debug
             pipeline_ph.empty()
         except Exception as e:
             pipeline_ph.empty()
-            error_msg = (
-                "Agent error: " + str(e) +
-                ". Make sure Ollama is running (`ollama serve`) and the model is pulled (`ollama pull qwen2.5`)."
-            )
-            st.session_state.messages.append({"role": "assistant", "content": error_msg})
+            st.session_state.messages.append({"role": "assistant", "content": f"Agent error: {e}"})
 
     st.rerun()

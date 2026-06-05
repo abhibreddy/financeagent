@@ -188,7 +188,7 @@ Only include findings the Audit Agent rated as Medium or High confidence."""
 # ── Agent builders ────────────────────────────────────────────────────────────
 def _build_data_agent():
     llm = ChatOllama(
-        model=os.getenv("OLLAMA_MODEL", "qwen2.5"),
+        model=os.getenv("OLLAMA_MODEL", "qwen2.5:14b"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         temperature=0,
     ).bind_tools(INVOICE_TOOLS)
@@ -216,7 +216,7 @@ def _build_data_agent():
 
 def _build_reasoning_agent(system_prompt: str):
     llm = ChatOllama(
-        model=os.getenv("OLLAMA_MODEL", "qwen2.5"),
+        model=os.getenv("OLLAMA_MODEL", "qwen2.5:14b"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         temperature=0,
     )
@@ -251,7 +251,7 @@ def run_invoice_agent(
     ]
 
     user_input = messages[-1]["content"] if messages else ""
-    model_name = os.getenv("OLLAMA_MODEL", "qwen2.5")
+    model_name = os.getenv("OLLAMA_MODEL", "qwen2.5:14b")
 
     try:
         with langfuse.start_as_current_observation(

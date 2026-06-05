@@ -7,6 +7,7 @@ Stage 3 — SynthAgent:  Produces concise analyst-ready summary (no tools).
 """
 
 import os
+import re
 import json
 import pandas as pd
 from dotenv import load_dotenv
@@ -212,48 +213,349 @@ TOOLS = [
 # ── System prompts ────────────────────────────────────────────────────────────
 DATA_AGENT_PROMPT = """You are the Data Collection Agent for FraudGuard.
 
-Call tools to collect facts. Do NOT reason, interpret, or summarize.
-For any account investigation:
+Call tools to collect facts. For any account investigation:
 1. lookup_account
 2. analyze_velocity
-3. get_transaction_history
-4. If risk is High: get_similar_flagged_accounts
+3. get_transaction_history (limit 10)
+4. If risk_level is High: get_similar_flagged_accounts
 5. If user requests a decision: record_decision
 
-After tool calls, output ONLY the raw data as collected — no interpretation."""
+After all tool calls, output a STRUCTURED DATA SUMMARY in exactly this format:
+
+ACCOUNT SUMMARY
+- Account ID: [value]
+- Customer: [value]
+- Account Type: [value]
+- Home City: [value]
+- KYC Verified: [Yes/No]
+- Dormant: [Yes – X days / No]
+- Risk Tier: [value]
+
+VELOCITY ANALYSIS
+- Max Velocity: [number] txns in a 5-min window
+- Velocity Threshold: 5
+- Risk Score: [number]/100
+- Risk Level: [High/Medium/Low]
+- Geo Anomaly Flags: [number]
+- Total Transactions: [number]
+- Total Amount: $[number]
+- Peak Window: [start timestamp] – [end timestamp]
+- Fraud Types Detected: [list or None]
+
+RECENT TRANSACTIONS (last 10)
+[List each as: timestamp | $amount | type | city | status | flags]"""
 
 AUDIT_AGENT_PROMPT = """You are the Audit Agent for FraudGuard.
 
-You receive raw data from the Data Agent. Your job:
-1. Verify every claim is supported by the actual data (no hallucinated numbers)
-2. Check velocity counts match the transaction history
-3. Confirm geo flags correspond to actual city mismatches
-4. Rate each finding: Confirmed / Uncertain / Likely False Positive
-5. Note any data gaps that should affect the final recommendation
+You receive two things:
+1. The Data Agent's text summary of an account investigation
+2. A GROUND TRUTH section produced by a deterministic database check (no LLM)
 
-Be skeptical. If a number doesn't add up, flag it."""
+Your job:
+1. Read the GROUND TRUTH section first. If it says "DISCREPANCIES", those are confirmed hallucinations — call each one out by name.
+2. Check that the Data Agent's conclusions (risk level, recommendation) are logically supported by the verified numbers.
+3. Flag any claim in the summary that contradicts the ground truth values.
+4. Rate each key finding: Confirmed / Uncertain / Hallucination.
+5. Note any data gaps that should affect the final recommendation.
 
-SYNTH_AGENT_PROMPT = """You are the Synthesis Agent for FraudGuard.
+The GROUND TRUTH values are authoritative. If the Data Agent wrote a different number, the Data Agent is wrong."""
 
-You receive data findings + an audit review. Produce a concise analyst summary:
+SYNTH_AGENT_PROMPT = """You are the Synthesis Agent for FraudGuard, a financial fraud detection system.
 
-## Fraud Investigation: [Account ID]
+You will receive:
+- A data summary with sections: ACCOUNT SUMMARY, VELOCITY ANALYSIS, RECENT TRANSACTIONS
+- An audit review with ground truth verification results
 
-**Risk Level:** [High / Medium / Low]
-**Recommendation:** [Block / Clear / Escalate / Monitor]
+Write the following report. Copy values directly from the data — do not paraphrase field names, do not add parenthetical notes, do not explain where values came from.
 
-**Key Evidence:**
-- [Confirmed finding with specific numbers]
+Output only the report. Nothing before it, nothing after the final line of dashes.
 
-**Caveats:** [Anything the Audit Agent flagged as uncertain]
+---
+## Fraud Investigation Report
 
-Be direct. Only cite numbers that appear in the actual data."""
+**Account:** <account ID from ACCOUNT SUMMARY>
+**Customer:** <customer name from ACCOUNT SUMMARY>
+**Risk Level:** <risk level from VELOCITY ANALYSIS>
+**Recommended Action:** <one of: BLOCK / ESCALATE / MONITOR / CLEAR>
+
+---
+
+### Executive Summary
+Write 2-3 sentences. State the risk level, the primary reason, and the recommended action. Use exact numbers. Do not hedge.
+
+### Risk Indicators
+
+| Indicator | Value | Verdict |
+|-----------|-------|---------|
+| Max velocity (txns/5 min) | <Max Velocity number> | <BREACH if above 5, else Normal> |
+| Velocity threshold | 5 | — |
+| Geographic anomalies | <Geo Anomaly Flags number> | <FLAGGED if above 0, else None> |
+| Account dormancy | <Dormant line from ACCOUNT SUMMARY> | <Risk factor if dormant, else Normal> |
+| KYC verified | <KYC Verified value> | <Compliant if Yes, else At Risk> |
+| Risk score | <Risk Score number> | <High / Medium / Low> |
+
+### Evidence
+
+Write one paragraph per confirmed finding. Each paragraph must name the finding, state what happened, and include at least one specific number (amount, count, timestamp, or city name) from the data.
+
+### Recommendation
+Write: BLOCK / ESCALATE / MONITOR / or CLEAR, followed by a dash, followed by one sentence with the specific numbers that justify the action.
+
+### Audit Notes
+Copy any discrepancies or caveats from the audit review. If none, write: No caveats identified.
+
+---
+
+Rules:
+- Do NOT write parenthetical notes like "(from ACCOUNT SUMMARY)" or "(extracted from data)" in any field.
+- Do NOT write "Not available" for any field that appears anywhere in the data.
+- The velocity threshold is 5. Never use any other number.
+- Stop writing after the final ---. No trailing notes or commentary."""
+
+
+# ── Direct account investigation (no LLM for data collection) ────────────────
+def _direct_account_investigation(account_id: str) -> str:
+    """
+    Call all investigation tools directly — bypasses LLM tool routing entirely.
+    Returns the same structured summary format as _build_data_summary_from_messages.
+    """
+    acc_raw      = lookup_account.invoke({"account_id": account_id})
+    velocity_raw = analyze_velocity.invoke({"account_id": account_id})
+    txn_raw      = get_transaction_history.invoke({"account_id": account_id, "limit": 10})
+    similar_raw  = None
+
+    try:
+        acc      = json.loads(acc_raw)
+        vel      = json.loads(velocity_raw)
+        txns     = json.loads(txn_raw) if not txn_raw.startswith("No transactions") else []
+        risk_lvl = vel.get("risk_level", "Low")
+        if risk_lvl == "High":
+            similar_raw = get_similar_flagged_accounts.invoke({"account_id": account_id})
+    except (json.JSONDecodeError, TypeError):
+        return f"Tool error collecting data for {account_id}."
+
+    dormant_str = (
+        f"Yes – {int(acc.get('dormant_days', 0))} days"
+        if acc.get("is_dormant") else "No"
+    )
+    peak = vel.get("peak_window") or {}
+    peak_str = f"{peak.get('start', '—')} – {peak.get('end', '—')}"
+    fraud_types = vel.get("fraud_types") or []
+
+    lines = [
+        "ACCOUNT SUMMARY",
+        f"- Account ID: {acc.get('account_id', account_id)}",
+        f"- Customer: {acc.get('customer', '—')}",
+        f"- Account Type: {acc.get('account_type', '—')}",
+        f"- Home City: {acc.get('home_city', '—')}",
+        f"- KYC Verified: {'Yes' if acc.get('kyc_verified') else 'No'}",
+        f"- Dormant: {dormant_str}",
+        f"- Risk Tier: {acc.get('risk_tier', '—')}",
+        "",
+        "VELOCITY ANALYSIS",
+        f"- Max Velocity: {vel.get('max_velocity', '—')} txns in a 5-min window",
+        f"- Velocity Threshold: 5",
+        f"- Risk Score: {vel.get('risk_score', '—')}/100",
+        f"- Risk Level: {vel.get('risk_level', '—')}",
+        f"- Geo Anomaly Flags: {vel.get('geo_flags', '—')}",
+        f"- Total Transactions: {vel.get('total_txns', '—')}",
+        f"- Total Amount: ${float(vel.get('total_amount', 0)):,.2f}",
+        f"- Peak Window: {peak_str}",
+        f"- Fraud Types Detected: {', '.join(fraud_types) if fraud_types else 'None'}",
+    ]
+
+    if txns:
+        lines += ["", "RECENT TRANSACTIONS (last 10)"]
+        for t in txns[:10]:
+            flags = []
+            if t.get("velocity_flag"):
+                flags.append("VELOCITY")
+            if t.get("geo_flag"):
+                flags.append("GEO")
+            flag_str = " | ".join(flags) if flags else "OK"
+            lines.append(
+                f"- {t.get('timestamp','—')} | ${float(t.get('amount',0)):,.2f} | "
+                f"{t.get('type','—')} | {t.get('city','—')} | {t.get('status','—')} | {flag_str}"
+            )
+
+    if similar_raw and not similar_raw.startswith("No similar"):
+        try:
+            similar = json.loads(similar_raw)
+            lines += ["", "SIMILAR FLAGGED ACCOUNTS"]
+            for s in similar[:3]:
+                lines.append(
+                    f"- {s.get('account_id','—')}: {s.get('fraud_txns','—')} fraud txns, "
+                    f"city overlap: {', '.join(s.get('city_overlap', [])) or 'none'}"
+                )
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+    return "\n".join(lines)
+
+
+# ── Tool output parser (no LLM) ──────────────────────────────────────────────
+def _build_data_summary_from_messages(messages: list) -> str:
+    """
+    Parse ToolMessage results from the Data Agent's message history into a
+    structured text summary. Deterministic — no LLM formatting required.
+    """
+    from langchain_core.messages import ToolMessage
+
+    account_data: dict = {}
+    velocity_data: dict = {}
+    txn_data: list = []
+
+    for msg in messages:
+        if not isinstance(msg, ToolMessage):
+            continue
+        try:
+            content = json.loads(msg.content)
+        except (json.JSONDecodeError, TypeError):
+            continue
+
+        if isinstance(content, dict):
+            if "customer" in content and "account_id" in content:
+                account_data = content
+            elif "max_velocity" in content:
+                velocity_data = content
+        elif isinstance(content, list) and content and "timestamp" in content[0]:
+            txn_data = content
+
+    lines = ["ACCOUNT SUMMARY"]
+    if account_data:
+        dormant_str = (
+            f"Yes – {int(account_data.get('dormant_days', 0))} days"
+            if account_data.get("is_dormant") else "No"
+        )
+        lines += [
+            f"- Account ID: {account_data.get('account_id', '—')}",
+            f"- Customer: {account_data.get('customer', '—')}",
+            f"- Account Type: {account_data.get('account_type', '—')}",
+            f"- Home City: {account_data.get('home_city', '—')}",
+            f"- KYC Verified: {'Yes' if account_data.get('kyc_verified') else 'No'}",
+            f"- Dormant: {dormant_str}",
+            f"- Risk Tier: {account_data.get('risk_tier', '—')}",
+        ]
+    else:
+        lines.append("- (lookup_account not called or failed)")
+
+    lines += ["", "VELOCITY ANALYSIS"]
+    if velocity_data:
+        peak = velocity_data.get("peak_window") or {}
+        peak_str = f"{peak.get('start', '—')} – {peak.get('end', '—')}"
+        fraud_types = velocity_data.get("fraud_types") or []
+        lines += [
+            f"- Max Velocity: {velocity_data.get('max_velocity', '—')} txns in a 5-min window",
+            f"- Velocity Threshold: 5",
+            f"- Risk Score: {velocity_data.get('risk_score', '—')}/100",
+            f"- Risk Level: {velocity_data.get('risk_level', '—')}",
+            f"- Geo Anomaly Flags: {velocity_data.get('geo_flags', '—')}",
+            f"- Total Transactions: {velocity_data.get('total_txns', '—')}",
+            f"- Total Amount: ${float(velocity_data.get('total_amount', 0)):,.2f}",
+            f"- Peak Window: {peak_str}",
+            f"- Fraud Types Detected: {', '.join(fraud_types) if fraud_types else 'None'}",
+        ]
+    else:
+        lines.append("- (analyze_velocity not called or failed)")
+
+    if txn_data:
+        lines += ["", "RECENT TRANSACTIONS (last 10)"]
+        for t in txn_data[:10]:
+            flags = []
+            if t.get("velocity_flag"):
+                flags.append("VELOCITY")
+            if t.get("geo_flag"):
+                flags.append("GEO")
+            flag_str = " | ".join(flags) if flags else "OK"
+            lines.append(
+                f"- {t.get('timestamp','—')} | ${float(t.get('amount',0)):,.2f} | "
+                f"{t.get('type','—')} | {t.get('city','—')} | {t.get('status','—')} | {flag_str}"
+            )
+
+    return "\n".join(lines)
+
+
+# ── Ground truth verifier (no LLM) ───────────────────────────────────────────
+def _verify_data_summary(data_summary: str) -> str:
+    """
+    Re-runs actual DB calculations and compares against what the Data Agent wrote.
+    Returns a discrepancy report injected into the Audit Agent's input.
+    Any mismatch is a confirmed hallucination the Audit Agent must flag.
+    """
+    _load()
+
+    # Extract account ID from the summary text
+    acc_match = re.search(r"Account ID:\s*(ACC-\w+)", data_summary, re.IGNORECASE)
+    if not acc_match:
+        return "GROUND TRUTH: Could not extract account ID from summary — manual review required."
+
+    account_id = acc_match.group(1).upper()
+    acc_txns = _txns[_txns["account_id"] == account_id]
+    if acc_txns.empty:
+        return f"GROUND TRUTH: Account {account_id} not found in database."
+
+    from utils import compute_velocity
+    v = compute_velocity(acc_txns)
+
+    actual = {
+        "max_velocity":  v["max_velocity"],
+        "risk_score":    v["risk_score"],
+        "risk_level":    v["risk_level"],
+        "geo_flags":     v["geo_flags"],
+        "total_txns":    len(acc_txns),
+        "total_amount":  round(v["total_amount"], 2),
+    }
+
+    # Parse claimed values from the data summary text
+    def _int(pattern):
+        m = re.search(pattern, data_summary, re.IGNORECASE)
+        return int(m.group(1)) if m else None
+
+    def _float(pattern):
+        m = re.search(pattern, data_summary, re.IGNORECASE)
+        return round(float(m.group(1).replace(",", "")), 2) if m else None
+
+    def _str(pattern):
+        m = re.search(pattern, data_summary, re.IGNORECASE)
+        return m.group(1).strip() if m else None
+
+    claimed = {
+        "max_velocity": _int(r"Max Velocity:\s*(\d+)"),
+        "risk_score":   _int(r"Risk Score:\s*(\d+)"),
+        "risk_level":   _str(r"Risk Level:\s*(High|Medium|Low)"),
+        "geo_flags":    _int(r"Geo Anomaly Flags:\s*(\d+)"),
+        "total_txns":   _int(r"Total Transactions:\s*(\d+)"),
+        "total_amount": _float(r"Total Amount:\s*\$?([\d,]+\.?\d*)"),
+    }
+
+    discrepancies = []
+    for field, actual_val in actual.items():
+        claimed_val = claimed.get(field)
+        if claimed_val is None:
+            discrepancies.append(f"  - {field}: not found in summary (actual: {actual_val})")
+        elif str(claimed_val).lower() != str(actual_val).lower():
+            discrepancies.append(f"  - {field}: claimed {claimed_val}, actual {actual_val} ← MISMATCH")
+
+    if discrepancies:
+        return (
+            "GROUND TRUTH DISCREPANCIES — the following values in the Data Agent summary "
+            "do not match the database. Treat these as hallucinations and use the actual values:\n"
+            + "\n".join(discrepancies)
+        )
+
+    return (
+        f"GROUND TRUTH VERIFIED for {account_id}: "
+        f"max_velocity={actual['max_velocity']}, risk_score={actual['risk_score']}, "
+        f"risk_level={actual['risk_level']}, geo_flags={actual['geo_flags']}, "
+        f"total_txns={actual['total_txns']}, total_amount=${actual['total_amount']:,.2f}. "
+        "All values match the database."
+    )
 
 
 # ── Agent builders ────────────────────────────────────────────────────────────
 def _build_data_agent():
     llm = ChatOllama(
-        model=os.getenv("OLLAMA_MODEL", "qwen3.5"),
+        model=os.getenv("OLLAMA_MODEL", "qwen2.5:14b"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         temperature=0,
     ).bind_tools(TOOLS)
@@ -281,7 +583,7 @@ def _build_data_agent():
 
 def _build_reasoning_agent(system_prompt: str):
     llm = ChatOllama(
-        model=os.getenv("OLLAMA_MODEL", "qwen3.5"),
+        model=os.getenv("OLLAMA_MODEL", "qwen2.5:14b"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         temperature=0,
     )
@@ -308,7 +610,7 @@ def run_agent(
     """
     Run the 3-stage fraud detection pipeline: Data → Audit → Synthesis.
     Returns (final_response, updated_messages).
-    Traces each stage to Langfuse using the v4 context-manager API.
+    Traces each stage to Langfuse using the stable low-level API.
     """
     lc_messages = [
         HumanMessage(content=m["content"]) if m["role"] == "user"
@@ -317,61 +619,65 @@ def run_agent(
     ]
 
     user_input = messages[-1]["content"] if messages else ""
-    model_name = os.getenv("OLLAMA_MODEL", "qwen3.5")
+    model_name = os.getenv("OLLAMA_MODEL", "qwen2.5:14b")
+
+    trace = langfuse.trace(
+        name="fraud-agent-run",
+        input=user_input,
+        session_id=session_id,
+        user_id=analyst,
+        metadata={"analyst": analyst},
+    )
+
+    debug: dict = {}
 
     try:
-        with langfuse.start_as_current_observation(
-            name="fraud-agent-run",
-            as_type="span",
-            input=user_input,
-            metadata={"session_id": session_id, "analyst": analyst},
-        ):
-            # Stage 1: Data collection (with tools)
-            with langfuse.start_as_current_observation(
-                name="data-agent",
-                as_type="generation",
-                model=model_name,
-                input=user_input,
-            ) as gen1:
-                data_result = _build_data_agent().invoke({"messages": lc_messages})
-                data_output = data_result["messages"][-1].content
-                gen1.update(output=data_output)
+        # Stage 1: Data collection
+        # If query contains an account ID, call tools directly (reliable).
+        # Otherwise fall back to LLM agent for open-ended questions.
+        gen1 = trace.generation(name="data-agent", model=model_name, input=user_input)
+        acc_match = re.search(r"\bACC-\w+\b", user_input, re.IGNORECASE)
+        if acc_match:
+            data_output = _direct_account_investigation(acc_match.group(0).upper())
+        else:
+            data_result = _build_data_agent().invoke({"messages": lc_messages})
+            data_output = _build_data_summary_from_messages(data_result["messages"])
+        gen1.end(output=data_output)
+        debug["data_agent"] = data_output
 
-            # Stage 2: Audit review
-            with langfuse.start_as_current_observation(
-                name="audit-agent",
-                as_type="generation",
-                model=model_name,
-                input=data_output,
-            ) as gen2:
-                audit_result = _build_reasoning_agent(AUDIT_AGENT_PROMPT).invoke({
-                    "messages": [HumanMessage(content=f"Data Agent output:\n\n{data_output}")]
-                })
-                audit_output = audit_result["messages"][-1].content
-                gen2.update(output=audit_output)
+        # Ground truth check (deterministic — no LLM)
+        ground_truth = _verify_data_summary(data_output)
+        gt_span = trace.span(name="ground-truth-verifier", input=data_output)
+        gt_span.end(output=ground_truth)
+        debug["ground_truth"] = ground_truth
 
-            # Stage 3: Synthesis
-            with langfuse.start_as_current_observation(
-                name="synthesis-agent",
-                as_type="generation",
-                model=model_name,
-                input=audit_output,
-            ) as gen3:
-                synth_result = _build_reasoning_agent(SYNTH_AGENT_PROMPT).invoke({
-                    "messages": [HumanMessage(content=(
-                        f"Original request: {user_input}\n\n"
-                        f"Data findings:\n{data_output}\n\n"
-                        f"Audit review:\n{audit_output}"
-                    ))]
-                })
-                final = synth_result["messages"][-1].content
-                gen3.update(output=final)
+        # Stage 2: Audit review (gets data summary + ground truth verification)
+        audit_input = f"Data Agent output:\n\n{data_output}\n\n---\n{ground_truth}"
+        gen2 = trace.generation(name="audit-agent", model=model_name, input=audit_input)
+        audit_result = _build_reasoning_agent(AUDIT_AGENT_PROMPT).invoke({
+            "messages": [HumanMessage(content=audit_input)]
+        })
+        audit_output = audit_result["messages"][-1].content
+        gen2.end(output=audit_output)
+        debug["audit_agent"] = audit_output
 
-            langfuse.set_current_trace_io(input=user_input, output=final)
+        # Stage 3: Synthesis
+        gen3 = trace.generation(name="synthesis-agent", model=model_name, input=audit_output)
+        synth_result = _build_reasoning_agent(SYNTH_AGENT_PROMPT).invoke({
+            "messages": [HumanMessage(content=(
+                f"Original request: {user_input}\n\n"
+                f"Data findings:\n{data_output}\n\n"
+                f"Audit review:\n{audit_output}"
+            ))]
+        })
+        final = synth_result["messages"][-1].content
+        gen3.end(output=final)
+
+        trace.update(output=final)
 
     except Exception:
         raise
     finally:
         langfuse.flush()
 
-    return final, messages + [{"role": "assistant", "content": final}]
+    return final, messages + [{"role": "assistant", "content": final}], debug

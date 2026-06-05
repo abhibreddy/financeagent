@@ -1,11 +1,16 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import os
+from dotenv import load_dotenv
 from utils import load_data, compute_velocity, build_alert_queue, VELOCITY_THRESHOLD
+from components import render_sidebar_nav
+
+load_dotenv()
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="FraudGuard — Account Lookup",
+    page_title="FraudGuard — Dashboard",
     page_icon="🛡️",
     layout="wide",
 )
@@ -16,27 +21,7 @@ with open("css/style.css") as f:
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🛡️ FraudGuard")
-    st.caption("Fraud Detection Platform")
-    st.divider()
-    st.markdown("**Agents**")
-    _agents = [
-        ("🔍", "Velocity Agent",  "online"),
-        ("🧾", "Invoice Agent",   "online"),
-        ("🔎", "Audit Agent",     "online"),
-        ("📊", "Synthesis Agent", "online"),
-    ]
-    for _icon, _name, _status in _agents:
-        st.markdown(
-            f"<div class='agent-status-row'>{_icon} {_name}"
-            f"<span style='flex:1'></span>"
-            f"<span class='agent-dot {_status}'></span></div>",
-            unsafe_allow_html=True,
-        )
-    st.divider()
-    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
-    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
-    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
+    render_sidebar_nav()
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 @st.cache_data
@@ -51,15 +36,129 @@ txns, accounts = cached_load()
 queue          = cached_queue(txns, accounts)
 flagged_ids    = queue["account_id"].tolist()
 
-# ── Header ────────────────────────────────────────────────────────────────────
+# ── Dashboard header ──────────────────────────────────────────────────────────
 st.markdown("""
 <div class="fd-header">
   <div class="fd-icon">🛡️</div>
   <div>
-    <div class="fd-title">FraudGuard — Account Lookup</div>
-    <div class="fd-sub">Transaction Velocity</div>
+    <div class="fd-title">FraudGuard</div>
+    <div class="fd-sub">Intelligent Fraud Detection Platform</div>
   </div>
 </div>
+""", unsafe_allow_html=True)
+
+# ── Summary metrics ───────────────────────────────────────────────────────────
+total_accounts = len(accounts)
+flagged_count  = len(flagged_ids)
+high_risk      = int((queue["risk_level"] == "High").sum()) if "risk_level" in queue.columns else 0
+avg_risk       = int(queue["risk_score"].mean()) if "risk_score" in queue.columns else 0
+
+col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+with col_m1:
+    st.metric("Total Accounts", f"{total_accounts:,}")
+with col_m2:
+    st.metric("Flagged Accounts", str(flagged_count), delta=f"{flagged_count} need review", delta_color="inverse")
+with col_m3:
+    st.metric("High Risk", str(high_risk), delta="immediate action" if high_risk else "none", delta_color="inverse")
+with col_m4:
+    st.metric("Avg Risk Score", str(avg_risk))
+
+# ── Feature navigation cards ──────────────────────────────────────────────────
+st.markdown('<div class="sec-label">Tools</div>', unsafe_allow_html=True)
+fc1, fc2, fc3 = st.columns(3)
+
+with fc1:
+    st.markdown(f"""
+    <div class="feat-card">
+      <div class="feat-card-icon">🚨</div>
+      <div class="feat-card-title">Alert Queue</div>
+      <div class="feat-card-desc">Review flagged accounts ranked by risk score. Approve, block, or escalate with one click.</div>
+      <span class="feat-stat {'red' if high_risk else 'green'}">{high_risk} high-risk</span>
+    </div>
+    """, unsafe_allow_html=True)
+    st.page_link("pages/alert_queue.py", label="Open Alert Queue →", use_container_width=True)
+
+with fc2:
+    st.markdown("""
+    <div class="feat-card">
+      <div class="feat-card-icon">🤖</div>
+      <div class="feat-card-title">Agent Chat</div>
+      <div class="feat-card-desc">Conversational fraud investigation. Multi-agent pipeline: Data → Audit → Synthesis.</div>
+      <span class="feat-stat blue">3-stage pipeline</span>
+    </div>
+    """, unsafe_allow_html=True)
+    st.page_link("pages/2_Agent_Chat.py", label="Open Agent Chat →", use_container_width=True)
+
+with fc3:
+    st.markdown("""
+    <div class="feat-card">
+      <div class="feat-card-icon">🧾</div>
+      <div class="feat-card-title">Invoice Fraud</div>
+      <div class="feat-card-desc">Detect duplicate invoices, split billing, threshold avoidance, and ghost vendors.</div>
+      <span class="feat-stat yellow">5 detection patterns</span>
+    </div>
+    """, unsafe_allow_html=True)
+    st.page_link("pages/3_Invoice_Fraud.py", label="Open Invoice Fraud →", use_container_width=True)
+
+# ── Agent Activity (Langfuse) ─────────────────────────────────────────────────
+st.markdown('<div class="sec-label">Agent Activity</div>', unsafe_allow_html=True)
+
+@st.cache_data(ttl=60)
+def fetch_langfuse_stats():
+    try:
+        from langfuse import Langfuse
+        lf = Langfuse(
+            public_key=os.getenv("LANGFUSE_PUBLIC_KEY"),
+            secret_key=os.getenv("LANGFUSE_SECRET_KEY"),
+            host=os.getenv("LANGFUSE_HOST", "http://localhost:3000"),
+        )
+        result = lf.get_traces(limit=20, name="fraud-agent-run")
+        traces = result.data if result and result.data else []
+        return traces
+    except Exception:
+        return []
+
+lf_traces = fetch_langfuse_stats()
+
+if not lf_traces:
+    st.caption("No agent runs recorded yet. Run an investigation in Agent Chat to see activity here.")
+else:
+    total_runs  = len(lf_traces)
+    avg_latency = sum(t.latency for t in lf_traces if t.latency) / max(1, sum(1 for t in lf_traces if t.latency))
+    analysts    = list({t.user_id for t in lf_traces if t.user_id})
+
+    lf_c1, lf_c2, lf_c3 = st.columns(3)
+    with lf_c1:
+        st.metric("Investigations Run", str(total_runs))
+    with lf_c2:
+        st.metric("Avg Latency", f"{avg_latency/1000:.1f}s" if avg_latency else "—")
+    with lf_c3:
+        st.metric("Analysts Active", str(len(analysts)))
+
+    st.markdown('<div class="sec-label">Recent Investigations</div>', unsafe_allow_html=True)
+    rows = []
+    for t in lf_traces[:10]:
+        account = "—"
+        if t.input and isinstance(t.input, str):
+            words = t.input.upper().split()
+            for w in words:
+                if w.startswith("ACC-"):
+                    account = w.rstrip(".,?!")
+                    break
+        rows.append({
+            "Account": account,
+            "Analyst": t.user_id or "—",
+            "Risk": t.output[:60] + "…" if t.output and len(t.output) > 60 else (t.output or "—"),
+            "Latency": f"{t.latency/1000:.1f}s" if t.latency else "—",
+            "Time": t.timestamp.strftime("%m/%d %H:%M") if t.timestamp else "—",
+        })
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+st.divider()
+
+# ── Account lookup section ────────────────────────────────────────────────────
+st.markdown("""
+<div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:12px;">Account Lookup</div>
 """, unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["🔍 Single Account", "⚖️ Compare Accounts"])

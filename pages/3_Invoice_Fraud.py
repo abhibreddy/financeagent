@@ -6,6 +6,7 @@ import uuid
 import pandas as pd
 import plotly.graph_objects as go
 from utils import load_invoices, build_invoice_risk_report
+from components import render_sidebar_nav
 
 st.set_page_config(
     page_title="FraudGuard — Invoice Fraud",
@@ -18,29 +19,8 @@ with open("css/style.css") as f:
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🛡️ FraudGuard")
-    st.caption("Fraud Detection Platform")
-    st.divider()
-    st.markdown("**Agents**")
-    _agents = [
-        ("🔍", "Velocity Agent",  "online"),
-        ("🧾", "Invoice Agent",   "online"),
-        ("🔎", "Audit Agent",     "online"),
-        ("📊", "Synthesis Agent", "online"),
-    ]
-    for _icon, _name, _status in _agents:
-        st.markdown(
-            f"<div class='agent-status-row'>{_icon} {_name}"
-            f"<span style='flex:1'></span>"
-            f"<span class='agent-dot {_status}'></span></div>",
-            unsafe_allow_html=True,
-        )
-    st.divider()
-    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
-    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
-    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
-    st.page_link("pages/3_Invoice_Fraud.py", label="🧾 Invoice Fraud")
-    st.divider()
+    render_sidebar_nav()
+    st.markdown('<div class="sb-section-label">Session</div>', unsafe_allow_html=True)
     analyst_name = st.text_input("Analyst name", placeholder="Your name", value="analyst")
 
 # ── Header ────────────────────────────────────────────────────────────────────
@@ -169,18 +149,11 @@ with tab3:
 
     for msg in st.session_state.invoice_messages:
         if msg["role"] == "user":
-            st.markdown(
-                "<div class='chat-label chat-label-right'>You</div>"
-                "<div class='chat-bubble chat-user'>" + msg["content"] + "</div>",
-                unsafe_allow_html=True,
-            )
+            with st.chat_message("user"):
+                st.markdown(msg["content"])
         else:
-            content = msg["content"].replace("\n", "<br>")
-            st.markdown(
-                "<div class='chat-label'>🤖 Invoice Agent</div>"
-                "<div class='chat-bubble chat-agent'>" + content + "</div>",
-                unsafe_allow_html=True,
-            )
+            with st.chat_message("assistant", avatar="🧾"):
+                st.markdown(msg["content"])
 
     st.markdown("""
     <div class="agent-pipeline">

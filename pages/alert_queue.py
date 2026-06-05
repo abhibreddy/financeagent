@@ -3,6 +3,7 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 from utils import load_data, build_alert_queue, get_decisions, save_decision, init_db, DB_PATH, VELOCITY_THRESHOLD
+from components import render_sidebar_nav
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -16,12 +17,7 @@ with open("css/style.css") as f:
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🛡️ FraudGuard")
-    st.caption("Fraud Detection Platform")
-    st.divider()
-    st.page_link("account_lookup.py",        label="🔍 Account Lookup")
-    st.page_link("pages/alert_queue.py",     label="🚨 Alert Queue")
-    st.page_link("pages/2_Agent_Chat.py",    label="🤖 Agent Chat")
+    render_sidebar_nav()
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 @st.cache_data
