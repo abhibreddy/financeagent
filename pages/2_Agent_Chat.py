@@ -6,6 +6,8 @@ Conversational fraud investigation chat powered by LangGraph + Ollama + Langfuse
 import streamlit as st
 import uuid
 import os
+import json
+import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -55,22 +57,80 @@ st.markdown("""
     text-align: center; padding: 3rem 1rem; color: #7d8590; font-size: 13px;
 }
 .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.file-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #161b22; border: 1px solid #21262d;
+    border-radius: 8px; padding: 6px 12px;
+    font-size: 11px; color: #8b949e; margin-bottom: 10px;
+}
+.file-badge .fname { color: #e6edf3; font-weight: 600; }
+.file-badge .fmeta { color: #7d8590; }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Session state init ────────────────────────────────────────────────────────
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+if "messages"        not in st.session_state: st.session_state.messages        = []
+if "session_id"      not in st.session_state: st.session_state.session_id      = str(uuid.uuid4())
+if "analyst"         not in st.session_state: st.session_state.analyst         = "analyst"
+if "pending_input"   not in st.session_state: st.session_state.pending_input   = None
+if "uploaded_context" not in st.session_state: st.session_state.uploaded_context = None  # {name, content, meta}
 
-if "session_id" not in st.session_state:
-    st.session_state.session_id = str(uuid.uuid4())
 
-if "analyst" not in st.session_state:
-    st.session_state.analyst = "analyst"
+# ── File parser ───────────────────────────────────────────────────────────────
+def parse_upload(file) -> dict:
+    """
+    Parse an uploaded file into a plain-text context string the agent can read.
+    Returns {"name": str, "content": str, "meta": str} or raises on failure.
+    """
+    name = file.name
+    ext  = name.rsplit(".", 1)[-1].lower()
 
-# pending_input holds a suggestion click so it survives the rerun
-if "pending_input" not in st.session_state:
-    st.session_state.pending_input = None
+    if ext == "csv":
+        df      = pd.read_csv(file)
+        rows, cols = df.shape
+        preview = df.head(200).to_csv(index=False)
+        content = f"CSV file with {rows} rows and {cols} columns.\n\n{preview}"
+        meta    = f"{rows} rows · {cols} cols"
+
+    elif ext == "json":
+        raw  = json.load(file)
+        text = json.dumps(raw, indent=2)
+        # Truncate very large JSON
+        if len(text) > 8000:
+            text = text[:8000] + "\n... (truncated)"
+        content = f"JSON file contents:\n\n{text}"
+        meta    = f"{len(text)} chars"
+
+    elif ext == "txt":
+        text = file.read().decode("utf-8", errors="replace")
+        if len(text) > 8000:
+            text = text[:8000] + "\n... (truncated)"
+        content = f"Text file contents:\n\n{text}"
+        meta    = f"{len(text)} chars"
+
+    else:
+        raise ValueError(f"Unsupported file type: .{ext}. Please upload CSV, JSON, or TXT.")
+
+    return {"name": name, "content": content, "meta": meta}
+
+
+# ── Inject file context into a user message ───────────────────────────────────
+def build_message_with_context(user_text: str) -> str:
+    """
+    If a file is loaded, prepend its contents to the user message so the
+    agent receives it as part of the conversation turn.
+    """
+    if st.session_state.uploaded_context:
+        ctx = st.session_state.uploaded_context
+        return (
+            f"I have uploaded a file called '{ctx['name']}'. "
+            f"Here are its contents:\n\n"
+            f"{ctx['content']}\n\n"
+            f"---\n"
+            f"My question: {user_text}"
+        )
+    return user_text
+
 
 # ── Header ────────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -83,7 +143,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Sidebar controls ──────────────────────────────────────────────────────────
+# ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### 🤖 Agent Session")
     st.divider()
@@ -97,16 +157,55 @@ with st.sidebar:
     st.code(st.session_state.session_id[:18] + "...", language=None)
 
     langfuse_host = os.getenv("LANGFUSE_HOST", "http://localhost:3000")
-    st.markdown(
-        "**[Open Langfuse →](" + langfuse_host + ")**",
-        unsafe_allow_html=False
+    st.markdown("**[Open Langfuse →](" + langfuse_host + ")**")
+
+    st.divider()
+
+    # ── File upload ───────────────────────────────────────────────────────────
+    st.markdown("**📎 Upload a file**")
+    st.caption("CSV, JSON, or TXT — the agent will read its contents.")
+
+    uploaded_file = st.file_uploader(
+        "Upload file",
+        type=["csv", "json", "txt"],
+        label_visibility="collapsed",
     )
+
+    if uploaded_file is not None:
+        # Only re-parse if it's a new file
+        current_name = st.session_state.uploaded_context["name"] if st.session_state.uploaded_context else None
+        if current_name != uploaded_file.name:
+            try:
+                parsed = parse_upload(uploaded_file)
+                st.session_state.uploaded_context = parsed
+                st.success(f"✅ Loaded **{parsed['name']}** ({parsed['meta']})")
+            except ValueError as e:
+                st.error(str(e))
+                st.session_state.uploaded_context = None
+    else:
+        # File was removed from uploader
+        st.session_state.uploaded_context = None
+
+    # Show active file badge
+    if st.session_state.uploaded_context:
+        ctx = st.session_state.uploaded_context
+        st.markdown(
+            f"<div class='file-badge'>📄 "
+            f"<span class='fname'>{ctx['name']}</span>"
+            f"<span class='fmeta'>{ctx['meta']}</span>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+        if st.button("🗑 Remove file", use_container_width=True):
+            st.session_state.uploaded_context = None
+            st.rerun()
 
     st.divider()
     if st.button("🗑 Clear conversation", use_container_width=True):
-        st.session_state.messages = []
-        st.session_state.pending_input = None
-        st.session_state.session_id = str(uuid.uuid4())
+        st.session_state.messages        = []
+        st.session_state.pending_input   = None
+        st.session_state.uploaded_context = None
+        st.session_state.session_id      = str(uuid.uuid4())
         st.rerun()
 
     st.divider()
@@ -121,7 +220,7 @@ with st.sidebar:
     for icon, name in tools:
         st.markdown(
             "<span class='tool-chip'>" + icon + " " + name + "</span>",
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
 # ── Suggested prompts ─────────────────────────────────────────────────────────
@@ -141,30 +240,29 @@ if not st.session_state.messages and st.session_state.pending_input is None:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="suggestion-row">', unsafe_allow_html=True)
     cols = st.columns(len(SUGGESTIONS))
     for i, suggestion in enumerate(SUGGESTIONS):
         with cols[i]:
             if st.button(suggestion, key="sug_" + str(i), use_container_width=True):
-                # Store as pending — don't append yet, let the agent block handle it
                 st.session_state.pending_input = suggestion
                 st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # ── Chat history ──────────────────────────────────────────────────────────────
 for msg in st.session_state.messages:
     if msg["role"] == "user":
+        # Show the display_content if set (hides raw file dump), else show content
+        display = msg.get("display_content", msg["content"])
         st.markdown(
             "<div class='chat-label chat-label-right'>You</div>"
-            "<div class='chat-bubble chat-user'>" + msg["content"] + "</div>",
-            unsafe_allow_html=True
+            "<div class='chat-bubble chat-user'>" + display + "</div>",
+            unsafe_allow_html=True,
         )
     else:
         content = msg["content"].replace("\n", "<br>")
         st.markdown(
             "<div class='chat-label'>🤖 FraudGuard Agent</div>"
             "<div class='chat-bubble chat-agent'>" + content + "</div>",
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
         langfuse_host = os.getenv("LANGFUSE_HOST", "http://localhost:3000")
         st.markdown(
@@ -172,28 +270,52 @@ for msg in st.session_state.messages:
             "<a href='" + langfuse_host + "' target='_blank'>Langfuse</a>"
             " · session: " + st.session_state.session_id[:12] + "..."
             "</div>",
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
+
+# ── Active file indicator above chat input ────────────────────────────────────
+if st.session_state.uploaded_context:
+    ctx = st.session_state.uploaded_context
+    st.markdown(
+        f"<div class='file-badge'>📎 "
+        f"<span class='fname'>{ctx['name']}</span> "
+        f"<span class='fmeta'>will be sent with your next message</span>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
 
 # ── Chat input ────────────────────────────────────────────────────────────────
 user_input = st.chat_input("Ask the agent to investigate an account...")
 
-# Resolve what to send: typed input takes priority, then pending suggestion
 to_send = user_input or st.session_state.pending_input
 
 if to_send:
-    # Clear pending so it doesn't re-fire on the next rerun
     st.session_state.pending_input = None
 
-    # Append user message and rerun immediately so the bubble renders first
-    if not st.session_state.messages or st.session_state.messages[-1]["content"] != to_send:
-        st.session_state.messages.append({"role": "user", "content": to_send})
-        st.session_state._run_agent_for = to_send
+    # Build the actual message sent to the agent (may include file context)
+    agent_message = build_message_with_context(to_send)
+
+    # Store both the full agent message and a clean display version
+    last_content = st.session_state.messages[-1]["content"] if st.session_state.messages else None
+    if last_content != agent_message:
+        msg_entry = {"role": "user", "content": agent_message}
+
+        # If file context was injected, store a clean label for the UI
+        if st.session_state.uploaded_context:
+            ctx = st.session_state.uploaded_context
+            msg_entry["display_content"] = (
+                f"📎 <em>{ctx['name']}</em><br>{to_send}"
+            )
+
+        st.session_state.messages.append(msg_entry)
+        st.session_state._run_agent_for = agent_message
+
+        # Clear file after sending so it doesn't re-attach on the next message
+        st.session_state.uploaded_context = None
         st.rerun()
 
-# After the rerun, the user bubble is visible — now run the agent
-if hasattr(st.session_state, "_run_agent_for") and st.session_state._run_agent_for:
-    prompt = st.session_state._run_agent_for
+# After rerun — run the agent
+if getattr(st.session_state, "_run_agent_for", None):
     st.session_state._run_agent_for = None
 
     with st.spinner("Agent is investigating..."):
