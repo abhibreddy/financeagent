@@ -1,8 +1,11 @@
-streamlit>=1.35.0
+streamlit>=1.36.0
 python-dotenv>=1.0.0
 langchain-core>=0.2.0
-langchain-ollama>=0.1.0
+langchain-openai>=0.1.0
 langfuse>=2.0.0,<3.0.0
 langgraph>=0.1.0
 pandas>=2.0.0
 plotly>=5.0.0
+# Trading module — FinGPT-Forecaster-style market data (no GPU/models; Azure does the reasoning)
+finnhub-python>=2.4.0
+yfinance>=0.2.40

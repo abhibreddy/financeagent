@@ -1,12 +1,22 @@
 # FraudGuard — Intelligent Fraud Detection Platform
 
-A production-quality fraud detection demo built with Streamlit, LangGraph, Ollama, and Langfuse. Combines a real-time alert queue, a conversational multi-agent investigation pipeline, and an automated invoice fraud scanner — all running fully locally with a self-hosted LLM and self-hosted observability infrastructure.
+A production-quality fraud detection demo built with Streamlit, LangGraph, Azure OpenAI, and Langfuse. Combines a real-time alert queue, a conversational multi-agent investigation pipeline, and an automated invoice fraud scanner, with self-hosted observability.
+
+> **Now a 2-module ERP.** The app is organized as independent modules under `modules/`, composed by a single shell (`app.py`) via `st.navigation`:
+> - **Finance** — the fraud platform (Dashboard, Alert Queue, Agent Chat, Invoice Fraud).
+> - **Trading** — portfolio analytics + a FinGPT-Forecaster-style single-stock outlook (Trading Dashboard, Portfolio Agent, Stock Forecaster). Runs FinGPT's *methodology* on Azure OpenAI — no local GPU models. See `modules/trading/vendor/` for attribution.
+>
+> Shared config, LLM/Langfuse factories, and UI helpers live in `core/`. Run with `streamlit run app.py`. Note most of the sections below describe the Finance module's internals under its original flat layout; file paths are now under `modules/finance/`.
 
 ---
 
 ## Table of Contents
 
 1. [What Is FraudGuard](#1-what-is-fraudguard)
+   - 1.1 [Purpose](#11-purpose)
+   - 1.2 [Business Problem Solved](#12-business-problem-solved)
+   - 1.3 [Technology Stack](#13-technology-stack)
+   - 1.4 [Key Features](#14-key-features)
 2. [System Architecture](#2-system-architecture)
 3. [Data Layer](#3-data-layer)
 4. [The 3-Stage Pipeline Pattern](#4-the-3-stage-pipeline-pattern)
@@ -24,6 +34,8 @@ A production-quality fraud detection demo built with Streamlit, LangGraph, Ollam
 16. [Project Structure](#16-project-structure)
 17. [Dependency Decisions](#17-dependency-decisions)
 18. [Known Limitations & Next Steps](#18-known-limitations--next-steps)
+19. [Notes & Operational Caveats](#19-notes--operational-caveats)
+20. [Demo Variations](#20-demo-variations)
 
 ---
 
@@ -42,6 +54,92 @@ The platform covers two fraud domains:
 **Transaction velocity fraud**: Card-present and online account takeover patterns characterized by rapid transaction bursts, geographic impossibilities, and dormant account reactivation.
 
 **Invoice fraud**: Accounts payable fraud patterns including exact duplicates, near-duplicate billing, invoice splitting to avoid approval thresholds, and ghost/fictitious vendor submissions.
+
+### 1.1 Purpose
+
+The platform enables fraud analysts to:
+
+- Review and act on ranked alert queues in real time
+- Deep-dive into individual accounts: velocity metrics, geo flags, dormancy signals, and full transaction timelines
+- Converse with an AI agent to investigate suspicious patterns
+- Persist analyst decisions (block / clear / escalate / monitor) to a local SQLite database
+- Trace every agent run for latency, token usage, and session replay via Langfuse
+
+### 1.2 Business Problem Solved
+
+Manual fraud triage is slow, inconsistent, and error-prone. FraudGuard addresses this by:
+
+- **Centralising alert management** — one queue, one workspace
+- **Automating velocity and geo-anomaly scoring** to surface true positives faster
+- **Providing an AI agent** to accelerate hypothesis testing during investigations
+- **Producing a durable audit trail** of every analyst decision
+
+### 1.3 Technology Stack
+
+| Layer | Technology | Notes |
+|---|---|---|
+| UI | Streamlit | Multi-page app; entry point `account_lookup.py` |
+| Agent Framework | LangGraph | Stateful graph-based agent orchestration |
+| LLM | Ollama (`qwen2.5:14b`) | Local inference; no data leaves the machine |
+| Observability | Langfuse v2 (self-hosted) | Docker Compose; traces persist in Postgres volume |
+| Database | SQLite (`fraudguard.db`) | Local only; excluded from git |
+| Data | Pandas + synthetic CSVs | Committed under `synthetictables/` |
+
+### 1.4 Key Features
+
+#### Alert Queue
+
+A ranked list of flagged accounts ordered by risk score. Analysts can take one-click actions directly from the queue:
+
+- **Block** — immediately restricts account activity
+- **Clear** — removes the flag after review
+- **Escalate** — routes to senior investigation team
+- **Monitor** — adds to watchlist for passive surveillance
+
+#### Account Lookup
+
+A deep-dive view for any account, surfacing:
+
+- Velocity metrics — transaction counts per rolling 5-minute window
+- Geographic anomaly flags — unusual origin countries or rapid geo-shifts
+- Dormancy signals — accounts reactivating after extended inactivity
+- Full transaction timeline with per-transaction fraud flags
+
+#### Agent Chat
+
+A conversational fraud investigation interface powered by a LangGraph agent. The agent reasons over account data using five specialised tools (see [Section 13](#13-agent-tools-reference)) and produces plain-language investigation summaries. All inference runs locally via Ollama — no data is sent to external APIs.
+
+#### Multi-Agent Pipeline
+
+A three-stage workflow designed to improve reliability and reduce hallucinations. Each agent performs a distinct task:
+
+| Stage | Role | Has Tools |
+|---|---|---|
+| Data Agent | Gathers account information, transaction history, velocity metrics, and related fraud indicators | Yes |
+| Audit Agent | Reviews findings against verified account data and identifies inconsistencies | No |
+| Synthesis Agent | Generates a structured investigation report | No |
+
+See [Section 4](#4-the-3-stage-pipeline-pattern) for full implementation details.
+
+#### Ground Truth Verification
+
+A verification layer that validates agent findings against source data before reasoning begins. This reduces hallucinated values in the final report:
+
+- Recomputes velocity and risk metrics directly from the database
+- Identifies discrepancies between the Data Agent's claimed values and actual computed values
+- Flags unverified claims for the Audit Agent to correct
+
+See [Section 6](#6-hallucination-reduction-system) for full implementation details.
+
+#### Observability
+
+Every agent run is traced to a self-hosted Langfuse v2 instance, capturing:
+
+- End-to-end latency per run
+- Token usage (prompt and completion)
+- Full session history for replay and audit
+
+See [Section 11](#11-observability-langfuse) for infrastructure and trace structure.
 
 ---
 
@@ -863,7 +961,8 @@ All keys are loaded via `python-dotenv` at module import time. The `.env` file i
 
 - Python 3.11+
 - [Docker Desktop](https://www.docker.com/) (for Langfuse)
-- [Ollama](https://ollama.com/) installed locally
+- An **Azure OpenAI** deployment (endpoint + API key + a chat deployment, e.g. `gpt-4o-mini`)
+- Optional: a free [Finnhub](https://finnhub.io) API key (Trading module's Stock Forecaster)
 
 ### First-Time Setup
 
@@ -873,30 +972,27 @@ python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# 2. Pull the model (~9GB download, one-time)
-ollama pull qwen2.5:14b
-
-# 3. Start Langfuse
+# 2. Start Langfuse
 docker compose up -d
 # Visit http://localhost:3000, create account, then Settings → API Keys → Create
 
-# 4. Configure environment
+# 3. Configure environment
 cp .env.example .env
-# Edit .env with your Langfuse API keys
+# Edit .env: Azure OpenAI + Langfuse keys (and FINNHUB_API_KEY for forecasting)
 
-# 5. Generate invoice data (only needed if invoices.csv is missing)
-python scripts/generate_invoices.py
+# 4. (Optional) Regenerate synthetic data
+python modules/finance/scripts/generate_invoices.py       # finance invoices
+python modules/trading/scripts/generate_trading_data.py   # trading positions/prices
 
-# 6. Launch the app
-streamlit run account_lookup.py
+# 5. Launch the ERP
+streamlit run app.py
 ```
 
 ### Every Session
 
 ```bash
 docker compose up -d                       # Langfuse (if not already running)
-ollama serve                               # Ollama (if not already running as a service)
-streamlit run account_lookup.py            # App → http://localhost:8501
+streamlit run app.py                       # ERP → http://localhost:8501
 ```
 
 ### Stopping
@@ -1044,3 +1140,25 @@ Analyst decisions are stored locally. No PostgreSQL, Redis, or external database
 - Add the invoice ground truth verifier (compare Audit Agent's quoted totals against tool output JSON)
 - Upgrade to Langfuse v3/v4 (requires changing both the Docker image and the SDK version)
 - Add `evaluate_report()` using Langfuse's LLM-as-judge evaluations to score report quality over time
+
+---
+
+## 19. Notes & Operational Caveats
+
+| Topic | Detail |
+|---|---|
+| `fraudguard.db` | Excluded from git via `.gitignore`. Analyst decisions are local only and not shared across environments. |
+| Synthetic Data | All files under `synthetictables/` contain generated data only. Safe to commit and share. |
+| Langfuse Traces | Stored in the Docker Postgres volume. Persist across `docker compose down` restarts. Wiped only by `docker compose down -v`. |
+| Model Selection | `qwen2.5:14b` is the default. Any Ollama-compatible model can be substituted via `OLLAMA_MODEL` in `.env`. |
+| Offline Operation | All inference, storage, and tracing is local. The platform runs without internet access after initial setup. |
+
+---
+
+## 20. Demo Variations
+
+| Demo Type | Duration | Focus Areas |
+|---|---|---|
+| Executive | 5 min | Business value, automation, alert triage speed, risk visibility |
+| Functional | 15 min | Alert queue, account lookup, agent chat, decision recording |
+| Technical | 20–30 min | Architecture, LangGraph graph, Ollama setup, Langfuse tracing, SQLite schema |

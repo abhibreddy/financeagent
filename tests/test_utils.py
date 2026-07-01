@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import pandas as pd
 import pytest
-from utils import compute_velocity, compare_accounts
+from modules.finance.utils import compute_velocity, compare_accounts
 
 
 def _make_txns(account_id, timestamps, geo_flags=None):
@@ -51,7 +51,7 @@ def test_compute_velocity_geo_flags():
 
 
 def test_compare_accounts_returns_list():
-    from utils import load_data
+    from modules.finance.utils import load_data
     txns, accounts = load_data()
     ids = txns["account_id"].unique()[:2].tolist()
     result = compare_accounts(ids, txns, accounts)
@@ -63,14 +63,14 @@ def test_compare_accounts_returns_list():
 
 
 def test_compare_accounts_unknown_id():
-    from utils import load_data
+    from modules.finance.utils import load_data
     txns, accounts = load_data()
     result = compare_accounts(["DOES-NOT-EXIST"], txns, accounts)
     assert result == []
 
 
 # ── Invoice fraud detection ────────────────────────────────────────────────────
-from utils import (
+from modules.finance.utils import (
     detect_exact_duplicates, detect_near_duplicates, detect_split_billing,
     detect_threshold_avoidance, detect_ghost_vendors, build_invoice_risk_report,
 )
@@ -118,7 +118,8 @@ def test_detect_ghost_vendors():
 
 
 def test_build_invoice_risk_report_on_real_data():
-    df = pd.read_csv("synthetictables/invoices.csv", parse_dates=["date"])
+    from modules.finance.utils import load_invoices
+    df = load_invoices()
     report = build_invoice_risk_report(df)
     assert "total_invoices" in report
     assert "flagged_count" in report
@@ -134,18 +135,18 @@ def test_run_agent_returns_tuple():
     mock_response.content = "Account ACC-001 shows high risk."
     mock_response.tool_calls = []
 
-    with patch("agent.ChatOllama") as mock_llm_class:
+    with patch("core.llm.AzureChatOpenAI") as mock_llm_class:
         mock_llm = MagicMock()
         mock_llm.bind_tools.return_value = mock_llm
         mock_llm.invoke.return_value = mock_response
         mock_llm_class.return_value = mock_llm
 
-        from agent import run_agent
+        from modules.finance.agent import run_agent
         result = run_agent(
             messages=[{"role": "user", "content": "Check ACC-00009"}],
             session_id="test-abc",
             analyst="tester",
         )
-        assert isinstance(result, tuple) and len(result) == 2
-        text, msgs = result
-        assert isinstance(text, str) and isinstance(msgs, list)
+        assert isinstance(result, tuple) and len(result) == 3
+        text, msgs, debug = result
+        assert isinstance(text, str) and isinstance(msgs, list) and isinstance(debug, dict)

@@ -1,0 +1,10 @@
+position_id,ticker,sector,quantity,avg_cost,current_price,asset_class
+POS-001,AAPL,Technology,1500,203.68,196.29,Equity
+POS-002,MSFT,Technology,1500,392.59,646.49,Equity
+POS-003,NVDA,Technology,1500,113.96,141.33,Equity
+POS-004,JPM,Financials,3000,174.75,224.35,Equity
+POS-005,GS,Financials,1500,436.22,401.9,Equity
+POS-006,XOM,Energy,1000,103.79,106.61,Equity
+POS-007,CVX,Energy,500,158.36,138.88,Equity
+POS-008,JNJ,Healthcare,1500,130.02,115.6,Equity
+POS-009,PFE,Healthcare,250,24.45,25.58,Equity
