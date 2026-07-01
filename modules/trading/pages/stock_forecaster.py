@@ -53,7 +53,10 @@ if run and ticker.strip():
             st.error(f"Forecast failed: {e}")
             st.stop()
 
-    st.markdown(f"### {result['symbol']} — outlook as of {result['as_of']}")
+    st.markdown(
+        f'<div class="sec-label">{result["symbol"]} — outlook as of {result["as_of"]}</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(result["report"])
 
     with st.expander("🔬 Prompt sent to the model (data gathered deterministically)"):

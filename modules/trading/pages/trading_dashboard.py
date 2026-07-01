@@ -34,22 +34,35 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Summary metrics ───────────────────────────────────────────────────────────
-c1, c2, c3, c4 = st.columns(4)
-with c1:
-    st.metric("Market Value", f"${metrics['total_market_value']:,.0f}")
-with c2:
-    st.metric(
-        "Unrealized P&L", f"${metrics['unrealized_pnl']:,.0f}",
-        delta=f"{metrics['unrealized_pnl_pct']}%",
-    )
-with c3:
-    st.metric(
-        "Concentration", exposure["concentration_level"],
-        delta=f"{exposure['largest_position']} {exposure['largest_weight_pct']}%",
-        delta_color="off",
-    )
-with c4:
-    st.metric("Risk Score", f"{risk['risk_score']}/100", delta=risk["risk_level"], delta_color="off")
+_lvl_color = {"High": "red", "Medium": "", "Low": "green"}
+pnl_color = "green" if metrics["unrealized_pnl"] >= 0 else "red"
+conc_color = _lvl_color.get(exposure["concentration_level"], "")
+risk_color = _lvl_color.get(risk["risk_level"], "")
+
+st.markdown(f"""
+<div class="metric-row">
+  <div class="metric-box">
+    <div class="label">Market Value</div>
+    <div class="value">${metrics['total_market_value']:,.0f}</div>
+  </div>
+  <div class="metric-box">
+    <div class="label">Unrealized P&L</div>
+    <div class="value {pnl_color}">${metrics['unrealized_pnl']:,.0f}</div>
+  </div>
+  <div class="metric-box">
+    <div class="label">Unrealized %</div>
+    <div class="value {pnl_color}">{metrics['unrealized_pnl_pct']}%</div>
+  </div>
+  <div class="metric-box">
+    <div class="label">Concentration</div>
+    <div class="value {conc_color}">{exposure['concentration_level']}</div>
+  </div>
+  <div class="metric-box">
+    <div class="label">Risk Score</div>
+    <div class="value {risk_color}">{risk['risk_score']}</div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ── Sector exposure chart ─────────────────────────────────────────────────────
 st.markdown('<div class="sec-label">Sector Exposure</div>', unsafe_allow_html=True)
