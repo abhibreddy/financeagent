@@ -9,7 +9,7 @@ _PAGES = "modules/trading/pages"
 
 def get_pages():
     return [
-        st.Page(f"{_PAGES}/trading_dashboard.py",  title="Trading Dashboard", icon="📈"),
+        st.Page(f"{_PAGES}/trading_dashboard.py",  title="Trading Dashboard", icon="📈", url_path="trading-dashboard"),
         st.Page(f"{_PAGES}/trading_agent_chat.py", title="Portfolio Agent",   icon="🤖"),
         st.Page(f"{_PAGES}/stock_forecaster.py",   title="Stock Forecaster",  icon="🔮"),
     ]

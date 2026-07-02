@@ -140,6 +140,34 @@ h1, h2, h3 { color: #111827; }
 }
 .feat-card-icon { font-size: 26px; }
 .feat-card-title { font-size: 14px; font-weight: 700; color: #111827; margin: 0; }
+
+/* ── Home landing cards ─────────────────────────────────────────────────────── */
+/* Entire card is one clickable link; equal height regardless of function count */
+a.home-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 430px;
+    height: 100%;
+    padding: 28px 26px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    text-decoration: none !important;
+    color: inherit !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+a.home-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+.home-card-icon     { font-size: 40px; line-height: 1; margin-bottom: 10px; }
+.home-card-title    { font-size: 20px; font-weight: 700; color: #111827; }
+.home-card-desc     { font-size: 13px; color: #4b5563; margin-top: 8px; line-height: 1.5; }
+.home-card-fn-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #9ca3af; margin-top: 22px; margin-bottom: 6px; }
+.home-card-fn       { font-size: 14px; color: #374151; padding: 5px 0; }
 .feat-card-desc { font-size: 12px; color: #6b7280; line-height: 1.5; flex: 1; }
 .feat-stat {
     font-size: 11px; font-weight: 600; padding: 4px 12px;

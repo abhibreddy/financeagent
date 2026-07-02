@@ -23,6 +23,7 @@ FINANCE = {
     "icon": "🛡️",
     "title": "Finance Agent",
     "desc": "Real-time fraud detection: alert triage, conversational investigation, and invoice fraud scanning.",
+    "url": "/finance-dashboard",
     "functions": [
         ("🏠", "Dashboard", "modules/finance/pages/dashboard.py"),
         ("🚨", "Alert Queue", "modules/finance/pages/alert_queue.py"),
@@ -35,6 +36,7 @@ TRADING = {
     "icon": "📈",
     "title": "Trading Agent",
     "desc": "Portfolio analytics, a multi-agent portfolio analyst, and FinGPT-style single-stock forecasting.",
+    "url": "/trading-dashboard",
     "functions": [
         ("📈", "Trading Dashboard", "modules/trading/pages/trading_dashboard.py"),
         ("🤖", "Portfolio Agent", "modules/trading/pages/trading_agent_chat.py"),
@@ -43,23 +45,25 @@ TRADING = {
 }
 
 
-def _render_card(mod: dict):
-    with st.container(border=True):
-        st.markdown(
-            f"""
-            <div class="feat-card-icon">{mod['icon']}</div>
-            <div class="feat-card-title">{mod['title']}</div>
-            <div class="feat-card-desc">{mod['desc']}</div>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.markdown('<div class="sec-label">Functions</div>', unsafe_allow_html=True)
-        for icon, label, path in mod["functions"]:
-            st.page_link(path, label=f"{icon}  {label}", width="stretch")
+def _card_html(mod: dict) -> str:
+    """The entire card is one clickable anchor linking to the module dashboard."""
+    fns = "".join(
+        f'<div class="home-card-fn">{icon}&nbsp;&nbsp;{label}</div>'
+        for icon, label, _ in mod["functions"]
+    )
+    return f"""
+    <a class="home-card" href="{mod['url']}" target="_self">
+      <div class="home-card-icon">{mod['icon']}</div>
+      <div class="home-card-title">{mod['title']}</div>
+      <div class="home-card-desc">{mod['desc']}</div>
+      <div class="home-card-fn-label">FUNCTIONS</div>
+      {fns}
+    </a>
+    """
 
 
 col_finance, col_trading = st.columns(2, gap="large")
 with col_finance:
-    _render_card(FINANCE)
+    st.markdown(_card_html(FINANCE), unsafe_allow_html=True)
 with col_trading:
-    _render_card(TRADING)
+    st.markdown(_card_html(TRADING), unsafe_allow_html=True)

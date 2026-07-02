@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 nav = st.navigation({
-    "Home": [st.Page("home.py", title="Home", icon="🏠", default=True)],
+    "": [st.Page("home.py", title="Home", icon="🏠", default=True)],  # "" = ungrouped, no section header
     "Finance": finance_pages(),
     "Trading": trading_pages(),
 })

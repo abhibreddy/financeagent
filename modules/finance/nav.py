@@ -11,7 +11,7 @@ _PAGES = "modules/finance/pages"
 
 def get_pages():
     return [
-        st.Page(f"{_PAGES}/dashboard.py",     title="Dashboard",     icon="🏠"),
+        st.Page(f"{_PAGES}/dashboard.py",     title="Dashboard",     icon="🏠", url_path="finance-dashboard"),
         st.Page(f"{_PAGES}/alert_queue.py",   title="Alert Queue",   icon="🚨"),
         st.Page(f"{_PAGES}/agent_chat.py",    title="Agent Chat",    icon="🤖"),
         st.Page(f"{_PAGES}/invoice_fraud.py", title="Invoice Fraud", icon="🧾"),
