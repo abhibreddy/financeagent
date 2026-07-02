@@ -1,0 +1,16 @@
+# Keep the backend image lean — exclude everything the FastAPI app doesn't need at runtime.
+.git
+.venv
+frontend
+Styling
+graphify-out
+docs
+.claude
+.omc
+__pycache__
+**/__pycache__
+*.pyc
+.env
+FraudGuard Documentation.pdf
+FraudGuard-Docs.html
+tests

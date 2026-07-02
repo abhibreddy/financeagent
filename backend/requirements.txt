@@ -1,0 +1,6 @@
+# Backend API — reuses the root requirements.txt Python logic (agents, utils, forecaster).
+# Install both: pip install -r requirements.txt -r backend/requirements.txt
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+sse-starlette>=2.0.0
+httpx>=0.27.0            # proxying to the FinGPT service

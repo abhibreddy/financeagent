@@ -7,6 +7,8 @@ in one place. Tests patch core.llm.AzureChatOpenAI to mock every agent at once.
 import os
 from langchain_openai import AzureChatOpenAI
 
+import core.config  # noqa: F401 — imported for its side effect: loads .env before we read env vars
+
 
 def make_azure_llm(**kwargs):
     """Return a configured AzureChatOpenAI. Extra kwargs override defaults."""

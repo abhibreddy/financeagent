@@ -1,0 +1,31 @@
+# Modelfile — wraps the pre-merged FinGPT-Forecaster GGUF with the correct Llama-2 chat
+# template and FinGPT's system prompt. This is the SINGLE source of truth for prompt
+# formatting; the service sends only the user prompt (no system) to avoid double-wrapping.
+#
+# Build: ollama create fingpt-forecaster -f fingpt-service/Modelfile
+FROM hf.co/Joshua265/fingpt-forecaster_llama2-7b-gguf
+
+# Llama-2 chat format: [INST] <<SYS>>{system}<</SYS>> {user} [/INST]
+TEMPLATE """[INST] <<SYS>>
+{{ .System }}
+<</SYS>>
+
+{{ .Prompt }} [/INST] """
+
+# FinGPT-Forecaster's inference system prompt (verbatim — matches the model's training).
+SYSTEM """You are a seasoned stock market analyst. Your task is to list the positive developments and potential concerns for companies based on relevant news and basic financials from the past weeks, then provide an analysis and prediction for the companies' stock price movement for the upcoming week. Your answer format should be as follows:
+
+[Positive Developments]:
+1. ...
+
+[Potential Concerns]:
+1. ...
+
+[Prediction & Analysis]
+Prediction: ...
+Analysis: ..."""
+
+# FinGPT prompts carry weeks of news — give it room; leave headroom for the response.
+PARAMETER num_ctx 4096
+PARAMETER temperature 0.6
+PARAMETER top_p 0.9

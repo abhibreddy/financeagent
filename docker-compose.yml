@@ -1,4 +1,24 @@
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"          # exposed to the host so the (host-run) Next.js frontend can reach it
+    env_file:
+      - .env                 # Azure OpenAI / Finnhub / Langfuse keys
+    environment:
+      # Inside the compose network, reach Langfuse by service name (not localhost).
+      LANGFUSE_HOST: http://langfuse-server:3000
+      # Persist analyst decisions on a volume instead of inside the ephemeral container.
+      FINANCE_DB: /data/fraudguard.db
+      # The FinGPT service runs on the HOST (needs host Ollama); reach it via host.docker.internal.
+      FINGPT_SERVICE_URL: http://host.docker.internal:8001
+    volumes:
+      - backend_data:/data
+    depends_on:
+      - langfuse-server
+
   langfuse-server:
     image: langfuse/langfuse:2
     depends_on:
@@ -29,3 +49,4 @@ services:
 
 volumes:
   langfuse_postgres:
+  backend_data:

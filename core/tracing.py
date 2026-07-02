@@ -9,6 +9,8 @@ import os
 from functools import lru_cache
 from langfuse import Langfuse
 
+import core.config  # noqa: F401 — imported for its side effect: loads .env before we read env vars
+
 
 @lru_cache
 def get_langfuse() -> Langfuse:

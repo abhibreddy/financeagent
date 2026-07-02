@@ -12,6 +12,7 @@ See modules/trading/vendor/ for the original FinGPT prompt code and license (att
 """
 from datetime import datetime, timedelta
 
+import pandas as pd
 import yfinance as yf
 
 from core.config import FINNHUB_API_KEY
@@ -71,7 +72,11 @@ def _company_intro(client, symbol: str) -> str:
 
 def _weekly_news_and_prices(client, symbol: str, windows: list[tuple[str, str]]) -> str:
     """Per-week price move + a capped set of news headlines. Deterministic, no LLM."""
-    prices = yf.download(symbol, windows[0][0], windows[-1][1], progress=False)
+    prices = yf.download(symbol, windows[0][0], windows[-1][1], progress=False, auto_adjust=True)
+    # Newer yfinance returns MultiIndex columns like ('Close', 'AAPL'); flatten to a single level
+    # so prices["Close"] is a 1-D Series and float(span.iloc[i]) works.
+    if isinstance(prices.columns, pd.MultiIndex):
+        prices.columns = prices.columns.get_level_values(0)
     blocks = []
     for start, end in windows:
         try:
