@@ -94,16 +94,16 @@ with st.sidebar:
 SUGGESTIONS = [
     "Investigate ACC-00009",
     "Why is ACC-00043 flagged?",
-    "Is ACC-00054 safe to clear?",
-    "Block ACC-00009 and explain why",
-    "Are there coordinated attacks in the dataset?",
+    "What's the current alert queue?",
+    "Show me high-risk accounts",
+    "How many are pending review?",
 ]
 
 if not st.session_state.messages and st.session_state.pending_input is None:
     st.markdown("""
     <div class="empty-state">
       <div class="icon">🛡️</div>
-      Ask the fraud agent to investigate an account, explain a flag, or recommend an action.
+      Ask the fraud agent to investigate an account, check the alert queue, or recommend an action.
     </div>
     """, unsafe_allow_html=True)
 
@@ -176,24 +176,49 @@ if hasattr(st.session_state, "_run_agent_for") and st.session_state._run_agent_f
     prompt = st.session_state._run_agent_for
     st.session_state._run_agent_for = None
 
+    # Detect alert queue vs velocity fraud query
+    alert_keywords = ["alert", "queue", "pending", "high.risk", "high risk", "top account", "decided", "blocked", "cleared", "escalated", "monitoring", "what's the alert", "show me alerts", "flagged accounts"]
+    is_alert_query = any(kw in prompt.lower() for kw in alert_keywords)
+
     with st.spinner("Running investigation pipeline..."):
         pipeline_ph = st.empty()
-        pipeline_ph.markdown("""
-        <div class="agent-pipeline">
-          <span class="pipeline-step data active">1. Data Agent</span>
-          <span class="pipeline-arrow">→</span>
-          <span class="pipeline-step audit">2. Audit Agent</span>
-          <span class="pipeline-arrow">→</span>
-          <span class="pipeline-step synth">3. Synthesis Agent</span>
-        </div>
-        """, unsafe_allow_html=True)
+        
+        if is_alert_query:
+            pipeline_ph.markdown("""
+            <div class="agent-pipeline">
+              <span class="pipeline-step data active">1. Alert Context</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step audit">2. Audit Agent</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step synth">3. Synthesis Agent</span>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            pipeline_ph.markdown("""
+            <div class="agent-pipeline">
+              <span class="pipeline-step data active">1. Data Agent</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step audit">2. Audit Agent</span>
+              <span class="pipeline-arrow">→</span>
+              <span class="pipeline-step synth">3. Synthesis Agent</span>
+            </div>
+            """, unsafe_allow_html=True)
+        
         try:
-            from agent import run_agent
-            response, updated_messages, debug = run_agent(
-                messages=st.session_state.messages,
-                session_id=st.session_state.session_id,
-                analyst=st.session_state.analyst or "analyst",
-            )
+            if is_alert_query:
+                from alert_queue_agent import run_alert_queue_agent
+                response, updated_messages, debug = run_alert_queue_agent(
+                    messages=st.session_state.messages,
+                    session_id=st.session_state.session_id,
+                    analyst=st.session_state.analyst or "analyst",
+                )
+            else:
+                from agent import run_agent
+                response, updated_messages, debug = run_agent(
+                    messages=st.session_state.messages,
+                    session_id=st.session_state.session_id,
+                    analyst=st.session_state.analyst or "analyst",
+                )
             st.session_state.messages = updated_messages
             st.session_state.last_debug = debug
             pipeline_ph.empty()

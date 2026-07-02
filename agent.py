@@ -13,7 +13,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from typing import Annotated, TypedDict
 
-from langchain_ollama import ChatOllama
+from langchain_openai import AzureChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, BaseMessage
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END
@@ -554,9 +554,11 @@ def _verify_data_summary(data_summary: str) -> str:
 
 # ── Agent builders ────────────────────────────────────────────────────────────
 def _build_data_agent():
-    llm = ChatOllama(
-        model=os.getenv("OLLAMA_MODEL", "qwen2.5:14b"),
-        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+    llm = AzureChatOpenAI(
+        azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview"),
+        deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
         temperature=0,
     ).bind_tools(TOOLS)
     tool_node = ToolNode(TOOLS)
@@ -582,9 +584,11 @@ def _build_data_agent():
 
 
 def _build_reasoning_agent(system_prompt: str):
-    llm = ChatOllama(
-        model=os.getenv("OLLAMA_MODEL", "qwen2.5:14b"),
-        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+    llm = AzureChatOpenAI(
+        azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview"),
+        deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
         temperature=0,
     )
 
