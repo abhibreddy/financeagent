@@ -1,16 +1,39 @@
 # FraudGuard — Intelligent Fraud Detection Platform
 
-A production-quality fraud detection demo built with Streamlit, LangGraph, Azure OpenAI, and Langfuse. Combines a real-time alert queue, a conversational multi-agent investigation pipeline, and an automated invoice fraud scanner, with self-hosted observability.
+A production-quality fraud + trading demo built with LangGraph, Azure OpenAI, and Langfuse. Combines a real-time alert queue, a conversational multi-agent investigation pipeline, an automated invoice fraud scanner, and portfolio/stock analytics — with self-hosted observability.
 
-> **Now a 2-module ERP.** The app is organized as independent modules under `modules/`, composed by a single shell (`app.py`) via `st.navigation`:
-> - **Finance** — the fraud platform (Dashboard, Alert Queue, Agent Chat, Invoice Fraud).
-> - **Trading** — portfolio analytics + a FinGPT-Forecaster-style single-stock outlook (Trading Dashboard, Portfolio Agent, Stock Forecaster). Runs FinGPT's *methodology* on Azure OpenAI — no local GPU models. See `modules/trading/vendor/` for attribution.
->
-> Shared config, LLM/Langfuse factories, and UI helpers live in `core/`. Run with `streamlit run app.py`. Note most of the sections below describe the Finance module's internals under its original flat layout; file paths are now under `modules/finance/`.
+> **Two front ends, one shared Python core.** The business logic (agents, detectors, forecaster) lives in `modules/` + `core/` and is served by **both**:
+> - **Streamlit ERP** (`app.py`, `st.navigation`) — the original 2-module app: **Finance** (Dashboard, Alert Queue, Agent Chat, Invoice Fraud) and **Trading** (Trading Dashboard, Portfolio Agent, Stock Forecaster). Run: `streamlit run app.py`.
+> - **Next.js + FastAPI web app** (`frontend/` + `backend/`) — a production web UI with the same features, plus the **actual FinGPT-Forecaster model** running **locally via Ollama** for the Stock Forecaster (toggle: real FinGPT ↔ Azure). See **[WEBAPP.md](WEBAPP.md)** and the section below.
+
+## Web App (Next.js + FastAPI + FinGPT)
+
+A React frontend over a FastAPI backend that **reuses all the Python logic** in `modules/` + `core/` (no rewrite):
+
+```
+Next.js frontend (:3001) ──HTTP/JSON + SSE──► FastAPI backend (:8000, Docker)
+                                                 └─ reuses modules/ + core/
+Stock Forecaster ──► fingpt-service (:8001, host) ──► Ollama ──► real FinGPT-Forecaster model
+```
+
+- Agent chats stream their **Data → Ground-Truth → Audit → Synthesis** pipeline over SSE.
+- The **Stock Forecaster** defaults to the **real fine-tuned FinGPT model** (local, via Ollama); Azure `gpt-4o-mini` is a one-click fallback. The Finance/Portfolio chat agents stay on Azure (tool-calling + multi-stage reasoning).
+
+**Run it:**
+```bash
+cd frontend && npm install && cd ..          # one-time: frontend deps
+./fingpt-service/setup_model.sh              # one-time: pull + create the local FinGPT model in Ollama
+./dev.sh                                      # backend+Langfuse (Docker), FinGPT service + Ollama, frontend
+```
+Ports: backend **:8000** · Langfuse **:3000** · FinGPT service **:8001** · frontend **:3001**. Full detail in **[WEBAPP.md](WEBAPP.md)**.
+
+> The sections below document the shared module logic (fraud pipeline, detectors, risk scoring) — file paths are under `modules/finance/` and `modules/trading/`, and the same code powers both front ends.
 
 ---
 
 ## Table of Contents
+
+- [Web App (Next.js + FastAPI + FinGPT)](#web-app-nextjs--fastapi--fingpt) · full detail in [WEBAPP.md](WEBAPP.md)
 
 1. [What Is FraudGuard](#1-what-is-fraudguard)
    - 1.1 [Purpose](#11-purpose)
