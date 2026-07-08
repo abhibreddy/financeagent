@@ -115,3 +115,75 @@ export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
 }
+
+// Finance AI Suite (backend/routers/finance_suite.py)
+
+export interface SuiteAgent {
+  key: string;
+  title: string;
+  icon: string;
+  subtitle: string;
+  has_report: boolean;
+  suggestions: string[];
+}
+
+export interface SuiteScenario {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface ApReport {
+  total_outstanding: number;
+  aging: { current: number; d1_30: number; d31_60: number; d60_plus: number };
+  overdue_count: number;
+  overdue_amount: number;
+  early_pay_savings: number;
+  duplicate_po_risk: number;
+  bill_count: number;
+}
+
+export interface ArReport {
+  total_receivable: number;
+  overdue_amount: number;
+  at_risk_amount: number;
+  disputed_count: number;
+  dso_days: number;
+  dunning_priority: Record<string, number>;
+  invoice_count: number;
+}
+
+export interface CashflowReport {
+  opening_cash: number;
+  total_inflow: number;
+  total_outflow: number;
+  ending_cash: number;
+  min_cash: number;
+  runway_weeks: number;
+  cash_crunch: boolean;
+  weeks_count: number;
+}
+
+export interface ReconciliationReport {
+  total_items: number;
+  matched: number;
+  break_count: number;
+  match_rate_pct: number;
+  break_amount: number;
+  breaks_by_type: Record<string, number>;
+}
+
+export interface InsightsReport {
+  revenue: number;
+  gross_margin_pct: number;
+  net_margin_pct: number;
+  opex_ratio_pct: number;
+  revenue_growth_pct: number;
+  budget_variance_pct: number;
+}
+
+export interface SuiteReportResponse<T> {
+  agent: string;
+  scenario: SuiteScenario;
+  report: T;
+}

@@ -1,6 +1,7 @@
 // Typed client for the FastAPI backend.
 import type {
   Alert, AccountDetail, Decision, InvoiceReport, PortfolioReport, Position, ForecastResult,
+  SuiteAgent, SuiteScenario, SuiteReportResponse,
 } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -43,4 +44,11 @@ export const api = {
     get<{ ticker: string; prices: { date: string; close: number }[] }>(`/api/trading/prices/${ticker}`),
   forecast: (symbol: string, weeks: number, with_basics: boolean, engine: "azure" | "fingpt" = "azure") =>
     post<ForecastResult>("/api/trading/forecast", { symbol, weeks, with_basics, engine }),
+
+  // Finance AI Suite
+  suiteAgents: () => get<{ agents: SuiteAgent[] }>("/api/finance-suite/agents"),
+  suiteScenarios: (agent: string) =>
+    get<{ agent: string; scenarios: SuiteScenario[] }>(`/api/finance-suite/${agent}/scenarios`),
+  suiteReport: <T>(agent: string, scenario: string) =>
+    get<SuiteReportResponse<T>>(`/api/finance-suite/${agent}/report?scenario=${scenario}`),
 };

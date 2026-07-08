@@ -1,0 +1,477 @@
+[
+  {
+    "id": "overdue-vendor",
+    "name": "Overdue vendor",
+    "description": "Several bills well past due from one vendor.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-000",
+          "amount": 4298.2,
+          "due_in_days": -20,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-001",
+          "amount": 5249.18,
+          "due_in_days": -55,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-002",
+          "amount": 7087.28,
+          "due_in_days": -80,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-003",
+          "amount": 2275.12,
+          "due_in_days": -20,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-004",
+          "amount": 6700.8,
+          "due_in_days": -20,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-005",
+          "amount": 6577.63,
+          "due_in_days": -55,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "early-pay-discount",
+    "name": "Early-pay discount",
+    "description": "Current bills offering 2% early-payment discounts.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Acme Supply",
+          "invoice_id": "AP-100",
+          "amount": 6767.49,
+          "due_in_days": -70,
+          "discount_pct": 2
+        },
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-101",
+          "amount": 1217.0,
+          "due_in_days": -70,
+          "discount_pct": 2
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-102",
+          "amount": 2734.43,
+          "due_in_days": 15,
+          "discount_pct": 2
+        },
+        {
+          "vendor": "Acme Supply",
+          "invoice_id": "AP-103",
+          "amount": 3475.62,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-104",
+          "amount": 1045.22,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-105",
+          "amount": 1854.14,
+          "due_in_days": 5,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-106",
+          "amount": 2535.8,
+          "due_in_days": -45,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "duplicate-po",
+    "name": "Duplicate PO",
+    "description": "Two identical bills from the same vendor \u2014 possible double pay.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Initech",
+          "invoice_id": "AP-200",
+          "amount": 3776.06,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Soylent",
+          "invoice_id": "AP-201",
+          "amount": 3348.85,
+          "due_in_days": -45,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-202",
+          "amount": 1303.39,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Initech",
+          "invoice_id": "AP-203",
+          "amount": 7184.84,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Initech",
+          "invoice_id": "AP-DUP",
+          "amount": 3776.06,
+          "due_in_days": 15,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "disputed-bill",
+    "name": "Disputed bill",
+    "description": "A large bill under dispute, payment on hold.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Umbrella Co",
+          "invoice_id": "AP-300",
+          "amount": 5575.6,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-301",
+          "amount": 2524.1,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-302",
+          "amount": 7231.6,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-303",
+          "amount": 3536.08,
+          "due_in_days": -70,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "partial-payment",
+    "name": "Partial payment",
+    "description": "Bills partially paid, small balances remaining.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-400",
+          "amount": 6944.11,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-401",
+          "amount": 1710.4,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Acme Supply",
+          "invoice_id": "AP-402",
+          "amount": 5711.92,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-403",
+          "amount": 1875.07,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-404",
+          "amount": 2994.57,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-405",
+          "amount": 2209.38,
+          "due_in_days": -45,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "credit-memo",
+    "name": "Credit memo",
+    "description": "A vendor credit offsets outstanding bills.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-500",
+          "amount": 7996.99,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Acme Supply",
+          "invoice_id": "AP-501",
+          "amount": 5202.99,
+          "due_in_days": -45,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Soylent",
+          "invoice_id": "AP-502",
+          "amount": 7538.99,
+          "due_in_days": -10,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-503",
+          "amount": 792.55,
+          "due_in_days": 5,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-504",
+          "amount": 5077.32,
+          "due_in_days": 5,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-505",
+          "amount": 6769.09,
+          "due_in_days": 30,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx-bill",
+    "name": "FX bill",
+    "description": "A foreign-currency bill converted to USD.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-600",
+          "amount": 2806.59,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Initech",
+          "invoice_id": "AP-601",
+          "amount": 4003.97,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Umbrella Co",
+          "invoice_id": "AP-602",
+          "amount": 2310.46,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-603",
+          "amount": 6616.71,
+          "due_in_days": -10,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Umbrella Co",
+          "invoice_id": "AP-604",
+          "amount": 2876.78,
+          "due_in_days": 5,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-605",
+          "amount": 3442.14,
+          "due_in_days": 5,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-606",
+          "amount": 1556.64,
+          "due_in_days": 5,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "recurring-subscription",
+    "name": "Recurring subscription",
+    "description": "Steady monthly software subscriptions.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-700",
+          "amount": 5104.01,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Soylent",
+          "invoice_id": "AP-701",
+          "amount": 7216.44,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Umbrella Co",
+          "invoice_id": "AP-702",
+          "amount": 4069.39,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Acme Supply",
+          "invoice_id": "AP-703",
+          "amount": 6910.87,
+          "due_in_days": -45,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-704",
+          "amount": 5778.85,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-705",
+          "amount": 4419.09,
+          "due_in_days": 30,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "large-capex",
+    "name": "Large capex",
+    "description": "One very large capital-equipment bill.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-800",
+          "amount": 125000.0,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Stark LLC",
+          "invoice_id": "AP-801",
+          "amount": 5381.3,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Umbrella Co",
+          "invoice_id": "AP-802",
+          "amount": 3361.06,
+          "due_in_days": 30,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Globex",
+          "invoice_id": "AP-803",
+          "amount": 1090.5,
+          "due_in_days": 5,
+          "discount_pct": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "vendor-on-hold",
+    "name": "Vendor on hold",
+    "description": "All bills from a vendor flagged on hold.",
+    "dataset": {
+      "bills": [
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-900",
+          "amount": 6806.69,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Hooli",
+          "invoice_id": "AP-901",
+          "amount": 645.93,
+          "due_in_days": 15,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Wayne Ind",
+          "invoice_id": "AP-902",
+          "amount": 4171.98,
+          "due_in_days": -70,
+          "discount_pct": 0
+        },
+        {
+          "vendor": "Initech",
+          "invoice_id": "AP-903",
+          "amount": 4903.56,
+          "due_in_days": 30,
+          "discount_pct": 0
+        }
+      ]
+    }
+  }
+]

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useAgentStream } from "@/lib/useAgentStream";
 import { Markdown } from "@/components/markdown";
 import { PageHeader } from "@/components/page-header";
@@ -21,14 +21,17 @@ export function AgentChat({
   subtitle,
   suggestions,
   avatar = "🤖",
+  scenario,
 }: {
   endpoint: string;
   title: string;
   subtitle: string;
   suggestions: string[];
   avatar?: string;
+  scenario?: string;
 }) {
-  const { messages, stages, running, error, send, reset } = useAgentStream(endpoint);
+  const extra = useMemo(() => (scenario ? { scenario } : undefined), [scenario]);
+  const { messages, stages, running, error, send, reset } = useAgentStream(endpoint, "analyst", extra);
   const [input, setInput] = useState("");
 
   function submit(text: string) {

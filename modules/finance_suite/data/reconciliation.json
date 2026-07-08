@@ -1,0 +1,458 @@
+[
+  {
+    "id": "clean",
+    "name": "Clean",
+    "description": "Bank and ledger fully agree.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-000",
+          "bank_amount": 912.18,
+          "ledger_amount": 912.18,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-001",
+          "bank_amount": 975.36,
+          "ledger_amount": 975.36,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-002",
+          "bank_amount": 454.35,
+          "ledger_amount": 454.35,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-003",
+          "bank_amount": 2461.87,
+          "ledger_amount": 2461.87,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-004",
+          "bank_amount": 1390.77,
+          "ledger_amount": 1390.77,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-005",
+          "bank_amount": 395.15,
+          "ledger_amount": 395.15,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "timing-diff",
+    "name": "Timing difference",
+    "description": "An entry booked in different periods.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-100",
+          "bank_amount": 4124.08,
+          "ledger_amount": 4124.08,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-101",
+          "bank_amount": 4478.92,
+          "ledger_amount": null,
+          "type": "timing"
+        },
+        {
+          "ref": "RC-102",
+          "bank_amount": 2754.69,
+          "ledger_amount": 2754.69,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-103",
+          "bank_amount": 3029.16,
+          "ledger_amount": 3029.16,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-104",
+          "bank_amount": 3250.13,
+          "ledger_amount": 3250.13,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-105",
+          "bank_amount": 4129.17,
+          "ledger_amount": 4129.17,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "missing-bank",
+    "name": "Missing bank txn",
+    "description": "A ledger entry with no matching bank line.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-200",
+          "bank_amount": 1828.12,
+          "ledger_amount": 1828.12,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-201",
+          "bank_amount": null,
+          "ledger_amount": 1056.29,
+          "type": "missing_bank"
+        },
+        {
+          "ref": "RC-202",
+          "bank_amount": 4299.45,
+          "ledger_amount": 4299.45,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-203",
+          "bank_amount": 1653.77,
+          "ledger_amount": 1653.77,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-204",
+          "bank_amount": 1514.3,
+          "ledger_amount": 1514.3,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-205",
+          "bank_amount": 2323.08,
+          "ledger_amount": 2323.08,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "missing-ledger",
+    "name": "Missing ledger entry",
+    "description": "A bank line not yet booked to the ledger.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-300",
+          "bank_amount": 2243.67,
+          "ledger_amount": 2243.67,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-301",
+          "bank_amount": 2389.91,
+          "ledger_amount": null,
+          "type": "missing_ledger"
+        },
+        {
+          "ref": "RC-302",
+          "bank_amount": 4209.18,
+          "ledger_amount": 4209.18,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-303",
+          "bank_amount": 2562.47,
+          "ledger_amount": 2562.47,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-304",
+          "bank_amount": 1707.69,
+          "ledger_amount": 1707.69,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-305",
+          "bank_amount": 1285.57,
+          "ledger_amount": 1285.57,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "amount-mismatch",
+    "name": "Amount mismatch",
+    "description": "Same item, different amounts.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-400",
+          "bank_amount": 1629.56,
+          "ledger_amount": 1629.56,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-401",
+          "bank_amount": 2978.53,
+          "ledger_amount": 3228.53,
+          "type": "amount_mismatch"
+        },
+        {
+          "ref": "RC-402",
+          "bank_amount": 2715.88,
+          "ledger_amount": 2715.88,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-403",
+          "bank_amount": 3820.03,
+          "ledger_amount": 3820.03,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-404",
+          "bank_amount": 1832.96,
+          "ledger_amount": 1832.96,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-405",
+          "bank_amount": 2739.86,
+          "ledger_amount": 2739.86,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "duplicate",
+    "name": "Duplicate",
+    "description": "A transaction recorded twice.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-500",
+          "bank_amount": 4403.62,
+          "ledger_amount": 4403.62,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-501",
+          "bank_amount": 879.92,
+          "ledger_amount": 879.92,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-502",
+          "bank_amount": 4444.44,
+          "ledger_amount": 4444.44,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-503",
+          "bank_amount": 4916.05,
+          "ledger_amount": 4916.05,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-504",
+          "bank_amount": 1131.42,
+          "ledger_amount": 1131.42,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-505",
+          "bank_amount": 2122.58,
+          "ledger_amount": 2122.58,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-DUP",
+          "bank_amount": 4403.62,
+          "ledger_amount": null,
+          "type": "duplicate"
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx-rounding",
+    "name": "FX rounding",
+    "description": "Small currency-rounding differences.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-600",
+          "bank_amount": 3037.45,
+          "ledger_amount": 3037.45,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-601",
+          "bank_amount": 2457.46,
+          "ledger_amount": 2457.49,
+          "type": "fx_rounding"
+        },
+        {
+          "ref": "RC-602",
+          "bank_amount": 4727.6,
+          "ledger_amount": 4727.6,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-603",
+          "bank_amount": 2976.06,
+          "ledger_amount": 2976.06,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-604",
+          "bank_amount": 4325.24,
+          "ledger_amount": 4325.24,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-605",
+          "bank_amount": 637.43,
+          "ledger_amount": 637.43,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "unbooked-fee",
+    "name": "Unbooked fee",
+    "description": "A bank fee not in the ledger.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-700",
+          "bank_amount": 3817.65,
+          "ledger_amount": 3817.65,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-701",
+          "bank_amount": 35.0,
+          "ledger_amount": null,
+          "type": "unbooked_fee"
+        },
+        {
+          "ref": "RC-702",
+          "bank_amount": 3546.85,
+          "ledger_amount": 3546.85,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-703",
+          "bank_amount": 1877.01,
+          "ledger_amount": 1877.01,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-704",
+          "bank_amount": 4009.05,
+          "ledger_amount": 4009.05,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-705",
+          "bank_amount": 615.18,
+          "ledger_amount": 615.18,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "transposed-digits",
+    "name": "Transposed digits",
+    "description": "A keying error (e.g. 1290 vs 1920).",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-800",
+          "bank_amount": 1167.83,
+          "ledger_amount": 1167.83,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-801",
+          "bank_amount": 1290.0,
+          "ledger_amount": 1920.0,
+          "type": "transposed"
+        },
+        {
+          "ref": "RC-802",
+          "bank_amount": 3101.01,
+          "ledger_amount": 3101.01,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-803",
+          "bank_amount": 4089.71,
+          "ledger_amount": 4089.71,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-804",
+          "bank_amount": 1071.57,
+          "ledger_amount": 1071.57,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-805",
+          "bank_amount": 4295.65,
+          "ledger_amount": 4295.65,
+          "type": "matched"
+        }
+      ]
+    }
+  },
+  {
+    "id": "unidentified-deposit",
+    "name": "Unidentified deposit",
+    "description": "A bank deposit with no ledger source.",
+    "dataset": {
+      "items": [
+        {
+          "ref": "RC-900",
+          "bank_amount": 2840.18,
+          "ledger_amount": 2840.18,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-901",
+          "bank_amount": 2925.71,
+          "ledger_amount": null,
+          "type": "unidentified_deposit"
+        },
+        {
+          "ref": "RC-902",
+          "bank_amount": 3767.38,
+          "ledger_amount": 3767.38,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-903",
+          "bank_amount": 2453.02,
+          "ledger_amount": 2453.02,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-904",
+          "bank_amount": 4951.1,
+          "ledger_amount": 4951.1,
+          "type": "matched"
+        },
+        {
+          "ref": "RC-905",
+          "bank_amount": 663.54,
+          "ledger_amount": 663.54,
+          "type": "matched"
+        }
+      ]
+    }
+  }
+]

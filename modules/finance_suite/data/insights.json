@@ -1,0 +1,122 @@
+[
+  {
+    "id": "margin-compression",
+    "name": "Margin compression",
+    "description": "Rising COGS squeezes gross margin.",
+    "dataset": {
+      "revenue": 1000000,
+      "cogs": 720000,
+      "opex": 200000,
+      "prior_revenue": 980000,
+      "budget_revenue": 1020000
+    }
+  },
+  {
+    "id": "revenue-growth",
+    "name": "Revenue growth",
+    "description": "Strong top-line growth vs prior period.",
+    "dataset": {
+      "revenue": 1300000,
+      "cogs": 650000,
+      "opex": 300000,
+      "prior_revenue": 1000000,
+      "budget_revenue": 1150000
+    }
+  },
+  {
+    "id": "expense-spike",
+    "name": "Expense spike",
+    "description": "Opex jumps on one-off costs.",
+    "dataset": {
+      "revenue": 1000000,
+      "cogs": 550000,
+      "opex": 380000,
+      "prior_revenue": 1010000,
+      "budget_revenue": 1000000
+    }
+  },
+  {
+    "id": "budget-variance",
+    "name": "Budget variance",
+    "description": "Revenue lands well under budget.",
+    "dataset": {
+      "revenue": 850000,
+      "cogs": 500000,
+      "opex": 250000,
+      "prior_revenue": 880000,
+      "budget_revenue": 1050000
+    }
+  },
+  {
+    "id": "opex-ratio",
+    "name": "Opex ratio",
+    "description": "Opex as a share of revenue creeps up.",
+    "dataset": {
+      "revenue": 1100000,
+      "cogs": 600000,
+      "opex": 350000,
+      "prior_revenue": 1090000,
+      "budget_revenue": 1100000
+    }
+  },
+  {
+    "id": "gross-margin-trend",
+    "name": "Gross-margin trend",
+    "description": "Gross margin improves period over period.",
+    "dataset": {
+      "revenue": 1200000,
+      "cogs": 600000,
+      "opex": 300000,
+      "prior_revenue": 1150000,
+      "budget_revenue": 1180000
+    }
+  },
+  {
+    "id": "cash-conversion",
+    "name": "Cash-conversion cycle",
+    "description": "Working-capital efficiency snapshot.",
+    "dataset": {
+      "revenue": 1050000,
+      "cogs": 580000,
+      "opex": 260000,
+      "prior_revenue": 1040000,
+      "budget_revenue": 1050000
+    }
+  },
+  {
+    "id": "dso-dpo",
+    "name": "DSO/DPO",
+    "description": "Receivable and payable days balance.",
+    "dataset": {
+      "revenue": 990000,
+      "cogs": 560000,
+      "opex": 250000,
+      "prior_revenue": 1000000,
+      "budget_revenue": 1000000
+    }
+  },
+  {
+    "id": "working-capital",
+    "name": "Working capital",
+    "description": "Working-capital position review.",
+    "dataset": {
+      "revenue": 1020000,
+      "cogs": 590000,
+      "opex": 240000,
+      "prior_revenue": 1005000,
+      "budget_revenue": 1010000
+    }
+  },
+  {
+    "id": "cohort-churn",
+    "name": "Cohort churn",
+    "description": "Churn drags revenue below prior period.",
+    "dataset": {
+      "revenue": 920000,
+      "cogs": 520000,
+      "opex": 250000,
+      "prior_revenue": 1010000,
+      "budget_revenue": 980000
+    }
+  }
+]

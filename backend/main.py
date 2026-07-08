@@ -17,7 +17,7 @@ if str(REPO_ROOT) not in sys.path:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.routers import agents, finance, trading
+from backend.routers import agents, finance, finance_suite, trading
 
 app = FastAPI(title="RT ERP API", version="1.0.0")
 
@@ -34,6 +34,7 @@ app.add_middleware(
 )
 
 app.include_router(finance.router)
+app.include_router(finance_suite.router)
 app.include_router(trading.router)
 app.include_router(agents.router)
 

@@ -1,0 +1,752 @@
+[
+  {
+    "id": "healthy-runway",
+    "name": "Healthy runway",
+    "description": "Steady inflows keep cash positive all quarter.",
+    "dataset": {
+      "opening_cash": 136270.51,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 66143.36,
+          "outflow": 52087.06
+        },
+        {
+          "week": 2,
+          "inflow": 63438.61,
+          "outflow": 46441.0
+        },
+        {
+          "week": 3,
+          "inflow": 56914.15,
+          "outflow": 41805.06
+        },
+        {
+          "week": 4,
+          "inflow": 49650.08,
+          "outflow": 47682.82
+        },
+        {
+          "week": 5,
+          "inflow": 54091.44,
+          "outflow": 47341.76
+        },
+        {
+          "week": 6,
+          "inflow": 57080.2,
+          "outflow": 46413.01
+        },
+        {
+          "week": 7,
+          "inflow": 53803.39,
+          "outflow": 46177.45
+        },
+        {
+          "week": 8,
+          "inflow": 58912.76,
+          "outflow": 51051.0
+        },
+        {
+          "week": 9,
+          "inflow": 52063.74,
+          "outflow": 53439.12
+        },
+        {
+          "week": 10,
+          "inflow": 66660.64,
+          "outflow": 54604.3
+        },
+        {
+          "week": 11,
+          "inflow": 59173.15,
+          "outflow": 43751.93
+        },
+        {
+          "week": 12,
+          "inflow": 47753.07,
+          "outflow": 40976.89
+        },
+        {
+          "week": 13,
+          "inflow": 56913.08,
+          "outflow": 41588.76
+        }
+      ]
+    }
+  },
+  {
+    "id": "cash-crunch",
+    "name": "Cash crunch",
+    "description": "Outflows exceed inflows; cash goes negative.",
+    "dataset": {
+      "opening_cash": 136479.32,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 40802.73,
+          "outflow": 75992.57
+        },
+        {
+          "week": 2,
+          "inflow": 35316.85,
+          "outflow": 75992.57
+        },
+        {
+          "week": 3,
+          "inflow": 37151.74,
+          "outflow": 75992.57
+        },
+        {
+          "week": 4,
+          "inflow": 31818.06,
+          "outflow": 75992.57
+        },
+        {
+          "week": 5,
+          "inflow": 34276.71,
+          "outflow": 75992.57
+        },
+        {
+          "week": 6,
+          "inflow": 34782.19,
+          "outflow": 75992.57
+        },
+        {
+          "week": 7,
+          "inflow": 31740.37,
+          "outflow": 75992.57
+        },
+        {
+          "week": 8,
+          "inflow": 36103.27,
+          "outflow": 75992.57
+        },
+        {
+          "week": 9,
+          "inflow": 35173.42,
+          "outflow": 75992.57
+        },
+        {
+          "week": 10,
+          "inflow": 31077.28,
+          "outflow": 75992.57
+        },
+        {
+          "week": 11,
+          "inflow": 43715.01,
+          "outflow": 75992.57
+        },
+        {
+          "week": 12,
+          "inflow": 30338.26,
+          "outflow": 75992.57
+        },
+        {
+          "week": 13,
+          "inflow": 34238.99,
+          "outflow": 75992.57
+        }
+      ]
+    }
+  },
+  {
+    "id": "receivable-delay",
+    "name": "Receivable delay",
+    "description": "A big receivable slips several weeks.",
+    "dataset": {
+      "opening_cash": 96771.87,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 42682.04,
+          "outflow": 58564.29
+        },
+        {
+          "week": 2,
+          "inflow": 14467.11,
+          "outflow": 48943.63
+        },
+        {
+          "week": 3,
+          "inflow": 14467.11,
+          "outflow": 51275.63
+        },
+        {
+          "week": 4,
+          "inflow": 48700.5,
+          "outflow": 59696.22
+        },
+        {
+          "week": 5,
+          "inflow": 39325.27,
+          "outflow": 46428.19
+        },
+        {
+          "week": 6,
+          "inflow": 47105.44,
+          "outflow": 52353.57
+        },
+        {
+          "week": 7,
+          "inflow": 42272.45,
+          "outflow": 53721.79
+        },
+        {
+          "week": 8,
+          "inflow": 57182.73,
+          "outflow": 57545.12
+        },
+        {
+          "week": 9,
+          "inflow": 54599.7,
+          "outflow": 64304.66
+        },
+        {
+          "week": 10,
+          "inflow": 56429.18,
+          "outflow": 51619.31
+        },
+        {
+          "week": 11,
+          "inflow": 55263.19,
+          "outflow": 62009.44
+        },
+        {
+          "week": 12,
+          "inflow": 45064.54,
+          "outflow": 60147.74
+        },
+        {
+          "week": 13,
+          "inflow": 53367.13,
+          "outflow": 49491.53
+        }
+      ]
+    }
+  },
+  {
+    "id": "big-capex",
+    "name": "Big capex",
+    "description": "A large one-off capital outflow.",
+    "dataset": {
+      "opening_cash": 191933.16,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 32123.38,
+          "outflow": 41059.05
+        },
+        {
+          "week": 2,
+          "inflow": 28974.25,
+          "outflow": 37550.26
+        },
+        {
+          "week": 3,
+          "inflow": 31875.13,
+          "outflow": 43962.19
+        },
+        {
+          "week": 4,
+          "inflow": 37091.5,
+          "outflow": 39629.41
+        },
+        {
+          "week": 5,
+          "inflow": 32071.11,
+          "outflow": 43366.07
+        },
+        {
+          "week": 6,
+          "inflow": 29839.15,
+          "outflow": 185090.86
+        },
+        {
+          "week": 7,
+          "inflow": 26792.95,
+          "outflow": 33194.41
+        },
+        {
+          "week": 8,
+          "inflow": 36411.91,
+          "outflow": 36843.1
+        },
+        {
+          "week": 9,
+          "inflow": 35553.72,
+          "outflow": 35279.95
+        },
+        {
+          "week": 10,
+          "inflow": 34844.31,
+          "outflow": 48986.13
+        },
+        {
+          "week": 11,
+          "inflow": 27183.64,
+          "outflow": 36876.98
+        },
+        {
+          "week": 12,
+          "inflow": 35496.11,
+          "outflow": 37307.81
+        },
+        {
+          "week": 13,
+          "inflow": 26918.53,
+          "outflow": 35171.97
+        }
+      ]
+    }
+  },
+  {
+    "id": "seasonal-dip",
+    "name": "Seasonal dip",
+    "description": "Inflows dip mid-quarter then recover.",
+    "dataset": {
+      "opening_cash": 145796.46,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 61301.61,
+          "outflow": 42352.74
+        },
+        {
+          "week": 2,
+          "inflow": 62493.04,
+          "outflow": 45074.92
+        },
+        {
+          "week": 3,
+          "inflow": 53035.03,
+          "outflow": 52795.08
+        },
+        {
+          "week": 4,
+          "inflow": 62601.28,
+          "outflow": 44481.95
+        },
+        {
+          "week": 5,
+          "inflow": 53648.14,
+          "outflow": 42171.48
+        },
+        {
+          "week": 6,
+          "inflow": 52257.89,
+          "outflow": 44800.29
+        },
+        {
+          "week": 7,
+          "inflow": 55207.36,
+          "outflow": 49448.86
+        },
+        {
+          "week": 8,
+          "inflow": 61924.8,
+          "outflow": 48763.01
+        },
+        {
+          "week": 9,
+          "inflow": 63653.36,
+          "outflow": 41765.78
+        },
+        {
+          "week": 10,
+          "inflow": 62235.32,
+          "outflow": 41040.75
+        },
+        {
+          "week": 11,
+          "inflow": 56637.13,
+          "outflow": 39416.44
+        },
+        {
+          "week": 12,
+          "inflow": 46357.55,
+          "outflow": 40594.78
+        },
+        {
+          "week": 13,
+          "inflow": 49261.75,
+          "outflow": 52082.92
+        }
+      ]
+    }
+  },
+  {
+    "id": "loan-drawdown",
+    "name": "Loan drawdown",
+    "description": "A financing inflow boosts liquidity.",
+    "dataset": {
+      "opening_cash": 167425.45,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 53473.09,
+          "outflow": 27300.37
+        },
+        {
+          "week": 2,
+          "inflow": 40033.26,
+          "outflow": 25590.2
+        },
+        {
+          "week": 3,
+          "inflow": 242422.74,
+          "outflow": 28957.32
+        },
+        {
+          "week": 4,
+          "inflow": 49593.1,
+          "outflow": 27493.68
+        },
+        {
+          "week": 5,
+          "inflow": 49646.06,
+          "outflow": 36168.16
+        },
+        {
+          "week": 6,
+          "inflow": 46395.27,
+          "outflow": 26249.47
+        },
+        {
+          "week": 7,
+          "inflow": 55977.93,
+          "outflow": 30160.46
+        },
+        {
+          "week": 8,
+          "inflow": 52110.46,
+          "outflow": 29478.23
+        },
+        {
+          "week": 9,
+          "inflow": 54642.14,
+          "outflow": 30232.21
+        },
+        {
+          "week": 10,
+          "inflow": 43204.81,
+          "outflow": 28222.46
+        },
+        {
+          "week": 11,
+          "inflow": 45951.58,
+          "outflow": 29545.9
+        },
+        {
+          "week": 12,
+          "inflow": 56637.19,
+          "outflow": 34056.49
+        },
+        {
+          "week": 13,
+          "inflow": 48169.97,
+          "outflow": 35518.18
+        }
+      ]
+    }
+  },
+  {
+    "id": "tax-payment",
+    "name": "Tax payment",
+    "description": "A quarterly tax outflow.",
+    "dataset": {
+      "opening_cash": 89854.97,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 65570.34,
+          "outflow": 30076.06
+        },
+        {
+          "week": 2,
+          "inflow": 53642.03,
+          "outflow": 33393.26
+        },
+        {
+          "week": 3,
+          "inflow": 52652.53,
+          "outflow": 38213.15
+        },
+        {
+          "week": 4,
+          "inflow": 49203.36,
+          "outflow": 35627.84
+        },
+        {
+          "week": 5,
+          "inflow": 65233.94,
+          "outflow": 28967.55
+        },
+        {
+          "week": 6,
+          "inflow": 65566.2,
+          "outflow": 36864.04
+        },
+        {
+          "week": 7,
+          "inflow": 59681.72,
+          "outflow": 36032.64
+        },
+        {
+          "week": 8,
+          "inflow": 57283.6,
+          "outflow": 30542.73
+        },
+        {
+          "week": 9,
+          "inflow": 50196.47,
+          "outflow": 122774.67
+        },
+        {
+          "week": 10,
+          "inflow": 53240.66,
+          "outflow": 28530.48
+        },
+        {
+          "week": 11,
+          "inflow": 47844.47,
+          "outflow": 29044.14
+        },
+        {
+          "week": 12,
+          "inflow": 60333.47,
+          "outflow": 33095.78
+        },
+        {
+          "week": 13,
+          "inflow": 52015.83,
+          "outflow": 27179.93
+        }
+      ]
+    }
+  },
+  {
+    "id": "payroll-spike",
+    "name": "Payroll spike",
+    "description": "A bonus-driven payroll spike.",
+    "dataset": {
+      "opening_cash": 162990.05,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 31239.93,
+          "outflow": 48267.7
+        },
+        {
+          "week": 2,
+          "inflow": 28530.92,
+          "outflow": 44488.11
+        },
+        {
+          "week": 3,
+          "inflow": 32936.08,
+          "outflow": 50659.8
+        },
+        {
+          "week": 4,
+          "inflow": 35604.13,
+          "outflow": 48489.09
+        },
+        {
+          "week": 5,
+          "inflow": 32617.81,
+          "outflow": 43523.52
+        },
+        {
+          "week": 6,
+          "inflow": 36265.66,
+          "outflow": 50856.61
+        },
+        {
+          "week": 7,
+          "inflow": 31479.38,
+          "outflow": 117358.88
+        },
+        {
+          "week": 8,
+          "inflow": 27552.28,
+          "outflow": 57352.05
+        },
+        {
+          "week": 9,
+          "inflow": 31004.35,
+          "outflow": 58458.62
+        },
+        {
+          "week": 10,
+          "inflow": 25313.96,
+          "outflow": 50673.94
+        },
+        {
+          "week": 11,
+          "inflow": 34152.37,
+          "outflow": 52599.41
+        },
+        {
+          "week": 12,
+          "inflow": 32845.28,
+          "outflow": 57270.06
+        },
+        {
+          "week": 13,
+          "inflow": 25139.98,
+          "outflow": 41271.28
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx-swing",
+    "name": "FX swing",
+    "description": "Currency movement dents net inflows.",
+    "dataset": {
+      "opening_cash": 141985.06,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 36198.19,
+          "outflow": 34133.85
+        },
+        {
+          "week": 2,
+          "inflow": 48781.47,
+          "outflow": 37939.48
+        },
+        {
+          "week": 3,
+          "inflow": 52504.3,
+          "outflow": 33238.06
+        },
+        {
+          "week": 4,
+          "inflow": 38300.82,
+          "outflow": 38542.81
+        },
+        {
+          "week": 5,
+          "inflow": 43651.05,
+          "outflow": 36966.29
+        },
+        {
+          "week": 6,
+          "inflow": 48856.09,
+          "outflow": 32298.43
+        },
+        {
+          "week": 7,
+          "inflow": 44790.95,
+          "outflow": 34782.3
+        },
+        {
+          "week": 8,
+          "inflow": 49982.61,
+          "outflow": 42060.42
+        },
+        {
+          "week": 9,
+          "inflow": 37405.01,
+          "outflow": 30601.73
+        },
+        {
+          "week": 10,
+          "inflow": 50772.97,
+          "outflow": 41924.85
+        },
+        {
+          "week": 11,
+          "inflow": 49175.33,
+          "outflow": 39249.71
+        },
+        {
+          "week": 12,
+          "inflow": 38562.46,
+          "outflow": 40322.33
+        },
+        {
+          "week": 13,
+          "inflow": 41476.96,
+          "outflow": 29803.02
+        }
+      ]
+    }
+  },
+  {
+    "id": "one-time-inflow",
+    "name": "One-time inflow",
+    "description": "A large one-off customer prepayment.",
+    "dataset": {
+      "opening_cash": 194428.26,
+      "weeks": [
+        {
+          "week": 1,
+          "inflow": 40680.38,
+          "outflow": 52638.63
+        },
+        {
+          "week": 2,
+          "inflow": 50369.78,
+          "outflow": 55716.27
+        },
+        {
+          "week": 3,
+          "inflow": 50031.46,
+          "outflow": 49026.26
+        },
+        {
+          "week": 4,
+          "inflow": 233064.69,
+          "outflow": 46470.63
+        },
+        {
+          "week": 5,
+          "inflow": 38510.84,
+          "outflow": 46381.96
+        },
+        {
+          "week": 6,
+          "inflow": 39191.89,
+          "outflow": 43462.98
+        },
+        {
+          "week": 7,
+          "inflow": 43379.27,
+          "outflow": 44669.31
+        },
+        {
+          "week": 8,
+          "inflow": 46015.15,
+          "outflow": 43563.34
+        },
+        {
+          "week": 9,
+          "inflow": 48266.01,
+          "outflow": 42488.97
+        },
+        {
+          "week": 10,
+          "inflow": 50992.41,
+          "outflow": 60677.08
+        },
+        {
+          "week": 11,
+          "inflow": 45592.84,
+          "outflow": 48445.64
+        },
+        {
+          "week": 12,
+          "inflow": 47572.13,
+          "outflow": 50976.73
+        },
+        {
+          "week": 13,
+          "inflow": 44523.79,
+          "outflow": 60109.57
+        }
+      ]
+    }
+  }
+]

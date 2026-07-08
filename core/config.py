@@ -24,5 +24,8 @@ FINANCE_DB = Path(os.getenv("FINANCE_DB", str(REPO_ROOT / "modules" / "finance" 
 # Trading module
 TRADING_DATA = REPO_ROOT / "modules" / "trading" / "data"
 
+# Finance AI Suite (AP/AR/Cash Flow/Reconciliation/Insights/Copilot) — scenario fixtures
+FINANCE_SUITE_DATA = REPO_ROOT / "modules" / "finance_suite" / "data"
+
 # Finnhub API key for the FinGPT-style forecaster (free tier at finnhub.io).
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "")

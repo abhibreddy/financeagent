@@ -11,6 +11,7 @@ import streamlit as st
 
 from core.ui import inject_css
 from modules.finance.nav import get_pages as finance_pages
+from modules.finance_suite.nav import get_pages as finance_suite_pages
 from modules.trading.nav import get_pages as trading_pages
 
 st.set_page_config(
@@ -22,6 +23,7 @@ st.set_page_config(
 nav = st.navigation({
     "": [st.Page("home.py", title="Home", icon="🏠", default=True)],  # "" = ungrouped, no section header
     "Finance": finance_pages(),
+    "Finance AI Suite": finance_suite_pages(),
     "Trading": trading_pages(),
 })
 

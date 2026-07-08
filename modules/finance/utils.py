@@ -78,40 +78,44 @@ def compute_velocity(acc_txns: pd.DataFrame) -> dict:
     }
 
 
-def build_alert_queue(txns: pd.DataFrame, accounts: pd.DataFrame) -> pd.DataFrame:
+def build_alert_queue(txns: pd.DataFrame, accounts: pd.DataFrame, low_limit: int = 12) -> pd.DataFrame:
     """
-    Compute velocity for every account and return a ranked DataFrame
-    of flagged accounts for the alert queue.
+    Compute velocity for every account and return a ranked DataFrame for the alert queue.
+    All High/Medium accounts are included; a capped sample (low_limit) of the highest-scoring
+    Low accounts is appended so the queue shows a realistic mix of risk levels without flooding.
     """
     rows = []
     for acc_id, group in txns.groupby("account_id"):
         v = compute_velocity(group)
-        if v["risk_level"] in ("High", "Medium"):
-            acc = accounts[accounts["account_id"] == acc_id]
-            if acc.empty:
-                continue
-            acc = acc.iloc[0]
-            rows.append({
-                "account_id":   acc_id,
-                "customer":     acc["customer_name"],
-                "account_type": acc["account_type"],
-                "home_city":    acc["home_city"],
-                "risk_level":   v["risk_level"],
-                "risk_score":   v["risk_score"],
-                "max_velocity": v["max_velocity"],
-                "geo_flags":    v["geo_flags"],
-                "total_amount": v["total_amount"],
-                "fraud_types":  ", ".join(v["fraud_types"]) if v["fraud_types"] else "—",
-                "is_dormant":   bool(acc["is_dormant"]),
-                "kyc_verified": bool(acc["kyc_verified"]),
-                "peak_start":   v["peak_window"][0],
-                "peak_end":     v["peak_window"][1],
-            })
+        acc = accounts[accounts["account_id"] == acc_id]
+        if acc.empty:
+            continue
+        acc = acc.iloc[0]
+        rows.append({
+            "account_id":   acc_id,
+            "customer":     acc["customer_name"],
+            "account_type": acc["account_type"],
+            "home_city":    acc["home_city"],
+            "risk_level":   v["risk_level"],
+            "risk_score":   v["risk_score"],
+            "max_velocity": v["max_velocity"],
+            "geo_flags":    v["geo_flags"],
+            "total_amount": v["total_amount"],
+            "fraud_types":  ", ".join(v["fraud_types"]) if v["fraud_types"] else "—",
+            "is_dormant":   bool(acc["is_dormant"]),
+            "kyc_verified": bool(acc["kyc_verified"]),
+            "peak_start":   v["peak_window"][0],
+            "peak_end":     v["peak_window"][1],
+        })
 
     df = pd.DataFrame(rows)
     if df.empty:
         return df
-    return df.sort_values("risk_score", ascending=False).reset_index(drop=True)
+
+    flagged = df[df["risk_level"].isin(("High", "Medium"))]
+    low = df[df["risk_level"] == "Low"].sort_values("risk_score", ascending=False).head(low_limit)
+    combined = pd.concat([flagged, low], ignore_index=True)
+    return combined.sort_values("risk_score", ascending=False).reset_index(drop=True)
 
 
 # ── SQLite — alert decisions ──────────────────────────────────────────────────

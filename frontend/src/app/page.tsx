@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { Shield, TrendingUp, LayoutDashboard, Bell, Bot, FileText, LineChart, Sparkles } from "lucide-react";
+import {
+  Shield, TrendingUp, LayoutDashboard, Bell, Bot, FileText, LineChart, Sparkles,
+  ArrowUpCircle, ArrowDownCircle, Wallet, Scale, PieChart, MessageSquare,
+} from "lucide-react";
 
 const MODULES = [
   {
@@ -25,6 +28,15 @@ const MODULES = [
       { icon: Sparkles, label: "Stock Forecaster" },
     ],
   },
+];
+
+const SUITE_AGENTS = [
+  { href: "/finance/ap", icon: ArrowUpCircle, title: "AP Agent", desc: "Accounts Payable — aging, overdue bills & early-pay discounts." },
+  { href: "/finance/ar", icon: ArrowDownCircle, title: "AR Agent", desc: "Accounts Receivable — DSO, aging & collections priority." },
+  { href: "/finance/cashflow", icon: Wallet, title: "Cash Flow Agent", desc: "13-week cash forecast, runway & liquidity risk." },
+  { href: "/finance/reconciliation", icon: Scale, title: "Reconciliation Agent", desc: "Bank vs ledger matching & break analysis." },
+  { href: "/finance/insights", icon: PieChart, title: "Financial Insights Agent", desc: "KPIs, margins & budget variance." },
+  { href: "/finance/copilot", icon: MessageSquare, title: "Finance Copilot", desc: "Cross-domain assistant that pulls AP, AR, cash, recon & insights on demand." },
 ];
 
 export default function Home() {
@@ -65,6 +77,35 @@ export default function Home() {
               </ul>
               <span className="mt-auto pt-6 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
                 Open {m.title} →
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+
+      <header className="mb-6 mt-12">
+        <h2 className="text-xl font-semibold">Finance AI Suite</h2>
+        <p className="text-muted-foreground">
+          Six finance-ops agents — pick a scenario, get a verified report, and chat with the agent.
+        </p>
+      </header>
+
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {SUITE_AGENTS.map((a) => {
+          const Icon = a.icon;
+          return (
+            <Link
+              key={a.href}
+              href={a.href}
+              className="group flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-foreground/20 hover:shadow-lg"
+            >
+              <div className="mb-3 flex size-11 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <Icon className="size-5" />
+              </div>
+              <h3 className="text-base font-semibold">{a.title}</h3>
+              <p className="mt-1.5 text-sm text-muted-foreground">{a.desc}</p>
+              <span className="mt-auto pt-5 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                Open {a.title} →
               </span>
             </Link>
           );

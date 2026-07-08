@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Bell, Bot, FileText, TrendingUp, LineChart, Sparkles, Home, Shield,
+  ArrowDownCircle, ArrowUpCircle, Wallet, Scale, PieChart, MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,15 @@ const FINANCE: Item[] = [
   { href: "/finance/alerts", label: "Alert Queue", icon: Bell },
   { href: "/finance/chat", label: "Agent Chat", icon: Bot },
   { href: "/finance/invoices", label: "Invoice Fraud", icon: FileText },
+];
+
+const AI_SUITE: Item[] = [
+  { href: "/finance/ap", label: "Accounts Payable", icon: ArrowUpCircle },
+  { href: "/finance/ar", label: "Accounts Receivable", icon: ArrowDownCircle },
+  { href: "/finance/cashflow", label: "Cash Flow", icon: Wallet },
+  { href: "/finance/reconciliation", label: "Reconciliation", icon: Scale },
+  { href: "/finance/insights", label: "Financial Insights", icon: PieChart },
+  { href: "/finance/copilot", label: "Finance Copilot", icon: MessageSquare },
 ];
 
 const TRADING: Item[] = [
@@ -70,6 +80,10 @@ export function Sidebar() {
         <NavLink item={HOME} active={isActive(HOME.href)} />
         <SectionLabel>Finance</SectionLabel>
         {FINANCE.map((i) => (
+          <NavLink key={i.href} item={i} active={isActive(i.href)} />
+        ))}
+        <SectionLabel>Finance AI Suite</SectionLabel>
+        {AI_SUITE.map((i) => (
           <NavLink key={i.href} item={i} active={isActive(i.href)} />
         ))}
         <SectionLabel>Trading</SectionLabel>

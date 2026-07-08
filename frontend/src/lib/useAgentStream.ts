@@ -15,7 +15,11 @@ export interface PipelineStage {
  * Stages arrive as `event: stage` frames (the Data→Audit→Synthesis reveal); the assistant
  * reply arrives as `event: final`.
  */
-export function useAgentStream(endpoint: string, analyst = "analyst") {
+export function useAgentStream(
+  endpoint: string,
+  analyst = "analyst",
+  extra?: Record<string, unknown>
+) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stages, setStages] = useState<PipelineStage[]>([]);
   const [running, setRunning] = useState(false);
@@ -42,7 +46,7 @@ export function useAgentStream(endpoint: string, analyst = "analyst") {
         const res = await fetch(`${API_URL}${endpoint}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history, session_id: sessionId.current, analyst }),
+          body: JSON.stringify({ messages: history, session_id: sessionId.current, analyst, ...extra }),
         });
         if (!res.ok || !res.body) throw new Error(`Stream failed (${res.status})`);
 
@@ -83,7 +87,7 @@ export function useAgentStream(endpoint: string, analyst = "analyst") {
         setRunning(false);
       }
     },
-    [messages, endpoint, analyst]
+    [messages, endpoint, analyst, extra]
   );
 
   return { messages, stages, running, error, send, reset, sessionId: sessionId.current };

@@ -1,0 +1,463 @@
+[
+  {
+    "id": "overdue-customer",
+    "name": "Overdue customer",
+    "description": "A customer with multiple badly overdue invoices.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-000",
+          "amount": 7123.96,
+          "due_in_days": -95,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-001",
+          "amount": 4504.66,
+          "due_in_days": -65,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-002",
+          "amount": 5248.67,
+          "due_in_days": -95,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-003",
+          "amount": 10824.28,
+          "due_in_days": -95,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-004",
+          "amount": 8761.62,
+          "due_in_days": -95,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-005",
+          "amount": 7034.6,
+          "due_in_days": -65,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "dispute",
+    "name": "Dispute",
+    "description": "An invoice disputed by the customer.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-100",
+          "amount": 5547.51,
+          "due_in_days": -90,
+          "disputed": true
+        },
+        {
+          "customer": "Fabrikam",
+          "invoice_id": "AR-101",
+          "amount": 6104.42,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-102",
+          "amount": 1191.62,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-103",
+          "amount": 11686.39,
+          "due_in_days": 20,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "early-pay-taken",
+    "name": "Early-pay taken",
+    "description": "Customer paid early to take a discount.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-200",
+          "amount": 11374.76,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-201",
+          "amount": 4286.77,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Litware",
+          "invoice_id": "AR-202",
+          "amount": 3646.94,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Litware",
+          "invoice_id": "AR-203",
+          "amount": 10650.03,
+          "due_in_days": -50,
+          "disputed": false
+        },
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-204",
+          "amount": 5288.18,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Proseware",
+          "invoice_id": "AR-205",
+          "amount": 7481.03,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-206",
+          "amount": 1017.62,
+          "due_in_days": -50,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "partial-payment",
+    "name": "Partial payment",
+    "description": "Invoices partly settled.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-300",
+          "amount": 6843.92,
+          "due_in_days": 30,
+          "disputed": false
+        },
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-301",
+          "amount": 8657.86,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-302",
+          "amount": 10057.99,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Northwind",
+          "invoice_id": "AR-303",
+          "amount": 2690.6,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-304",
+          "amount": 893.18,
+          "due_in_days": 30,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "credit-downgrade",
+    "name": "Credit downgrade",
+    "description": "A customer's credit was downgraded; exposure at risk.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-400",
+          "amount": 9944.18,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Fabrikam",
+          "invoice_id": "AR-401",
+          "amount": 4554.04,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-402",
+          "amount": 3440.4,
+          "due_in_days": 30,
+          "disputed": false
+        },
+        {
+          "customer": "Litware",
+          "invoice_id": "AR-403",
+          "amount": 4520.16,
+          "due_in_days": -90,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "promise-to-pay",
+    "name": "Promise to pay",
+    "description": "Customer promised payment on overdue balances.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-500",
+          "amount": 7828.63,
+          "due_in_days": -15,
+          "disputed": false
+        },
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-501",
+          "amount": 10722.51,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Northwind",
+          "invoice_id": "AR-502",
+          "amount": 6242.38,
+          "due_in_days": -50,
+          "disputed": false
+        },
+        {
+          "customer": "Litware",
+          "invoice_id": "AR-503",
+          "amount": 1919.25,
+          "due_in_days": -15,
+          "disputed": false
+        },
+        {
+          "customer": "Proseware",
+          "invoice_id": "AR-504",
+          "amount": 3873.06,
+          "due_in_days": 30,
+          "disputed": false
+        },
+        {
+          "customer": "Litware",
+          "invoice_id": "AR-505",
+          "amount": 3236.27,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-506",
+          "amount": 9832.7,
+          "due_in_days": -15,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "write-off-candidate",
+    "name": "Write-off candidate",
+    "description": "Very old invoices likely uncollectable.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-600",
+          "amount": 870.71,
+          "due_in_days": -150,
+          "disputed": false
+        },
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-601",
+          "amount": 9078.48,
+          "due_in_days": -150,
+          "disputed": false
+        },
+        {
+          "customer": "Proseware",
+          "invoice_id": "AR-602",
+          "amount": 1770.03,
+          "due_in_days": -150,
+          "disputed": false
+        },
+        {
+          "customer": "Proseware",
+          "invoice_id": "AR-603",
+          "amount": 7872.44,
+          "due_in_days": -200,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "new-customer",
+    "name": "New customer",
+    "description": "First invoices to a new account.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-700",
+          "amount": 9808.44,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-701",
+          "amount": 6871.88,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-702",
+          "amount": 10709.38,
+          "due_in_days": 30,
+          "disputed": false
+        },
+        {
+          "customer": "Fabrikam",
+          "invoice_id": "AR-703",
+          "amount": 6600.89,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Litware",
+          "invoice_id": "AR-704",
+          "amount": 9591.2,
+          "due_in_days": -15,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "seasonal-spike",
+    "name": "Seasonal spike",
+    "description": "A surge of invoices from seasonal demand.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-800",
+          "amount": 4726.05,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Proseware",
+          "invoice_id": "AR-801",
+          "amount": 1456.14,
+          "due_in_days": -90,
+          "disputed": false
+        },
+        {
+          "customer": "Northwind",
+          "invoice_id": "AR-802",
+          "amount": 7781.44,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-803",
+          "amount": 10781.82,
+          "due_in_days": -90,
+          "disputed": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "contra",
+    "name": "Contra account",
+    "description": "Customer is also a vendor \u2014 contra balance.",
+    "dataset": {
+      "invoices": [
+        {
+          "customer": "Contoso",
+          "invoice_id": "AR-900",
+          "amount": 6535.16,
+          "due_in_days": -50,
+          "disputed": false
+        },
+        {
+          "customer": "Northwind",
+          "invoice_id": "AR-901",
+          "amount": 9279.51,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Tailspin",
+          "invoice_id": "AR-902",
+          "amount": 3243.88,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-903",
+          "amount": 4243.44,
+          "due_in_days": -50,
+          "disputed": false
+        },
+        {
+          "customer": "Fabrikam",
+          "invoice_id": "AR-904",
+          "amount": 11869.4,
+          "due_in_days": 20,
+          "disputed": false
+        },
+        {
+          "customer": "Adventure Works",
+          "invoice_id": "AR-905",
+          "amount": 7419.82,
+          "due_in_days": 10,
+          "disputed": false
+        },
+        {
+          "customer": "Wingtip",
+          "invoice_id": "AR-906",
+          "amount": 2841.04,
+          "due_in_days": -50,
+          "disputed": false
+        }
+      ]
+    }
+  }
+]
